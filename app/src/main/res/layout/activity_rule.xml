@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainAction.RuleActivity">
+
+    <TextView
+        android:id="@+id/rule_title"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="利用規約"
+        android:textSize="32sp"
+        tools:layout_editor_absoluteX="128dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints"
+        android:textColor="#eb6101"/>
+
+    <ScrollView
+        android:layout_width="343dp"
+        android:layout_height="389dp"
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="76dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/rule_contents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="ここに利用規約をたしてください"
+            android:textSize="20dp"
+            />
+        
+    </ScrollView>
+
+    <Button
+        android:id="@+id/agree_contents"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_normal_orange_button"
+        android:text="同意する"
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="106dp"
+        tools:layout_editor_absoluteY="478dp"
+        tools:ignore="MissingConstraints"
+        android:textColor="#eb6101"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainAction.ResistActivity">
+
+    <TextView
+        android:id="@+id/user_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ユーザー登録"
+        android:textSize="32sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="33dp"
+        android:textColor="#eb6101"/>
+
+    <TextView
+        android:id="@+id/explain_resist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="本人確認を行う際の名前を\n半角英数字\n〇文字以上〇〇文字以内\nで入力してください"
+        android:textSize="24dp"
+        tools:layout_editor_absoluteX="48dp"
+        tools:layout_editor_absoluteY="104dp"
+        tools:ignore="MissingConstraints"
+        android:textColor="#eb6101"/>
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/ic_normal_orange_button"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="246dp"
+        android:scaleType="fitXY"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/send_name"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_normal_orange_button"
+        android:text="入力完了"
+        android:textSize="26sp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="354dp"
+        android:textColor="#eb6101"/>
+</android.support.constraint.ConstraintLayout>

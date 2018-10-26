@@ -1,0 +1,2 @@
+# NEWGIT
+初めてのGit
