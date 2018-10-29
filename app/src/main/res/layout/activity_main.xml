@@ -90,7 +90,7 @@
             android:cropToPadding="true"
             android:scaleType="fitXY"
             android:visibility="visible"
-            app:srcCompat="@drawable/ic_picture_frame_16_9"
+            app:srcCompat="@drawable/pictureframe"
             tools:layout_editor_absoluteY="-51dp" />
 
         <android.support.constraint.ConstraintLayout
