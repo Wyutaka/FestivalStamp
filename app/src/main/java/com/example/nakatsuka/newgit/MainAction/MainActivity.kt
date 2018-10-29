@@ -54,9 +54,6 @@ class MainActivity : AppCompatActivity() {
             goActivity(answerNumber)
         }
 
-        //GlideによるGIFの追加
-        val target = GlideDrawableImageViewTarget(gifView)
-        Glide.with(this).load(R.raw.icon_loader_f_ww_01_s1).into(target)
 
         //ナビゲーションに関するボタンの操作
         val fragmentManager : FragmentManager = supportFragmentManager
