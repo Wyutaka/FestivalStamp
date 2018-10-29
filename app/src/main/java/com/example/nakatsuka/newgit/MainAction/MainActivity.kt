@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 
 
                 var answerNumber:Int? = intent!!.getIntExtra("answerNumber",6)
-                buttonResult[answerNumber!!] = true
+                buttonResult[answerNumber!!-1] = true
 
                 when (answerNumber) {
                     1 -> if (buttonResult[0]) {
