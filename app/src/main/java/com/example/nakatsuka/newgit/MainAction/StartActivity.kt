@@ -1,6 +1,9 @@
 package com.example.nakatsuka.newgit.MainAction
 
+import android.app.SharedElementCallback
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,12 +17,34 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
+        //プリファレンスからUUIDとuserNameを取得
+        val prefer:SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+        var stringUUID = prefer.getString("UUID","")
+        var userName = prefer.getString("USERNAME","")
 
-        val button = start_button
+        //仮アプリとして何度も登録できるようにしてます
+        stringUUID = ""
+        userName = ""
 
-        button.setOnClickListener{
+        //未登録の場合はAPITestにデバイス情報しか入りません
+        val APITest = APITest()
+        APITest.SetandPostUserJSON(userName, Build.DEVICE, stringUUID)
+
+        //登録後はMainActivityにとばされます
+        if(stringUUID != "" && userName != ""){
+            val intent = Intent(this,MainActivity::class.java)
+            intent.putExtra("APITest",APITest)
+            startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        start_button.setOnClickListener{
             val intent = Intent(this, RuleActivity::class.java)
             startActivity(intent)
         }
+
     }
 }

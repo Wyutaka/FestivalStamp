@@ -11,7 +11,7 @@ class APITest() :Parcelable{
     private var isAPI:Boolean = false
     private var userName = ""
     private var device = ""
-    private var version = ""
+    private var UUID = ""
 
     constructor(parcel: Parcel) : this() {
         button_number = parcel.readInt()
@@ -19,21 +19,21 @@ class APITest() :Parcelable{
         isAPI = parcel.readByte() != 0.toByte()
         userName = parcel.readString()
         device = parcel.readString()
-        version = parcel.readString()
+        UUID = parcel.readString()
     }
 
     fun setButtonNumber(buttonNumber: Int){
         this.button_number = buttonNumber
     }
 
-    fun SetandPostUserJSON(userName:String,device:String,version:String){
+    fun SetandPostUserJSON(userName:String,device:String,UUID:String){
         this.userName = userName
         this.device = device
-        this.version = version
+        this.UUID = UUID
     }
 
     fun GetandPostUserJSON():String{
-        return userName+device+version
+        return userName+device+UUID
     }
 
     //このメソッドにAPI側から答えをセット
@@ -43,12 +43,12 @@ class APITest() :Parcelable{
     fun getAPIData():String{
         //APIからURLをもらうところを代用
         when(button_number){
-            0 -> APIData = "https://pbs.twimg.com/profile_images/983595280850305024/-e7O7KaL_400x400.jpg"
-            1 -> APIData = "https://yt3.ggpht.com/-phqR1pvakkM/AAAAAAAAAAI/AAAAAAAAAAA/ajOkOO-ItrU/s288-mo-c-c0xffffffff-rj-k-no/photo.jpg"
-            2 -> APIData = "http://livedoor.blogimg.jp/na_seiji-virtual/imgs/1/f/1ff83a0b-s.jpg"
-            3 -> APIData = "https://akari-mir.ai/wp-content/uploads/2018/03/Akari_iphonex.jpg"
-            4 -> APIData = "https://youtuberlabo.com/wp-content/uploads/2018/01/SnapCrab_NoName_2018-1-13_20-47-28_No-00.png"
-            5 -> APIData = "https://lohas.nicoseiga.jp/thumb/8165390i?1527286117"
+            1 -> APIData = "https://pbs.twimg.com/profile_images/983595280850305024/-e7O7KaL_400x400.jpg"
+            2 -> APIData = "https://yt3.ggpht.com/-phqR1pvakkM/AAAAAAAAAAI/AAAAAAAAAAA/ajOkOO-ItrU/s288-mo-c-c0xffffffff-rj-k-no/photo.jpg"
+            3 -> APIData = "http://livedoor.blogimg.jp/na_seiji-virtual/imgs/1/f/1ff83a0b-s.jpg"
+            4 -> APIData = "https://akari-mir.ai/wp-content/uploads/2018/03/Akari_iphonex.jpg"
+            5 -> APIData = "https://youtuberlabo.com/wp-content/uploads/2018/01/SnapCrab_NoName_2018-1-13_20-47-28_No-00.png"
+            6 -> APIData = "https://lohas.nicoseiga.jp/thumb/8165390i?1527286117"
         }
         //ここでAPIDataに文字列が入ったかどうか判別
         if(!(APIData.equals(""))){
@@ -68,7 +68,7 @@ class APITest() :Parcelable{
         parcel.writeByte(if (isAPI) 1 else 0)
         parcel.writeString(userName)
         parcel.writeString(device)
-        parcel.writeString(version)
+        parcel.writeString(UUID)
     }
 
     override fun describeContents(): Int {

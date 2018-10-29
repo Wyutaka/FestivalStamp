@@ -24,11 +24,17 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="156dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
                 android:text="tap to start"
-                android:textSize="32sp"
-                tools:layout_editor_absoluteX="114dp"
-                tools:layout_editor_absoluteY="405dp"
                 android:textColor="#eb6101"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -36,12 +42,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="名工大\nスタンプラリー\nアプリ"
-                android:textSize="40sp"
-                tools:layout_editor_absoluteX="52dp"
-                tools:layout_editor_absoluteY="142dp"
                 android:textColor="#eb6101"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.671"
                 tools:ignore="MissingConstraints" />
 
             <Button
@@ -50,6 +65,8 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="ライセンス" />
+
+
 
         </android.support.constraint.ConstraintLayout>
 

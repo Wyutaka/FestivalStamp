@@ -12,7 +12,6 @@ class RuleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rule)
 
-        val intent1 = getIntent()
         agree_contents.setOnClickListener {
             val intent = Intent(this,ResistActivity::class.java)
             startActivity(intent)

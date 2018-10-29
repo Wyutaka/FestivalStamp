@@ -1,5 +1,6 @@
 package com.example.nakatsuka.newgit.MainAction
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,9 @@ import com.example.nakatsuka.newgit.NavigationAction.FirstFragment
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.activity_main.*
 
+/*Todo 登録後の戻るボタンの制御
+  Todo fragmentの処理　
+  Todo 不要ボタン*/
 class MainActivity : AppCompatActivity() {
     private val buttonResult = mutableListOf<Boolean>(false,false,false,false,false,false)
     val RESULT_SUBACTIVITY:Int = 1000
@@ -23,11 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         val APITest: APITest = intent.extras.get("APITest") as APITest
         val infor = APITest.GetandPostUserJSON()
+        Log.d("Infor",infor)
         userInformation.text = infor
-        imageButton0.setOnClickListener{
-            val answerNumber:Int = 0
-            goActivity(answerNumber)
-        }
         imageButton1.setOnClickListener{
             val answerNumber:Int = 1
             goActivity(answerNumber)
@@ -48,6 +49,10 @@ class MainActivity : AppCompatActivity() {
             val answerNumber:Int = 5
             goActivity(answerNumber)
         }
+        imageButton6.setOnClickListener{
+            val answerNumber:Int = 6
+            goActivity(answerNumber)
+        }
 
         //GlideによるGIFの追加
         val target = GlideDrawableImageViewTarget(gifView)
@@ -64,36 +69,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode:Int,resultCode:Int,intent: Intent?){
         super.onActivityResult(requestCode,resultCode,intent)
-
-
         if(requestCode == RESULT_SUBACTIVITY){
             if(resultCode == result_canceled){
-                Log.d("cancel","cancelcalled")
             }else if(resultCode == RESULT_OK) {
 
 
-                var answerNumber:Int? = intent?.getIntExtra("answerNumber",6)
+                var answerNumber:Int? = intent!!.getIntExtra("answerNumber",6)
                 buttonResult[answerNumber!!] = true
-                Log.d("startOnActivityResult","MainActivity")
 
                 when (answerNumber) {
-                    0 -> if (buttonResult[0]) {
-                        imageButton0.setImageResource(R.mipmap.ic_launcher)
-                    }
-                    1 -> if (buttonResult[1]) {
+                    1 -> if (buttonResult[0]) {
                         imageButton1.setImageResource(R.mipmap.ic_launcher)
                     }
-                    2 -> if (buttonResult[2]) {
+                    2 -> if (buttonResult[1]) {
                         imageButton2.setImageResource(R.mipmap.ic_launcher)
                     }
-                    3 -> if (buttonResult[3]) {
+                    3 -> if (buttonResult[2]) {
                         imageButton3.setImageResource(R.mipmap.ic_launcher)
                     }
-                    4 -> if (buttonResult[4]) {
+                    4 -> if (buttonResult[3]) {
                         imageButton4.setImageResource(R.mipmap.ic_launcher)
                     }
-                    5 -> if (buttonResult[5]) {
+                    5 -> if (buttonResult[4]) {
                         imageButton5.setImageResource(R.mipmap.ic_launcher)
+                    }
+                    6 -> if (buttonResult[5]) {
+                        imageButton6.setImageResource(R.mipmap.ic_launcher)
                     }
                 }
             }
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         if(buttonResult[answerNumber]){
 
             val completed:String = "すでにスタンプは押されています"
-            makeToast(completed,0,-200)
+            makeToast(completed,0,for_scale.height)
         }else {
             intent.putExtra("AnswerNumber", answerNumber)
             if (isAPI) {
@@ -118,9 +119,10 @@ class MainActivity : AppCompatActivity() {
     }
     private fun makeToast(message:String,x:Int,y:Int){
         val toast: Toast = Toast.makeText(this,message, Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER,x,y)
+        toast.setGravity(Gravity.CENTER,x,y/4)
         toast.show()
     }
+
 
 
 }

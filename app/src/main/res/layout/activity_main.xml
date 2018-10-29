@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/for_scale"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainAction.MainActivity">
@@ -118,20 +119,6 @@
                 tools:rowCount="6">
 
                 <ImageButton
-                    android:id="@+id/imageButton0"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
                     android:id="@+id/imageButton1"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
@@ -147,7 +134,7 @@
 
                 <ImageButton
                     android:id="@+id/imageButton2"
-                    android:layout_width="161dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:contentDescription="@android:string/no"
@@ -161,7 +148,7 @@
 
                 <ImageButton
                     android:id="@+id/imageButton3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="161dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:contentDescription="@android:string/no"
@@ -175,7 +162,7 @@
 
                 <ImageButton
                     android:id="@+id/imageButton4"
-                    android:layout_width="72dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:contentDescription="@android:string/no"
@@ -189,6 +176,20 @@
 
                 <ImageButton
                     android:id="@+id/imageButton5"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_launcher_background"
+                    app:layout_columnSpan="2"
+                    app:layout_columnWeight="2"
+                    app:layout_rowSpan="2"
+                    app:layout_rowWeight="2"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <ImageButton
+                    android:id="@+id/imageButton6"
                     android:layout_width="186dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -211,8 +212,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="16dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="16dp">
 
 
         <android.support.v7.widget.Toolbar

@@ -13,7 +13,8 @@
         <activity
             android:name=".MainAction.SecondActivity"
             android:label="SecondActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".MainAction.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -7,8 +7,6 @@
     tools:context=".MainAction.SecondActivity">
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,9 +24,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:text="戻る"
+                android:text="スタンプラリー"
                 android:textColor="@android:color/background_light"
-                android:textSize="30sp" />
+                android:textSize="20dp" />
 
 
         </android.support.v7.widget.Toolbar>
@@ -36,12 +34,17 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="690dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/for_focus2"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
 
                 <TextView
                     android:id="@+id/result"
@@ -50,35 +53,100 @@
                     android:gravity="center"
                     android:text="" />
 
-                <ImageView
-                    android:id="@+id/question_image"
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="286dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@drawable/question_sample" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/frame_style">
+
+                    <TextView
+                        android:id="@+id/question_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="謎解き"
+                        android:textColor="@color/koudaisaiorange"
+                        android:textSize="40dp"
+                        app:layout_constraintBottom_toTopOf="@+id/question_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.38" />
+
+                    <ImageView
+                        android:id="@+id/question_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="64dp"
+                        android:src="@drawable/question_sample"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.503"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints" />
+
+                </android.support.constraint.ConstraintLayout>
 
 
                 <EditText
                     android:id="@+id/answer_word"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:hint="答え" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:width="335dp"
+                    android:background="@drawable/frame_style"
+                    android:hint="答え"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:maxWidth="15dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:textColorHighlight="#eb6101"
+                    android:textColorLink="#eb6101"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="38dp"
+                    tools:layout_editor_absoluteY="360dp" />
+
 
                 <Button
                     android:id="@+id/answer_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:background="@android:color/darker_gray"
-                    android:text="回答"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="30sp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/button_state"
+                    android:text="回答送信"
+                    android:textColor="@color/koudaisaiorange"
+                    android:textSize="20dp"
+                    tools:ignore="MissingConstraints" />
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
 

@@ -1,17 +1,23 @@
 package com.example.nakatsuka.newgit.MainAction;
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import android.widget.EditText
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import com.example.nakatsuka.newgit.R
+import kotlinx.android.synthetic.main.activity_resist.*
 import kotlinx.android.synthetic.main.activity_second.*
-const val result_canceled:Int = 3
+
+const val result_canceled: Int = 3
+
+//todo ここだけキーボードが背景タッチで消えない
 
 class SecondActivity : AppCompatActivity() {
 
+    lateinit private var inputMethodManager: InputMethodManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,21 +25,16 @@ class SecondActivity : AppCompatActivity() {
         setContentView(R.layout.activity_second)
 
 
-        //
-
-
-
-        val answer_button: Button = findViewById(R.id.answer_button)
-        val answer_word: EditText = findViewById(R.id.answer_word)
-
+        inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         //MainActivityからのインテントと仮APIのデータを受け取る
         val intent = intent
-        val answerNumber = intent.getIntExtra("AnswerNumber",6)
+        val answerNumber = intent.getIntExtra("AnswerNumber", 6)
 
+        question_number.setText("謎解き" + answerNumber.toString())
         val APITest = APITest()
         APITest.setButtonNumber(answerNumber)
-        val APIData:String = APITest.getAPIData()
+        val APIData: String = APITest.getAPIData()
 
 
         //テストのためMainActivityからの情報を表示
@@ -44,16 +45,16 @@ class SecondActivity : AppCompatActivity() {
         //正誤判定
 
 
-        var answerResult:Boolean = false
+        var answerResult: Boolean = false
         answer_button.setOnClickListener {
             val rightAnswer = "126"
             //EditTextからの答えをセット
             val answer = answer_word.editableText.toString()
-            if (answer == rightAnswer ) {
+            if (answer == rightAnswer) {
                 answerResult = true
-                judgement(answerResult,answerNumber)
-            }else{
-                judgement(answerResult,answerNumber)
+                judgement(answerResult, answerNumber)
+            } else {
+                judgement(answerResult, answerNumber)
             }
         }
 
@@ -64,27 +65,32 @@ class SecondActivity : AppCompatActivity() {
     }
 
 
-
-    private fun judgement(answerResult:Boolean, answerNumber:Int){
-        if(answerResult){
+    private fun judgement(answerResult: Boolean, answerNumber: Int) {
+        if (answerResult) {
             AlertDialog.Builder(this)
                     .setTitle("正解!")
                     .setPositiveButton("OK") { _, _ ->
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("isCorrect",answerResult)
-                        intent.putExtra("answerNumber",answerNumber)
-                        setResult(RESULT_OK,intent)
+                        intent.putExtra("isCorrect", answerResult)
+                        intent.putExtra("answerNumber", answerNumber)
+                        setResult(RESULT_OK, intent)
                         finish()
 
                     }
                     .show()
-        }else{
+        } else {
             AlertDialog.Builder(this)
                     .setTitle("不正解!")
-                    .setPositiveButton("OK"){
-                        _, _ ->
+                    .setPositiveButton("OK") { _, _ ->
                     }.show()
         }
     }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        inputMethodManager.hideSoftInputFromWindow(for_focus2.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        for_focus2.requestFocus()
+        return super.onTouchEvent(event)
+    }
+
 
 }
