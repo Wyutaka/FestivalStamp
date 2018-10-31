@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.R.id.action_bar_container
+import android.support.design.R.id.container
 import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val APITest: APITest = intent.extras.get("APITest") as APITest
         val infor = APITest.GetandPostUserJSON()
-        Log.d("Infor",infor)
+
         userInformation.text = infor
         imageButton1.setOnClickListener{
             val answerNumber:Int = 1
@@ -56,11 +59,13 @@ class MainActivity : AppCompatActivity() {
 
 
         //ナビゲーションに関するボタンの操作
-        val fragmentManager : FragmentManager = supportFragmentManager
+
+
+
+       val fragmentManager : FragmentManager = supportFragmentManager
         stamp_rally.setOnClickListener {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container,FirstFragment())
-                    .commit()
+
+
         }
     }
 
@@ -122,4 +127,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+   // fun gotofragment() {
+   // val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+    //    transaction.
+    //}
 }
