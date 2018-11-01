@@ -12,6 +12,23 @@ import com.example.nakatsuka.newgit.R
 
 class FirstFragment : Fragment() {
 
+    companion object {
+        private const val KEY_MAKER = "maker_name"
+        private const val KEY_BRAND = "brand_name"
+
+        fun createInstance(): FirstFragment {
+            val firstfragment = FirstFragment()
+            //val args = Bundle()
+            //args.putString(KEY_MAKER, maker)
+            //args.putString(KEY_BRAND, brand)
+
+            return firstfragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
