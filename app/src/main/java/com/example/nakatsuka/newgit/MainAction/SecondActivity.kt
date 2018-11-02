@@ -31,7 +31,7 @@ class SecondActivity : AppCompatActivity() {
         val intent = intent
         val answerNumber = intent.getIntExtra("AnswerNumber", 6)
 
-        question_number.setText("謎解き" + answerNumber.toString())
+        question_number.setText("謎解き" + answerNumber+1.toString())
         val APITest = APITest()
         APITest.setButtonNumber(answerNumber)
         val APIData: String = APITest.getAPIData()

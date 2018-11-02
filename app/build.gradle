@@ -5,6 +5,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    dexOptions{
+        javaMaxHeapSize "2g"
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.nakatsuka.newgit"

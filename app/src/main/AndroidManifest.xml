@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainAction.MainActivity" />
+        <activity android:name=".MainAction.MainActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MainAction.SecondActivity"
             android:label="SecondActivity"
@@ -23,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainAction.RuleActivity" />
+
+
         <activity android:name=".MainAction.ResistActivity"></activity>
     </application>
 

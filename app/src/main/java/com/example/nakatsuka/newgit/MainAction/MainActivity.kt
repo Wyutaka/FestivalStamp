@@ -10,12 +10,14 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
 import com.example.nakatsuka.newgit.NavigationAction.FirstFragment
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.R.id.for_scale
+import com.example.nakatsuka.newgit.R.id.invisible
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_first.*
 
@@ -35,27 +37,27 @@ class MainActivity : AppCompatActivity() {
 
         userInformation.text = infor
         imageButton1.setOnClickListener {
-            val answerNumber: Int = 1
+            val answerNumber: Int = 0
             goActivity(answerNumber)
         }
         imageButton2.setOnClickListener {
-            val answerNumber: Int = 2
+            val answerNumber: Int = 1
             goActivity(answerNumber)
         }
         imageButton3.setOnClickListener {
-            val answerNumber: Int = 3
+            val answerNumber: Int = 2
             goActivity(answerNumber)
         }
         imageButton4.setOnClickListener {
-            val answerNumber: Int = 4
+            val answerNumber: Int = 3
             goActivity(answerNumber)
         }
         imageButton5.setOnClickListener {
-            val answerNumber: Int = 5
+            val answerNumber: Int = 4
             goActivity(answerNumber)
         }
         imageButton6.setOnClickListener {
-            val answerNumber: Int = 6
+            val answerNumber: Int = 5
             goActivity(answerNumber)
         }
 
@@ -90,26 +92,26 @@ class MainActivity : AppCompatActivity() {
 
 
                     var answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
-                    buttonResult[answerNumber!! - 1] = true
+                    buttonResult[answerNumber!!] = true
 
                     when (answerNumber) {
-                        1 -> if (buttonResult[0]) {
-                            imageButton1.setImageResource(R.mipmap.ic_launcher)
+                        0 -> if (buttonResult[0]) {
+                            imageButton1.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
-                        2 -> if (buttonResult[1]) {
-                            imageButton2.setImageResource(R.mipmap.ic_launcher)
+                        1 -> if (buttonResult[1]) {
+                            imageButton2.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
-                        3 -> if (buttonResult[2]) {
-                            imageButton3.setImageResource(R.mipmap.ic_launcher)
+                        2 -> if (buttonResult[2]) {
+                            imageButton3.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
-                        4 -> if (buttonResult[3]) {
-                            imageButton4.setImageResource(R.mipmap.ic_launcher)
+                        3 -> if (buttonResult[3]) {
+                            imageButton4.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
-                        5 -> if (buttonResult[4]) {
-                            imageButton5.setImageResource(R.mipmap.ic_launcher)
+                        4 -> if (buttonResult[4]) {
+                            imageButton5.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
-                        6 -> if (buttonResult[5]) {
-                            imageButton6.setImageResource(R.mipmap.ic_launcher)
+                        5 -> if (buttonResult[5]) {
+                            imageButton6.setImageResource(R.color.mtrl_btn_transparent_bg_color)
                         }
                     }
                 }
@@ -134,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun makeToast(message: String, x: Int, y: Int) {
-            val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_LONG)
+            val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.CENTER, x, y / 4)
             toast.show()
         }
