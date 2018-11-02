@@ -1,4 +1,4 @@
-package com.example.nakatsuka.newgit.MainAction;
+package com.example.nakatsuka.newgit.MainAction
 
 import android.content.Context
 import android.content.Intent
@@ -30,8 +30,9 @@ class SecondActivity : AppCompatActivity() {
         //MainActivityからのインテントと仮APIのデータを受け取る
         val intent = intent
         val answerNumber = intent.getIntExtra("AnswerNumber", 6)
+        val answernumberforview = answerNumber+1
 
-        question_number.setText("謎解き" + answerNumber+1.toString())
+        question_number.setText("謎解き" + answernumberforview.toString())
         val APITest = APITest()
         APITest.setButtonNumber(answerNumber)
         val APIData: String = APITest.getAPIData()
@@ -45,7 +46,7 @@ class SecondActivity : AppCompatActivity() {
         //正誤判定
 
 
-        var answerResult: Boolean = false
+        var answerResult = false
         answer_button.setOnClickListener {
             val rightAnswer = "126"
             //EditTextからの答えをセット

@@ -85,11 +85,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/president"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_invertedorangebutton" />
+            app:srcCompat="@drawable/test" />
 
         <ImageView
             android:id="@+id/imageView"
