@@ -18,9 +18,6 @@ class FirstFragment : Fragment() {
 
         fun createInstance(): FirstFragment {
             val firstfragment = FirstFragment()
-            //val args = Bundle()
-            //args.putString(KEY_MAKER, maker)
-            //args.putString(KEY_BRAND, brand)
 
             return firstfragment
         }

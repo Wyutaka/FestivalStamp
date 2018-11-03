@@ -8,6 +8,8 @@ import android.view.Gravity
 import android.webkit.WebViewClient
 import android.widget.Toast
 import com.example.nakatsuka.newgit.NavigationAction.FirstFragment
+import com.example.nakatsuka.newgit.NavigationAction.SecondFragment
+import com.example.nakatsuka.newgit.NavigationAction.ThirdFragment
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
 
         //itimaie.webViewClient = WebViewClient()
@@ -45,15 +46,15 @@ class MainActivity : AppCompatActivity() {
             goActivity(answerNumber)
         }
         imageButton4.setOnClickListener {
-            val answerNumber  = 3
+            val answerNumber = 3
             goActivity(answerNumber)
         }
         imageButton5.setOnClickListener {
-            val answerNumber  = 4
+            val answerNumber = 4
             goActivity(answerNumber)
         }
         imageButton6.setOnClickListener {
-            val answerNumber  = 5
+            val answerNumber = 5
             goActivity(answerNumber)
         }
 
@@ -70,15 +71,24 @@ class MainActivity : AppCompatActivity() {
                 //バックスタックを設定
                 transaction.addToBackStack(null)
                 //パラメータを設定
-                transaction.add(R.id.container, FirstFragment())
+                transaction.replace(R.id.container, FirstFragment())
                 transaction.commit()
-
-
             }
-
         }
-    }
+        map.setOnClickListener {
+            Log.d("fragment", "called")
+            if (savedInstanceState == null) {
+                val transaction = supportFragmentManager.beginTransaction()
+                //バックスタックを設定
+                transaction.addToBackStack(null)
+                //パラメータを設定
+                transaction.replace(R.id.container, SecondFragment())
+                transaction.commit()
+            }
+        }
 
+
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == RESULT_SUBACTIVITY) {
