@@ -74,6 +74,7 @@ class ResistActivity : AppCompatActivity() {
                                         val editor: SharedPreferences.Editor =prefer.edit()
                                         editor.putString("UUID",stringUUID)
                                         editor.putString("USERNAME",userName)
+                                        Log.d("prefer","prefer")
                                         editor.commit()
                                         val APITest = APITest()
                                         APITest.SetandPostUserJSON(userName, Build.DEVICE,stringUUID)

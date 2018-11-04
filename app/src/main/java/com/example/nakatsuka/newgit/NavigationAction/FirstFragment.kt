@@ -1,30 +1,46 @@
 package com.example.nakatsuka.newgit.NavigationAction
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.nakatsuka.newgit.R
-
+import kotlinx.android.synthetic.main.fragment_first.*
 
 
 class FirstFragment : Fragment() {
-
-    companion object {
-        private const val KEY_MAKER = "maker_name"
-        private const val KEY_BRAND = "brand_name"
-
-        fun createInstance(): FirstFragment {
-            val firstfragment = FirstFragment()
-
-            return firstfragment
-        }
-    }
+    private var quizNumber:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("firstdesu","firstdesu")
+        imageButton1.setOnClickListener {
+            quizNumber = 0
+            setQuizNumber(quizNumber)
+        }
+        Log.d("firstafter","firstafter")
+        imageButton2.setOnClickListener {
+            quizNumber = 1
+            setQuizNumber(quizNumber)
+        }
+        imageButton3.setOnClickListener {
+            quizNumber = 2
+            setQuizNumber(quizNumber)
+        }
+        imageButton4.setOnClickListener {
+            quizNumber = 3
+            setQuizNumber(quizNumber)
+        }
+        imageButton5.setOnClickListener {
+            quizNumber = 4
+            setQuizNumber(quizNumber)
+        }
+        imageButton6.setOnClickListener {
+            quizNumber = 5
+            setQuizNumber(quizNumber)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +50,13 @@ class FirstFragment : Fragment() {
 
     }
 
+    private fun setQuizNumber(quizNumber:Int){
+        this.quizNumber = quizNumber
+    }
+    fun getQuizNumber():Int {
+        return quizNumber
+        quizNumber = 6
+    }
 
 
 }
