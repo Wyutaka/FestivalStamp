@@ -26,18 +26,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("maindesu","maindesu")
+        Log.d("maindesu", "maindesu")
 
 
         //itimaie.webViewClient = WebViewClient()
         //itimaie.loadUrl("https://c0de-app.club.nitech.ac.jp/cloud/apps/files/?dir=/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture&fileid=78384#/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture/test.png")
 
         //fragmentの初期設定
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.container,FirstFragment())
-        transaction.commit()
+        if(savedInstanceState==null) {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, FirstFragment())
+            transaction.commit()
 
-        Log.d("fragmentdesu","fragmentdesu")
+            Log.d("fragmentdesu", "fragmentdesu")
+        }
         /**
         //ボタンが押されるとそのボタン相応のquiznumが返されてきてボタンの反応があるときにだけgoActivityが呼び出されます
         val fragment = FirstFragment()
@@ -45,18 +47,18 @@ class MainActivity : AppCompatActivity() {
         Log.d("maindesita","maindesita")
         val quizNumber =fragment.getQuizNumber()
         if(quizNumber in 0..5){
-            goActivity(quizNumber)
+        goActivity(quizNumber)
         }
 
 
         //ナビゲーションに関するボタンの操作
 
-        */
+         */
         stamp_rally.setOnClickListener {
             // コードからフラグメントを追加
             Log.d("fragment", "called!!")
             if (savedInstanceState == null) {
-
+                val transaction = supportFragmentManager.beginTransaction()
                 //バックスタックを設定
                 transaction.addToBackStack(null)
                 //パラメータを設定
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         map.setOnClickListener {
             Log.d("fragment", "called")
             if (savedInstanceState == null) {
-
+                val transaction = supportFragmentManager.beginTransaction()
                 //パラメータを設定
                 transaction.replace(R.id.container, SecondFragment())
                 //バックスタックを設定
@@ -75,8 +77,18 @@ class MainActivity : AppCompatActivity() {
                 transaction.commit()
             }
         }
+        notice_board.setOnClickListener {
+            Log.d("fragment", "called")
+            if (savedInstanceState == null) {
+                val transaction = supportFragmentManager.beginTransaction()
+                //パラメータを設定
+                transaction.replace(R.id.container, ThirdFragment())
+                //バックスタックを設定
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
 
-
+        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)

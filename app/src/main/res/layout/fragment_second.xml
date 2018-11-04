@@ -21,6 +21,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:text="first_blank_fragment" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

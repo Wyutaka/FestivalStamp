@@ -13,8 +13,18 @@ import kotlinx.android.synthetic.main.fragment_first.*
 class FirstFragment : Fragment() {
     private var quizNumber:Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_first, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         Log.d("firstdesu","firstdesu")
         imageButton1.setOnClickListener {
             quizNumber = 0
@@ -41,13 +51,6 @@ class FirstFragment : Fragment() {
             quizNumber = 5
             setQuizNumber(quizNumber)
         }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_first, container, false)
-
     }
 
     private fun setQuizNumber(quizNumber:Int){
