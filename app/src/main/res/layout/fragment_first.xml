@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="361dp"
+    android:layout_height="454dp"
     android:background="@android:color/transparent"
     tools:context=".NavigationAction.FirstFragment">
 
@@ -11,7 +11,8 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="center"
+        android:gravity="center"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/girl" />
 
     <ImageView
@@ -23,121 +24,107 @@
         android:cropToPadding="true"
         android:scaleType="fitXY"
         android:visibility="visible"
-        app:srcCompat="@drawable/pictureframe"
-        tools:layout_editor_absoluteY="-51dp" />
+        app:srcCompat="@drawable/pictureframe" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="346dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:visibility="visible"
         tools:layout_editor_absoluteX="14dp"
         tools:layout_editor_absoluteY="66dp">
 
         <android.support.v7.widget.GridLayout
             android:id="@+id/gridLayout2"
-            android:layout_width="337dp"
-            android:layout_height="408dp"
+            android:layout_width="332dp"
+            android:layout_height="431dp"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
             android:visibility="visible"
             app:columnCount="4"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             tools:rowCount="6">
 
             <ImageButton
                 android:id="@+id/imageButton1"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
             <ImageButton
                 android:id="@+id/imageButton3"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
             <ImageButton
                 android:id="@+id/imageButton4"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
             <ImageButton
                 android:id="@+id/imageButton5"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
             <ImageButton
                 android:id="@+id/imageButton6"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_floating_island"
                 android:contentDescription="@android:string/no"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
                 app:layout_columnSpan="2"
                 app:layout_columnWeight="2"
                 app:layout_rowSpan="2"
-                app:layout_rowWeight="2"
-                tools:ignore="VectorDrawableCompat" />
+                app:layout_rowWeight="2" />
 
         </android.support.v7.widget.GridLayout>
 
     </android.support.constraint.ConstraintLayout>
-
 
 
 </FrameLayout>
