@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    tools:context=".NavigationAction.FirstFragment">
+    tools:context=".NavigationAction.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +14,7 @@
         android:layout_gravity="center"
         android:minHeight="191dp">
 
-        <TextView
+        <WebView
             android:id="@+id/secondfragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

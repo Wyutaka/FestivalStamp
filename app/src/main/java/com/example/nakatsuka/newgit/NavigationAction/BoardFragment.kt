@@ -1,10 +1,7 @@
 package com.example.nakatsuka.newgit.NavigationAction
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,22 +11,21 @@ import android.webkit.WebViewClient
 import com.example.nakatsuka.newgit.R
 
 
-class ThirdFragment : Fragment() {
+class BoardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view: View = inflater!!.inflate(R.layout.fragment_third, container, false)
+        val view: View = inflater!!.inflate(R.layout.fragment_board, container, false)
         val mwebview = view.findViewById(R.id.webView) as WebView
         mwebview.loadUrl("https://www.nitech.ac.jp/")
 
 
-        val webSettings = mwebview.getSettings()
+        val webSettings = mwebview.settings
         webSettings.javaScriptEnabled = true
 
         mwebview.webViewClient = WebViewClient()
-        Log.d("web", "1000RR")
-        return view
 
+        return view
     }
 
 }

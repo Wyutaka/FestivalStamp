@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/for_scale"
@@ -56,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:layout_gravity="center"
                 android:text="スタンプ" />
 
@@ -65,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:text="地図"
                 android:layout_gravity="center" />
 
@@ -74,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:text="掲示板"
                 android:layout_gravity="center"/>
 
@@ -83,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:text="スケジュール"
                 android:textSize="8dp"
                 android:layout_gravity="center"/>
@@ -93,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:text="その他"
                 android:layout_gravity="center"/>
         </LinearLayout>
