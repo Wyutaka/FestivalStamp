@@ -1,17 +1,39 @@
 package com.example.nakatsuka.newgit.NavigationAction
 
+import android.content.Context
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import com.example.nakatsuka.newgit.MainAction.MainActivity
+import com.example.nakatsuka.newgit.MainAction.SecondActivity
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.fragment_first.*
 
+//イベントactivity内でviewを呼び出す方法
 
 class FirstFragment : Fragment() {
     private var quizNumber:Int = 0
+
+    interface FragmentListener{
+        fun onClickButton()
+    }
+
+    private var mListener: FragmentListener? = null
+
+    override fun onAttach(context: Context){
+        super.onAttach(context)
+
+        if (context is FragmentListener){
+            mListener = context
+        }
+    }
 
 
 
@@ -25,11 +47,21 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("firstdesu","firstdesu")
-        imageButton1.setOnClickListener {
+
+        view!!.findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+            if(mListener != null){
+                mListener?.let { it.onClickButton() }
+
+
+            }
+        }
+        /*imageButton1.setOnClickListener {
+            if(mListener != null){
+                mListener.onClickButton()
+            }
             quizNumber = 0
             setQuizNumber(quizNumber)
-        }
+        }*/
         Log.d("firstafter","firstafter")
         imageButton2.setOnClickListener {
             quizNumber = 1
@@ -61,7 +93,10 @@ class FirstFragment : Fragment() {
         quizNumber = 6
     }
 
-
+    override fun onDetach() {
+        super.onDetach()
+        mListener =null
+    }
 }
 
 

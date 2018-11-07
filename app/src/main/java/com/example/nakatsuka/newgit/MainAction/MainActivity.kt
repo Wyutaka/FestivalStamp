@@ -18,7 +18,9 @@ import kotlinx.android.synthetic.main.fragment_first.*
 /*Todo 登録後の戻るボタンの制御
   Todo fragmentの処理　
   Todo 不要ボタン*/
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),FirstFragment.FragmentListener {
+
+
     private val buttonResult = mutableListOf<Boolean>(false, false, false, false, false, false)
     val RESULT_SUBACTIVITY: Int = 1000
 
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         //itimaie.loadUrl("https://c0de-app.club.nitech.ac.jp/cloud/apps/files/?dir=/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture&fileid=78384#/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture/test.png")
 
         //fragmentの初期設定
-        if(savedInstanceState==null) {
+       if(savedInstanceState==null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, FirstFragment())
             transaction.commit()
@@ -84,12 +86,18 @@ class MainActivity : AppCompatActivity() {
                 //パラメータを設定
                 transaction.replace(R.id.container, ThirdFragment())
                 //バックスタックを設定
-                transaction.addToBackStack(null)
+                //transaction.addToBackStack(null)
                 transaction.commit()
             }
 
         }
     }
+        //イベントの情報
+    override fun onClickButton() {
+        Log.d("callback","called")
+            goActivity(0)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == RESULT_SUBACTIVITY) {
@@ -102,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
                 when (answerNumber) {
                     0 -> if (buttonResult[0]) {
-                        imageButton1.setImageResource(0)
+                        //imageButton1.setImageResource(0)
                     }
                     1 -> if (buttonResult[1]) {
                         imageButton2.setImageResource(0)
@@ -140,6 +148,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun makeToast(message: String, x: Int, y: Int) {
         val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
