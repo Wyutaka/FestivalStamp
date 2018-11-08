@@ -43,11 +43,8 @@ class ResistActivity : AppCompatActivity() {
 
                         val mApiController = ApiController()
 
-                        //val APITest = APITest()
-                        //APITest.device = Build.DEVICE
                         var stringUUID = ""
 
-                        //TODO 実装例
                         mApiController.registerUser(userName, Build.DEVICE, Build.VERSION.RELEASE) { response ->
                             when (response.code()) {
                                 200 -> {
@@ -60,9 +57,6 @@ class ResistActivity : AppCompatActivity() {
                                     response.body()?.let {
                                         stringUUID = it.uuid
 
-                                        //APITest.UUID = it.uuid
-                                        //APITest.userName = userName
-
                                         Log.d("registerUser", "${response.body()}, stringUUID: $stringUUID")
                                     }
 
@@ -73,8 +67,6 @@ class ResistActivity : AppCompatActivity() {
                                     editor.putString("USERNAME", userName)
                                     editor.commit()
                                     val intent = Intent(this, MainActivity::class.java)
-
-                                    //intent.putExtra("APITest", APITest)
 
                                     startActivity(intent)
                                 }
