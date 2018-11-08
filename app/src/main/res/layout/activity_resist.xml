@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:id="@+id/for_focus"
     app:layout_gravity="center"
-    tools:context=".MainAction.ResistActivity">
+    tools:context=".mainAction.ResistActivity">
 
     <TextView
         android:id="@+id/user_title"

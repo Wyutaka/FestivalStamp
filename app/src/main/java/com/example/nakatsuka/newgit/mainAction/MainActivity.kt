@@ -1,15 +1,12 @@
-package com.example.nakatsuka.newgit.MainAction
+package com.example.nakatsuka.newgit.mainAction
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Gravity
-import android.widget.Toast
-import com.example.nakatsuka.newgit.NavigationAction.*
+import com.example.nakatsuka.newgit.navigationAction.*
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_stamp.*
 
 /*Todo 登録後の戻るボタンの制御
   Todo fragmentの処理　

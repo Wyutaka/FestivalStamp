@@ -12,24 +12,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainAction.MainActivity"
+        <activity android:name=".mainAction.MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".MainAction.SecondActivity"
+            android:name=".mainAction.SecondActivity"
             android:label="SecondActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".MainAction.StartActivity">
+        <activity android:name=".mainAction.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainAction.RuleActivity" />
+        <activity android:name=".mainAction.RuleActivity" />
 
 
-        <activity android:name=".MainAction.ResistActivity"></activity>
+        <activity android:name=".mainAction.ResistActivity"></activity>
     </application>
+
+
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
 
 </manifest>

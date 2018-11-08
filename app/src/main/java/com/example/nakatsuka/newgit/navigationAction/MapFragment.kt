@@ -1,4 +1,4 @@
-package com.example.nakatsuka.newgit.NavigationAction
+package com.example.nakatsuka.newgit.navigationAction
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

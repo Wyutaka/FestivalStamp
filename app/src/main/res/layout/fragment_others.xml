@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NavigationAction.OthersFragment">
+    tools:context=".navigationAction.OthersFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <WebView

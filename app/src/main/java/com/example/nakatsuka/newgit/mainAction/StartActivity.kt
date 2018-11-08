@@ -1,13 +1,11 @@
-package com.example.nakatsuka.newgit.MainAction
+package com.example.nakatsuka.newgit.mainAction
 
-import android.app.SharedElementCallback
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.example.nakatsuka.newgit.BuildConfig
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.activity_start.*
 

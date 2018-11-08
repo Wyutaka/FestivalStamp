@@ -1,4 +1,4 @@
-package com.example.nakatsuka.newgit.MainAction
+package com.example.nakatsuka.newgit.mainAction
 
 import android.os.Parcel
 import android.os.Parcelable

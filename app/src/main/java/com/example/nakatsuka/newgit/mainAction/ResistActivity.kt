@@ -1,18 +1,15 @@
-package com.example.nakatsuka.newgit.MainAction
+package com.example.nakatsuka.newgit.mainAction
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.renderscript.ScriptGroup
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.example.nakatsuka.newgit.BuildConfig
 import com.example.nakatsuka.newgit.R
 import kotlinx.android.synthetic.main.activity_resist.*
 import java.util.*
