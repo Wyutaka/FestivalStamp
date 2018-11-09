@@ -45,7 +45,7 @@ class ResistActivity : AppCompatActivity() {
 
                         var stringUUID = ""
 
-                        mApiController.registerUser(userName, Build.DEVICE, Build.VERSION.RELEASE) { response ->
+                        mApiController.registerUser(this, userName, Build.DEVICE, Build.VERSION.RELEASE) { response ->
                             when (response.code()) {
                                 200 -> {
                                     AlertDialog.Builder(this)

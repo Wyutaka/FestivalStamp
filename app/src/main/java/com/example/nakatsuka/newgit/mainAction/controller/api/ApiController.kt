@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import com.example.nakatsuka.newgit.mainAction.ResistActivity
 import com.example.nakatsuka.newgit.mainAction.RuleActivity
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.model.api.*
@@ -20,7 +21,7 @@ class ApiController {
         private val TAG get() = ApiController::class.java.simpleName
     }
 
-    fun getRegulation(activity: RuleActivity, agreeButton: Button, title: TextView,  onResponse: (response: Response<RuleResponse>) -> Unit) {
+    fun getRegulation(activity: RuleActivity, agreeButton: Button, title: TextView, onResponse: (response: Response<RuleResponse>) -> Unit) {
         APIClient.instance.rule().enqueue(object : Callback<RuleResponse> {
             override fun onResponse(call: Call<RuleResponse>, response: Response<RuleResponse>) {
                 onResponse(response)
@@ -39,7 +40,7 @@ class ApiController {
                 title.visibility = View.GONE
                 AlertDialog.Builder(activity)
                         .setTitle("通信エラー")
-                        .setMessage("通信状況を確認の上再度お試しください。")
+                        .setMessage("通信状況を確認の上再度お試しください")
                         .setPositiveButton("OK") { _, _ ->
                             activity.jump()
                         }
@@ -48,7 +49,7 @@ class ApiController {
         })
     }
 
-    fun registerUser(userName: String, device: String, version: String, onResponse: (response: Response<UserResponse>) -> Unit) {
+    fun registerUser(activity: ResistActivity, userName: String, device: String, version: String, onResponse: (response: Response<UserResponse>) -> Unit) {
         val request = UserRequest(userName, device, version)
         APIClient.instance.user(request).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
@@ -62,6 +63,12 @@ class ApiController {
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Log.e(TAG, t.localizedMessage, t)
+                AlertDialog.Builder(activity)
+                        .setTitle("通信エラー")
+                        .setMessage("通信状況を確認の上再度お試しください")
+                        .setPositiveButton("OK") { _, _ ->
+                        }
+                        .show()
             }
         })
     }
