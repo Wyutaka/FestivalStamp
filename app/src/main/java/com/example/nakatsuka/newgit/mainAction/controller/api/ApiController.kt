@@ -1,6 +1,11 @@
 package com.example.nakatsuka.newgit.mainAction.controller.api
 
+import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import com.example.nakatsuka.newgit.mainAction.RuleActivity
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.model.api.*
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
@@ -15,8 +20,8 @@ class ApiController {
         private val TAG get() = ApiController::class.java.simpleName
     }
 
-    fun getRegulation(onResponse: (response: Response<RuleResponse>) -> Unit){
-        APIClient.instance.rule().enqueue(object :Callback<RuleResponse>{
+    fun getRegulation(activity: RuleActivity, agreeButton: Button, title: TextView,  onResponse: (response: Response<RuleResponse>) -> Unit) {
+        APIClient.instance.rule().enqueue(object : Callback<RuleResponse> {
             override fun onResponse(call: Call<RuleResponse>, response: Response<RuleResponse>) {
                 onResponse(response)
                 if (response.code() == 200) {
@@ -28,6 +33,17 @@ class ApiController {
 
             override fun onFailure(call: Call<RuleResponse>, t: Throwable) {
                 Log.e(TAG, t.localizedMessage, t)
+
+                //テキストもろもろ消して最初の画面に戻ります
+                agreeButton.visibility = View.INVISIBLE
+                title.visibility = View.GONE
+                AlertDialog.Builder(activity)
+                        .setTitle("通信エラー")
+                        .setMessage("通信状況を確認の上再度お試しください。")
+                        .setPositiveButton("OK") { _, _ ->
+                            activity.jump()
+                        }
+                        .show()
             }
         })
     }
@@ -74,13 +90,14 @@ class ApiController {
         })
 
     }
+
     /**
      * beaconManagerを直接渡すのではなく、beaconListだけを渡す仕様に変更した。
      * */
-    fun requestImage(uuid: String, quizCode: Int, beaconList:MutableList<MyBeaconData>, onResponse: (response: Response<ImageResponse>) -> Unit) {
+    fun requestImage(uuid: String, quizCode: Int, beaconList: MutableList<MyBeaconData>, onResponse: (response: Response<ImageResponse>) -> Unit) {
 
         val request = ImageRequest(quizCode, beaconList.map { it.major })
-        Log.d(TAG,"BeaconList = ")
+        Log.d(TAG, "BeaconList = ")
 
         //APIClientで、上で作ったrequestを用いてAPI通信を行う
         APIClient.instance.image(request, uuid).enqueue(object : Callback<ImageResponse> {
