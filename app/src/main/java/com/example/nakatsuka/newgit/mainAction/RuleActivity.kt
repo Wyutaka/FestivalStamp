@@ -15,15 +15,12 @@ class RuleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rule)
 
-        val title = findViewById<TextView>(R.id.rule_title)
-        val agreeButton = findViewById<Button>(R.id.agree_contents)
-        val regulation = findViewById<TextView>(R.id.rule_contents)
         val mApiController = ApiController()
-        mApiController.getRegulation(this, agreeButton, title) { response ->
+        mApiController.getRegulation(this, agree_contents, rule_title) { response ->
             when (response.code()) {
                 200 -> {
                     response.body()?.let {
-                        regulation.text = it.ruleText
+                        rule_contents.text = it.ruleText
                     }
                 }
             }

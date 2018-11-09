@@ -52,23 +52,25 @@ class ResistActivity : AppCompatActivity() {
                                             .setTitle("登録完了")
                                             .setPositiveButton("OK") { _, _ ->
 
+                                                response.body()?.let {
+                                                    stringUUID = it.uuid
+
+                                                    Log.d("registerUser", "${response.body()}, stringUUID: $stringUUID")
+                                                }
+
+                                                Log.d("UUID", stringUUID)
+                                                val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+                                                val editor: SharedPreferences.Editor = prefer.edit()
+                                                editor.putString("UUID", stringUUID)
+                                                editor.putString("USERNAME", userName)
+                                                editor.commit()
+                                                val intent = Intent(this, MainActivity::class.java)
+
+                                                startActivity(intent)
                                             }
                                             .show()
-                                    response.body()?.let {
-                                        stringUUID = it.uuid
 
-                                        Log.d("registerUser", "${response.body()}, stringUUID: $stringUUID")
-                                    }
 
-                                    Log.d("UUID", stringUUID)
-                                    val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
-                                    val editor: SharedPreferences.Editor = prefer.edit()
-                                    editor.putString("UUID", stringUUID)
-                                    editor.putString("USERNAME", userName)
-                                    editor.commit()
-                                    val intent = Intent(this, MainActivity::class.java)
-
-                                    startActivity(intent)
                                 }
                                 400 -> {
                                     AlertDialog.Builder(this)

@@ -35,7 +35,7 @@ class StampFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-/**
+
 
         Log.d("firstdesu","firstdesu")
         imageButton1.setOnClickListener {
@@ -67,16 +67,15 @@ class StampFragment : Fragment() {
         for(i in 0..5){
             if(buttonResult[i]){
                 when(i){
-                    0 -> imageButton1.setImageResource(0)
-                    1 -> imageButton2.setImageResource(0)
-                    2 -> imageButton3.setImageResource(0)
-                    3 -> imageButton4.setImageResource(0)
-                    4 -> imageButton5.setImageResource(0)
-                    5 -> imageButton6.setImageResource(0)
+                    0 -> imageButton1.setBackgroundResource(0)
+                    1 -> imageButton2.setBackgroundResource(0)
+                    2 -> imageButton3.setBackgroundResource(0)
+                    3 -> imageButton4.setBackgroundResource(0)
+                    4 -> imageButton5.setBackgroundResource(0)
+                    5 -> imageButton6.setBackgroundResource(0)
                 }
             }
         }
-*/
     }
 
 

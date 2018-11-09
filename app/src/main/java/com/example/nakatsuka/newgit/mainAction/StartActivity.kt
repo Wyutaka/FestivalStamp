@@ -15,10 +15,14 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
+        //Todo launch画面でのCode画像
         //プリファレンスからUUIDとuserNameを取得
         val prefer:SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         var stringUUID = prefer.getString("UUID","")
         var userName = prefer.getString("USERNAME","")
+
+        stringUUID = ""
+        userName = ""
 
         //未登録の場合はAPITestにデバイス情報しか入りません
         val APITest = APITest()
