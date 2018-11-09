@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.nakatsuka.newgit.mainAction.ResistActivity
 import com.example.nakatsuka.newgit.mainAction.RuleActivity
+import com.example.nakatsuka.newgit.mainAction.SecondActivity
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.model.api.*
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
@@ -124,7 +125,7 @@ class ApiController {
         })
     }
 
-    fun judgeAnswer(uuid: String, quizCode: Int, answer: String, onResponse: (response: Response<AnswerResponse>) -> Unit) {
+    fun judgeAnswer(activity: SecondActivity,uuid: String, quizCode: Int, answer: String, onResponse: (response: Response<AnswerResponse>) -> Unit) {
         val request = AnswerRequest(quizCode, answer)
 
         APIClient.instance.answer(request, uuid).enqueue(object : Callback<AnswerResponse> {
@@ -140,6 +141,12 @@ class ApiController {
 
             override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
                 Log.e(TAG, t.localizedMessage, t)
+                AlertDialog.Builder(activity)
+                        .setTitle("通信エラー")
+                        .setMessage("通信状況を確認の上再度お試しください")
+                        .setPositiveButton("OK") { _, _ ->
+                        }
+                        .show()
             }
         })
     }

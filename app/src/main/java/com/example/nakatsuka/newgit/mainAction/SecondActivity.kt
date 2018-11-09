@@ -39,31 +39,31 @@ class SecondActivity : AppCompatActivity() {
         var answerResult = false
         val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         val uuid = prefer.getString("UUID", "")
-        val quizCode=1
+        val quizCode = 1
         answer_button.setOnClickListener {
             /**
              * サーバー側の正誤判定に合わせるため正解がquizCodeごとに変わります
              * 1:"AD34E" 2:"DEACG" 3:"FSXJW" 4:"VX8LK" 5:"X1QPY" 6:"HIQ3A"
              */
 
-            mApiController.judgeAnswer(uuid,quizCode,answer_word.editableText.toString()){response ->
-                when(response.code()){
+            mApiController.judgeAnswer(this, uuid, quizCode, answer_word.editableText.toString()) { response ->
+                when (response.code()) {
                     200 -> {
                         response.body()?.let {
                             answerResult = it.isCorrect
                             Log.d("judgeAnswer", "${response.body()}")
 
-                            judgement(answerResult, quizCode, response.code(),"")
+                            judgement(answerResult, quizCode, response.code(), "")
                         }
                     }
                     401 -> {
-                        response.body()?.let{
-                            judgement(answerResult,quizCode,401,"")
+                        response.body()?.let {
+                            judgement(answerResult, quizCode, 401, "")
                         }
                     }
                     else -> {
                         Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
-                        judgement(answerResult,quizCode,response.code(),"")
+                        judgement(answerResult, quizCode, response.code(), "")
                     }
                 }
             }
@@ -76,9 +76,9 @@ class SecondActivity : AppCompatActivity() {
 
     }
 
-    private fun judgement(answerResult: Boolean, quizCode: Int, responseCode: Int,msg:String) {
+    private fun judgement(answerResult: Boolean, quizCode: Int, responseCode: Int, msg: String) {
         if (responseCode == 200) {
-            if(answerResult) {
+            if (answerResult) {
                 AlertDialog.Builder(this)
                         .setTitle("正解!")
                         .setMessage("スタンプを押します")
@@ -91,7 +91,7 @@ class SecondActivity : AppCompatActivity() {
 
                         }
                         .show()
-            }else{
+            } else {
                 AlertDialog.Builder(this)
                         .setTitle("不正解")
                         .setMessage("もう一度考えてみてください")
@@ -108,13 +108,13 @@ class SecondActivity : AppCompatActivity() {
                             }.show()
                 }
                 401 -> {
-                    if (msg =="Not Send UUID") {
+                    if (msg == "Not Send UUID") {
                         AlertDialog.Builder(this)
                                 .setTitle("通信エラー")
                                 .setMessage("もう一度やり直してください")
                                 .setPositiveButton("OK") { _, _ ->
                                 }.show()
-                    }else if(msg =="User not found"){
+                    } else if (msg == "User not found") {
                         AlertDialog.Builder(this)
                                 .setTitle("エラー")
                                 .setMessage("このエラーが出続けるようならばサービスセンターにお越しください")
