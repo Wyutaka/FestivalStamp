@@ -2,12 +2,15 @@ package com.example.nakatsuka.newgit.mainAction
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import com.example.nakatsuka.newgit.R
+import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import kotlinx.android.synthetic.main.activity_second.*
 
 const val result_canceled: Int = 3
@@ -16,7 +19,7 @@ const val result_canceled: Int = 3
 
 class SecondActivity : AppCompatActivity() {
 
-    lateinit private var inputMethodManager: InputMethodManager
+    private lateinit var inputMethodManager: InputMethodManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,33 +31,41 @@ class SecondActivity : AppCompatActivity() {
 
         //MainActivityからのインテントと仮APIのデータを受け取る
         val intent = intent
-        val answerNumber = intent.getIntExtra("AnswerNumber", 6)
-        val answernumberforview = answerNumber+1
-
-        question_number.setText("謎解き" + answernumberforview.toString())
-        val APITest = APITest()
-        APITest.setButtonNumber(answerNumber)
-        val APIData: String = APITest.getAPIData()
-
-
-        //テストのためMainActivityからの情報を表示
-        result.text = APIData
         //このあたりでbuttonNumberから画像の設定
 
 
         //正誤判定
-
-
+        val mApiController = ApiController()
         var answerResult = false
+        val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+        val uuid = prefer.getString("UUID", "")
+        val quizCode=1
         answer_button.setOnClickListener {
-            val rightAnswer = "126"
-            //EditTextからの答えをセット
-            val answer = answer_word.editableText.toString()
-            if (answer == rightAnswer) {
-                answerResult = true
-                judgement(answerResult, answerNumber)
-            } else {
-                judgement(answerResult, answerNumber)
+            /**
+             * サーバー側の正誤判定に合わせるため正解がquizCodeごとに変わります
+             * 1:"AD34E" 2:"DEACG" 3:"FSXJW" 4:"VX8LK" 5:"X1QPY" 6:"HIQ3A"
+             */
+
+            mApiController.judgeAnswer(uuid,quizCode,answer_word.editableText.toString()){response ->
+                when(response.code()){
+                    200 -> {
+                        response.body()?.let {
+                            answerResult = it.isCorrect
+                            Log.d("judgeAnswer", "${response.body()}")
+
+                            judgement(answerResult, quizCode, response.code(),"")
+                        }
+                    }
+                    401 -> {
+                        response.body()?.let{
+                            judgement(answerResult,quizCode,401,"")
+                        }
+                    }
+                    else -> {
+                        Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
+                        judgement(answerResult,quizCode,response.code(),"")
+                    }
+                }
             }
         }
 
@@ -62,29 +73,66 @@ class SecondActivity : AppCompatActivity() {
             setResult(result_canceled)
             finish()
         }
+
     }
 
+    private fun judgement(answerResult: Boolean, quizCode: Int, responseCode: Int,msg:String) {
+        if (responseCode == 200) {
+            if(answerResult) {
+                AlertDialog.Builder(this)
+                        .setTitle("正解!")
+                        .setMessage("スタンプを押します")
+                        .setPositiveButton("OK") { _, _ ->
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("isCorrect", answerResult)
+                            intent.putExtra("answerNumber", quizCode)
+                            setResult(RESULT_OK, intent)
+                            finish()
 
-    private fun judgement(answerResult: Boolean, answerNumber: Int) {
-        if (answerResult) {
-            AlertDialog.Builder(this)
-                    .setTitle("正解!")
-                    .setPositiveButton("OK") { _, _ ->
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("isCorrect", answerResult)
-                        intent.putExtra("answerNumber", answerNumber)
-                        setResult(RESULT_OK, intent)
-                        finish()
-
-                    }
-                    .show()
+                        }
+                        .show()
+            }else{
+                AlertDialog.Builder(this)
+                        .setTitle("不正解")
+                        .setMessage("もう一度考えてみてください")
+                        .setPositiveButton("OK") { _, _ ->
+                        }.show()
+            }
         } else {
-            AlertDialog.Builder(this)
-                    .setTitle("不正解!")
-                    .setPositiveButton("OK") { _, _ ->
-                    }.show()
+            when (responseCode) {
+                400 -> {
+                    AlertDialog.Builder(this)
+                            .setTitle("不正な値が入力されました")
+                            .setMessage("もう一度回答してください")
+                            .setPositiveButton("OK") { _, _ ->
+                            }.show()
+                }
+                401 -> {
+                    if (msg =="Not Send UUID") {
+                        AlertDialog.Builder(this)
+                                .setTitle("通信エラー")
+                                .setMessage("もう一度やり直してください")
+                                .setPositiveButton("OK") { _, _ ->
+                                }.show()
+                    }else if(msg =="User not found"){
+                        AlertDialog.Builder(this)
+                                .setTitle("エラー")
+                                .setMessage("このエラーが出続けるようならばサービスセンターにお越しください")
+                                .setPositiveButton("OK") { _, _ ->
+                                }.show()
+                    }
+                }
+                500 -> {
+                    AlertDialog.Builder(this)
+                            .setTitle("エラー")
+                            .setMessage("解答を入力し直してください")
+                            .setPositiveButton("OK") { _, _ ->
+                            }.show()
+                }
+            }
         }
     }
+
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         inputMethodManager.hideSoftInputFromWindow(for_focus2.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)

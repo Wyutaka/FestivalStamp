@@ -19,7 +19,7 @@ class RuleActivity : AppCompatActivity() {
         val agreeButton = findViewById<Button>(R.id.agree_contents)
         val regulation = findViewById<TextView>(R.id.rule_contents)
         val mApiController = ApiController()
-        mApiController.getRegulation(this,agreeButton, title) { response ->
+        mApiController.getRegulation(this, agreeButton, title) { response ->
             when (response.code()) {
                 200 -> {
                     response.body()?.let {
@@ -35,7 +35,7 @@ class RuleActivity : AppCompatActivity() {
         }
     }
 
-    fun jump(){
+    fun jump() {
         finish()
     }
 }
