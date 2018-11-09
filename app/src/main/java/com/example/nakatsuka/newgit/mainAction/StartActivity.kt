@@ -20,10 +20,6 @@ class StartActivity : AppCompatActivity() {
         var stringUUID = prefer.getString("UUID","")
         var userName = prefer.getString("USERNAME","")
 
-        //仮アプリとして何度も登録できるようにしてます
-        stringUUID = ""
-        userName = ""
-
         //未登録の場合はAPITestにデバイス情報しか入りません
         val APITest = APITest()
         APITest.SetandPostUserJSON(userName, Build.DEVICE, stringUUID)

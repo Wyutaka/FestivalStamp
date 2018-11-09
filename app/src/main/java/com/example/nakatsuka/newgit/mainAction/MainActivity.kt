@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         //fragmentの初期設定
        if(savedInstanceState==null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, StampFragment())
+            transaction.replace(R.id.container,StampFragment())
             transaction.commit()
 
             Log.d("fragmentdesu", "fragmentdesu")

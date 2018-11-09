@@ -35,7 +35,7 @@ class StampFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+/**
 
         Log.d("firstdesu","firstdesu")
         imageButton1.setOnClickListener {
@@ -76,7 +76,7 @@ class StampFragment : Fragment() {
                 }
             }
         }
-
+*/
     }
 
 

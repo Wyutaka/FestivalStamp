@@ -10,16 +10,12 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="431dp"
-        android:layout_gravity="center"
-        android:minHeight="191dp">
+        android:layout_height="match_parent">
 
         <WebView
-            android:id="@+id/secondfragment"
+            android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:text="first_blank_fragment" />
+            android:layout_height="match_parent" />
 
     </android.support.constraint.ConstraintLayout>
 
