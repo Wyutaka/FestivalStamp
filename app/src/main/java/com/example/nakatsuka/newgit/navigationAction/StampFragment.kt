@@ -1,8 +1,10 @@
 package com.example.nakatsuka.newgit.navigationAction
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +14,22 @@ import android.widget.Toast
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.APITest
 import com.example.nakatsuka.newgit.mainAction.SecondActivity
+import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
+import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
+import com.example.nakatsuka.newgit.mainAction.model.api.ImageResponse
+import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_stamp.*
+import retrofit2.Response
 
 
 class StampFragment : Fragment() {
 
     val RESULT_SUBACTIVITY: Int = 1000
     private val buttonResult = mutableListOf<Boolean>(false, false, false, false, false, false)
+    val uuid = arguments!!.getString("uuid")
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,6 +54,13 @@ class StampFragment : Fragment() {
                     mProgressDialog!!.dismiss()
                     goActivity(quizNumber)
                 })
+
+            if (buttonResult[quizNumber] == false) {
+                mBeaconController.rangeBeacon({
+                    mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+                }
+                )
+            }
                 thread.start()
             }
 
@@ -101,6 +118,33 @@ class StampFragment : Fragment() {
 
     fun setState(state: Boolean, num: Int) {
         buttonResult[num] = state
+    }
+
+
+
+    /*Beacon通信用のいろいろ*/
+    //Controller関係
+    val mApiController = ApiController()
+    val mBeaconController: BeaconController = BeaconController(activity as Context)
+    //関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
+    val requestImagesFunc = fun(quizCode: Int): (Response<ImageResponse>) -> Unit {
+        val go = fun(response: Response<ImageResponse>) {
+            when (response.code()) {
+                200 -> {
+                    response.body()?.let {
+                        val imageUrl = it.imageURL
+                        val isSend = it.isSend
+                        Log.d("judgeAnswer", "${response.body()}")
+                        //goActivity(quizCode, imageUrl, isSend, false)
+                    }
+                }
+                else -> {
+                    Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
+                }
+            }
+
+        }
+        return go
     }
 
 }

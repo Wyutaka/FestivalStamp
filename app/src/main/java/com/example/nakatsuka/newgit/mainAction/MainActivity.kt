@@ -1,6 +1,8 @@
 package com.example.nakatsuka.newgit.mainAction
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -16,9 +18,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     val RESULT_SUBACTIVITY: Int = 1000
 
+    val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         Log.d("maindesu", "maindesu")
 
@@ -51,8 +56,16 @@ class MainActivity : AppCompatActivity() {
                 val transaction = supportFragmentManager.beginTransaction()
                 //バックスタックを設定
                 transaction.addToBackStack(null)
+
+                /*beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします*/
+                var bnd = Bundle()
+                bnd.putString("uuid",prefer.getString("uuid",null))
+
+                val stampFragment = StampFragment()
+                stampFragment.arguments = bnd
+
                 //パラメータを設定
-                transaction.replace(R.id.container, StampFragment())
+                transaction.replace(R.id.container, stampFragment)
                 
                 nowFragment = 0
                 transaction.commit()
