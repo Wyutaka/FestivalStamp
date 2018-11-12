@@ -10,8 +10,7 @@ import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 
-/*Todo progressbarの処理
-  Todo fragmentの処理　
+/*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
 class MainActivity : AppCompatActivity() {
