@@ -2,12 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/for_focus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:id="@+id/for_focus"
+    android:gravity="center"
     app:layout_gravity="center"
     tools:context=".mainAction.ResistActivity">
 
@@ -25,12 +25,12 @@
         android:gravity="center"
         android:text="ユーザー登録"
         android:textColor="#eb6101"
-        android:textSize="40dp"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/explain_resist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788"
+        app:layout_constraintVertical_bias="0.054"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -38,26 +38,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center"
-        android:text="本人確認を行う際の名前を\n半角英数字\n5文字以上で入力してください"
+        android:text="4文字以上で入力してください"
         android:textColor="#eb6101"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/explain_resist2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/explain_resist2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="半角英数,ひらがな,カタカナ,漢字が使用できます"
+        android:textColor="@color/koudaisaiorange"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/send_name"
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="248dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -82,7 +99,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/send_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
@@ -95,6 +112,7 @@
             android:layout_marginTop="8dp"
             android:width="335dp"
             android:background="@drawable/frame_style"
+            android:hint="ユーザー名を入力してください"
             android:inputType="text"
             android:paddingBottom="8dp"
             android:paddingLeft="8dp"
@@ -102,7 +120,6 @@
             android:paddingTop="8dp"
             android:textColorHighlight="#eb6101"
             android:textColorLink="#eb6101"
-            android:hint="電脳少女シロ"
             app:layout_constraintBottom_toTopOf="@+id/send_name"
             tools:layout_editor_absoluteX="center" />
     </HorizontalScrollView>

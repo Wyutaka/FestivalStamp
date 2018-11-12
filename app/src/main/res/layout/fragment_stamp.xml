@@ -32,9 +32,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="15dp"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="66dp">
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="14dp">
 
         <FrameLayout
             android:layout_width="match_parent"

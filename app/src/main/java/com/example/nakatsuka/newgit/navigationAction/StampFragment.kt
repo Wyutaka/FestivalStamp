@@ -13,6 +13,7 @@ import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.APITest
 import com.example.nakatsuka.newgit.mainAction.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_stamp.*
 
 
 class StampFragment : Fragment() {
@@ -25,31 +26,33 @@ class StampFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
 
-        //ダイアログが出ます
-        val event = View.OnClickListener {
-            val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
-            mProgressDialog.setTargetFragment(this, 100)
-            mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
-            val thread = Thread(Runnable {
-                try {
-                    Thread.sleep(1000)
-                    mProgressDialog.move()
-                } catch (e: Exception) {
-                }
-                try {
-                    Thread.sleep(2000)
-                } catch (e: Exception) {
-                }
-                mProgressDialog!!.dismiss()
-            })
-            thread.start()
-        }
-        view.findViewById<Button>(R.id.imageButton1).setOnClickListener(event)
-        view.findViewById<Button>(R.id.imageButton2).setOnClickListener(event)
-        view.findViewById<Button>(R.id.imageButton3).setOnClickListener(event)
-        view.findViewById<Button>(R.id.imageButton4).setOnClickListener(event)
-        view.findViewById<Button>(R.id.imageButton5).setOnClickListener(event)
-        view.findViewById<Button>(R.id.imageButton6).setOnClickListener(event)
+        //ダイアログ機能を追加させました
+        fun event(quizNumber: Int):View.OnClickListener = View.OnClickListener {
+                val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
+                mProgressDialog.setTargetFragment(this, 100)
+                mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
+                val thread = Thread(Runnable {
+                    try {
+                        Thread.sleep(1000)
+                        mProgressDialog.move()
+                    } catch (e: Exception) {
+                    }
+                    try {
+                        Thread.sleep(2000)
+                    } catch (e: Exception) {
+                    }
+                    mProgressDialog!!.dismiss()
+                    goActivity(quizNumber)
+                })
+                thread.start()
+            }
+
+        view.findViewById<Button>(R.id.imageButton1).setOnClickListener(event(0))
+        view.findViewById<Button>(R.id.imageButton2).setOnClickListener(event(1))
+        view.findViewById<Button>(R.id.imageButton3).setOnClickListener(event(2))
+        view.findViewById<Button>(R.id.imageButton4).setOnClickListener(event(3))
+        view.findViewById<Button>(R.id.imageButton5).setOnClickListener(event(4))
+        view.findViewById<Button>(R.id.imageButton6).setOnClickListener(event(5))
 
         return view
 
@@ -58,48 +61,17 @@ class StampFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /**
+        for (i in 0..5)
+            if (buttonResult[i])
+                when (i) {
+                    0 -> imageButton1.setBackgroundResource(0)
+                    1 -> imageButton2.setBackgroundResource(0)
+                    2 -> imageButton3.setBackgroundResource(0)
+                    3 -> imageButton4.setBackgroundResource(0)
+                    4 -> imageButton5.setBackgroundResource(0)
+                    5 -> imageButton6.setBackgroundResource(0)
+                }
 
-        Log.d("firstdesu","firstdesu")
-        imageButton1.setOnClickListener {
-        val quizNumber = 0
-        goActivity(quizNumber)
-        }
-        Log.d("firstafter","firstafter")
-        imageButton2.setOnClickListener {
-        val quizNumber = 1
-        goActivity(quizNumber)
-        }
-        imageButton3.setOnClickListener {
-        val quizNumber = 2
-        goActivity(quizNumber)
-        }
-        imageButton4.setOnClickListener {
-        val quizNumber = 3
-        goActivity(quizNumber)
-        }
-        imageButton5.setOnClickListener {
-        val quizNumber = 4
-        goActivity(quizNumber)
-        }
-        imageButton6.setOnClickListener {
-        val quizNumber = 5
-        goActivity(quizNumber)
-        }
-
-        for(i in 0..5){
-        if(buttonResult[i]){
-        when(i){
-        0 -> imageButton1.setImageResource(0)
-        1 -> imageButton2.setImageResource(0)
-        2 -> imageButton3.setImageResource(0)
-        3 -> imageButton4.setImageResource(0)
-        4 -> imageButton5.setImageResource(0)
-        5 -> imageButton6.setImageResource(0)
-        }
-        }
-        }
-         */
     }
 
 

@@ -102,8 +102,8 @@ class SecondActivity : AppCompatActivity() {
             when (responseCode) {
                 400 -> {
                     AlertDialog.Builder(this)
-                            .setTitle("不正な値が入力されました")
-                            .setMessage("もう一度回答してください")
+                            .setTitle("エラー")
+                            .setMessage("解答を入力し直してください")
                             .setPositiveButton("OK") { _, _ ->
                             }.show()
                 }
@@ -117,7 +117,7 @@ class SecondActivity : AppCompatActivity() {
                     } else if (msg == "User not found") {
                         AlertDialog.Builder(this)
                                 .setTitle("エラー")
-                                .setMessage("このエラーが出続けるようならばサービスセンターにお越しください")
+                                .setMessage("このエラーが出続けるよう場合、お手数ですがサービスセンターにお越しください")
                                 .setPositiveButton("OK") { _, _ ->
                                 }.show()
                     }
