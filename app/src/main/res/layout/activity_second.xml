@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:text="スタンプラリー"
+                android:text="←スタンプラリー"
                 android:textColor="@android:color/background_light"
                 android:textSize="20dp" />
 
@@ -81,7 +81,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.38" />
 
-                    <ImageView
+                    <WebView
                         android:id="@+id/question_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/button_state"
-                    android:text="回答送信"
+                    android:text="解答送信"
                     android:textColor="@color/koudaisaiorange"
                     android:textSize="20dp"
                     tools:ignore="MissingConstraints" />

@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 /*Todo progressbarの処理
   Todo fragmentの処理　
-  Todo APITestの部分の差し替え*/
+  Todo APITestの部分の差し替え
+  Todo Goal後のアラートの実装*/
 class MainActivity : AppCompatActivity() {
     val RESULT_SUBACTIVITY: Int = 1000
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
 
         //itimaie.webViewClient = WebViewClient()
-        //itimaie.loadUrl("https://c0de-app.club.nitech.ac.jp/cloud/apps/files/?dir=/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture&fileid=78384#/Public%20Share%20(C0de)/NitFes2018/www_knoom/design/stamp-picture/test.png")
+        //itimaie.loadUrl("https://c0de-app.club.nitech.ac.jp/cloud/apps/files/?dir=/Public%20Share%20(c0de)/NitFes2018/www_knoom/design/stamp-picture&fileid=78384#/Public%20Share%20(c0de)/NitFes2018/www_knoom/design/stamp-picture/test.png")
 
         //fragmentの初期設定
         if (savedInstanceState == null) {
@@ -35,27 +36,31 @@ class MainActivity : AppCompatActivity() {
             Log.d("fragmentdesu", "fragmentdesu")
         }
 
-        val normal:Int = R.drawable.normalorengebutton
-        val inverted:Int = R.drawable.invertedorangebutton
+        var nowFragment = 0
+        val normal: Int = R.drawable.normalorengebutton
+        val inverted: Int = R.drawable.invertedorangebutton
         //Todo アニメーションの追加
         stamp_rally.setOnClickListener {
+            stamp_rally.setBackgroundResource(inverted)
+            map.setBackgroundResource(normal)
+            board.setBackgroundResource(normal)
+            time_table.setBackgroundResource(normal)
+            others.setBackgroundResource(normal)
             // コードからフラグメントを追加
             Log.d("fragment", "called!!")
             if (savedInstanceState == null) {
-                stamp_rally.setBackgroundResource(inverted)
-                map.setBackgroundResource(normal)
-                board.setBackgroundResource(normal)
-                time_table.setBackgroundResource(normal)
-                others.setBackgroundResource(normal)
                 val transaction = supportFragmentManager.beginTransaction()
                 //バックスタックを設定
                 transaction.addToBackStack(null)
                 //パラメータを設定
                 transaction.replace(R.id.container, StampFragment())
+                
+                nowFragment = 0
                 transaction.commit()
             }
         }
         map.setOnClickListener {
+
             stamp_rally.setBackgroundResource(normal)
             map.setBackgroundResource(inverted)
             board.setBackgroundResource(normal)
@@ -63,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             others.setBackgroundResource(normal)
             Log.d("fragment", "called")
             if (savedInstanceState == null) {
+                nowFragment = 1
                 val transaction = supportFragmentManager.beginTransaction()
                 //パラメータを設定
                 transaction.replace(R.id.container, MapFragment())
@@ -72,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         board.setOnClickListener {
+
             stamp_rally.setBackgroundResource(normal)
             map.setBackgroundResource(normal)
             board.setBackgroundResource(inverted)
@@ -79,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             others.setBackgroundResource(normal)
             Log.d("fragment", "called")
             if (savedInstanceState == null) {
+                nowFragment = 2
                 val transaction = supportFragmentManager.beginTransaction()
                 //パラメータを設定
                 transaction.replace(R.id.container, BoardFragment())
@@ -88,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         time_table.setOnClickListener {
+
             stamp_rally.setBackgroundResource(normal)
             map.setBackgroundResource(normal)
             board.setBackgroundResource(normal)
@@ -95,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             others.setBackgroundResource(normal)
             Log.d("fragment", "called")
             if (savedInstanceState == null) {
+                nowFragment = 3
                 val transaction = supportFragmentManager.beginTransaction()
                 //パラメータを設定
                 transaction.replace(R.id.container, ScheduleFragment())
@@ -104,6 +114,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         others.setOnClickListener {
+
             stamp_rally.setBackgroundResource(normal)
             map.setBackgroundResource(normal)
             board.setBackgroundResource(normal)
@@ -111,6 +122,7 @@ class MainActivity : AppCompatActivity() {
             others.setBackgroundResource(inverted)
             Log.d("fragment", "called")
             if (savedInstanceState == null) {
+                nowFragment = 4
                 val transaction = supportFragmentManager.beginTransaction()
                 //パラメータを設定
                 transaction.replace(R.id.container, OthersFragment())

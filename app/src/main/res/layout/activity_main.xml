@@ -13,15 +13,18 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eb6101">
+            android:gravity="center"
+            >
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="スタンプラリー"
-                android:textColor="@android:color/background_light"
-                android:textSize="18dp" />
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
 
         </android.support.v7.widget.Toolbar>
 

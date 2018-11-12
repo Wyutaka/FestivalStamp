@@ -75,7 +75,7 @@ class ResistActivity : AppCompatActivity() {
                                 400 -> {
                                     AlertDialog.Builder(this)
                                             .setTitle("エラー")
-                                            .setMessage("5文字以上で入力してください")
+                                            .setMessage("4文字以上で入力してください")
                                             .setPositiveButton("OK") { _, _ ->
                                             }
                                             .show()
@@ -84,7 +84,7 @@ class ResistActivity : AppCompatActivity() {
                                 409 -> {
                                     AlertDialog.Builder(this)
                                             .setTitle("エラー")
-                                            .setMessage("その名前は使用済みです")
+                                            .setMessage("その名前は使用できません")
                                             .setPositiveButton("OK") { _, _ ->
                                             }
                                             .show()

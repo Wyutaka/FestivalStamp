@@ -13,9 +13,16 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+        }
+
+        // スプラッシュthemeを通常themeに変更する
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_start)
 
-        //Todo launch画面でのCode画像
         //プリファレンスからUUIDとuserNameを取得
         val prefer:SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         var stringUUID = prefer.getString("UUID","")

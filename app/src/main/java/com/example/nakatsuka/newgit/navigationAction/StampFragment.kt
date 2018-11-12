@@ -37,12 +37,10 @@ class StampFragment : Fragment() {
 
 
 
-        Log.d("firstdesu","firstdesu")
         imageButton1.setOnClickListener {
             val quizNumber = 0
             goActivity(quizNumber)
         }
-        Log.d("firstafter","firstafter")
         imageButton2.setOnClickListener {
             val quizNumber = 1
             goActivity(quizNumber)
