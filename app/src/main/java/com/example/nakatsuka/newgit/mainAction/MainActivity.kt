@@ -9,20 +9,27 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.KeyEvent
 import com.example.nakatsuka.newgit.R
+import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
+import org.altbeacon.beacon.BeaconConsumer
 
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BeaconConsumer {
     val RESULT_SUBACTIVITY: Int = 1000
+    val TAG = this.javaClass.simpleName
 
-    val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+    lateinit var prefer: SharedPreferences
+    lateinit var stampFragment: StampFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //前のActivityからuuidをもらうためのsharedPreferences
+        prefer = getSharedPreferences("prefer", Context.MODE_PRIVATE)
 
 
         Log.d("maindesu", "maindesu")
@@ -34,7 +41,16 @@ class MainActivity : AppCompatActivity() {
         //fragmentの初期設定
         if (savedInstanceState == null) {
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.container, StampFragment())
+
+            //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
+            val bnd = Bundle()
+            Log.d(TAG,prefer.getString("UUID",""))
+            bnd.putString("UUID", prefer.getString("UUID", ""))
+
+            stampFragment = StampFragment()
+            stampFragment.arguments = bnd
+
+            transaction.replace(R.id.container, stampFragment)
             transaction.commit()
 
             Log.d("fragmentdesu", "fragmentdesu")
@@ -57,16 +73,9 @@ class MainActivity : AppCompatActivity() {
                 //バックスタックを設定
                 transaction.addToBackStack(null)
 
-                /*beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします*/
-                var bnd = Bundle()
-                bnd.putString("uuid",prefer.getString("uuid",null))
-
-                val stampFragment = StampFragment()
-                stampFragment.arguments = bnd
-
                 //パラメータを設定
                 transaction.replace(R.id.container, stampFragment)
-                
+
                 nowFragment = 0
                 transaction.commit()
             }
@@ -194,6 +203,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onBeaconServiceConnect() {
+        stampFragment.onBeaconServiceConnect()
+    }
 }
 

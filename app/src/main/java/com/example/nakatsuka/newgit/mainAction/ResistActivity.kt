@@ -25,10 +25,6 @@ class ResistActivity : AppCompatActivity() {
         //キーボードの設定
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        val connection = false
-        val used = false
-
-
         //ユーザー名の登録とUUIDの作成、またその保存
         send_name.setOnClickListener {
             val userName: String = userName.editableText.toString()
@@ -58,12 +54,12 @@ class ResistActivity : AppCompatActivity() {
                                                     Log.d("registerUser", "${response.body()}, stringUUID: $stringUUID")
                                                 }
 
-                                                Log.d("UUID", stringUUID)
+                                                Log.d("ResistActivity", "UUID = ${stringUUID}")
                                                 val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
                                                 val editor: SharedPreferences.Editor = prefer.edit()
                                                 editor.putString("UUID", stringUUID)
                                                 editor.putString("USERNAME", userName)
-                                                editor.commit()
+                                                editor.apply()
                                                 val intent = Intent(this, MainActivity::class.java)
 
                                                 startActivity(intent)

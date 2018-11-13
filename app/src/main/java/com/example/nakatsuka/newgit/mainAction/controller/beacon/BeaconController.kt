@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
 import org.altbeacon.beacon.*
 import java.util.*
@@ -31,13 +32,11 @@ class BeaconController(val parentContext:Context) : BeaconConsumer {
 
     private lateinit var mBeaconManager: BeaconManager
 
-    fun onCreate() {
+    fun onCreated() {
         mBeaconManager = BeaconManager.getInstanceForApplication(parentContext)
 
         // iBeaconの受信設定：iBeaconのフォーマットを登録する
         mBeaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(BeaconUtil.IBEACON_FORMAT))
-
-        mBeaconManager.bind(this)
     }
 
     override fun onBeaconServiceConnect() {
@@ -54,6 +53,7 @@ class BeaconController(val parentContext:Context) : BeaconConsumer {
             } else {
                 Log.d(TAG, "time passed: ${Date().time - startTime}, count: ${myBeaconDataList.size}")
                 mBeaconManager.stopRangingBeaconsInRegion(mRegion)
+                Toast.makeText(parentContext,"BeaconSize:${myBeaconDataList.size}",Toast.LENGTH_SHORT).show()
                 //全ループ終了後に非同期処理を行う
                 handler.post {
                     onBeaconDataIsUpdated?.invoke(myBeaconDataList)
@@ -61,41 +61,7 @@ class BeaconController(val parentContext:Context) : BeaconConsumer {
                 }
             }
         }
-
-        /*
-        *旧版
-        *
-        mBeaconManager.addRangeNotifier(object : RangeNotifier {
-            override fun didRangeBeaconsInRegion(beaconList: MutableCollection<Beacon>, region: Region) {
-
-                Log.d(TAG, "didRangeBeaconInRegion called")
-
-                if (Date().time - startTime < 3000) {
-                    beaconList.forEach {
-                        //var savedata = "major:"+beacon.id2+" minor:"+beacon.id3+" rssi:"+beacon.rssi
-                        var saveMajor = it.id2.toString()
-                        var saverssi = Integer.toString(it.rssi)
-                        Log.d(TAG, saveMajor + ":" + saverssi)
-
-                        myBeaconDataList.add(MyBeaconData(saveMajor.toInt(), it.rssi))
-                    }
-                } else {
-                    Log.d(TAG, "time passed: ${Date().time - startTime}, count: ${myBeaconDataList.size}")
-                    mBeaconManager.stopRangingBeaconsInRegion(mRegion)
-
-                }
-                    //全ループ終了後に非同期処理を行う
-                    handler.post {
-                        onBeaconDataIsUpdated?.invoke(myBeaconDataList)
-                        myBeaconDataList.clear()
-                    }
-                }
-            })
-            */
     }
-
-
-
     //コールバックメソッド
     var onBeaconDataIsUpdated :((beaconListModel: MutableCollection< MyBeaconData >) -> Unit)? = null
 
@@ -105,4 +71,8 @@ class BeaconController(val parentContext:Context) : BeaconConsumer {
         startTime = Date().time
         onBeaconDataIsUpdated = overWriteFun
     }
+    fun bind(bc:BeaconConsumer) = mBeaconManager.bind(bc)
+
+    fun unbind(bc:BeaconConsumer) = mBeaconManager.unbind(bc)
+
 }
