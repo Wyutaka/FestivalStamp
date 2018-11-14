@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    dexOptions{
+    dexOptions {
 
     }
     compileSdkVersion 28
@@ -19,7 +19,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField("boolean", "IS_DEBUG", "true")
+        }
         release {
+            buildConfigField("boolean", "IS_DEBUG", "false")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -47,6 +51,5 @@ dependencies {
 
     implementation 'com.squareup.moshi:moshi:1.7.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.7.0'
-
 
 }

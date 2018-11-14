@@ -76,7 +76,6 @@ class ApiController {
 
     /**
      * 旧版requestImage.BeaconControllerを引数にとって渡しているのが問題点だった。
-     * */
     fun requestImage(uuid: String, quizCode: Int, mBeaconController: BeaconController, onResponse: (response: Response<ImageResponse>) -> Unit) {
         val beaconList = mBeaconController.myBeaconDataList
         val request = ImageRequest(quizCode, beaconList.map { it.major })
@@ -98,6 +97,7 @@ class ApiController {
         })
 
     }
+     * */
 
     /**
      * beaconManagerを直接渡すのではなく、beaconListだけを渡す仕様に変更した。
