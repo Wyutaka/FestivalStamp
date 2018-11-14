@@ -45,40 +45,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         uuid = arguments!!.getString("UUID", "")
         Log.d("StampFragment", "uuid = ${uuid}")
 
-        //ダイアログ機能を追加させました
-        fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
-            val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
-            mProgressDialog.setTargetFragment(this, 100)
-            mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
-
-            val thread = Thread(Runnable {
-                try {
-                    Thread.sleep(1000)
-                    mProgressDialog.move()
-                } catch (e: Exception) {
-                }
-                try {
-                    Thread.sleep(2000)
-                } catch (e: Exception) {
-                }
-                mProgressDialog.dismiss()
-            })
-            thread.start()
-
-            //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
-            if (!buttonResult[quizNumber]) {
-                mBeaconController.rangeBeacon {
-                    mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
-                }
-            }
-        }
-
-        view.findViewById<Button>(R.id.imageButton1).setOnClickListener(event(1))
-        view.findViewById<Button>(R.id.imageButton2).setOnClickListener(event(2))
-        view.findViewById<Button>(R.id.imageButton3).setOnClickListener(event(3))
-        view.findViewById<Button>(R.id.imageButton4).setOnClickListener(event(4))
-        view.findViewById<Button>(R.id.imageButton5).setOnClickListener(event(5))
-        view.findViewById<Button>(R.id.imageButton6).setOnClickListener(event(6))
+        val buttons = arrayOf<Button>(view.findViewById(R.id.imageButton1), view.findViewById(R.id.imageButton2), view.findViewById(R.id.imageButton3), view.findViewById(R.id.imageButton4), view.findViewById(R.id.imageButton5), view.findViewById(R.id.imageButton6))
+        for (i in 1..6)
+            buttons[i - 1]?.setOnClickListener(event(i))
 
         return view
 
@@ -127,6 +96,33 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         buttonResult[num] = state
     }
 
+    //ダイアログ機能を追加させました
+    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
+        val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
+        mProgressDialog.setTargetFragment(this, 100)
+        mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
+
+        val thread = Thread(Runnable {
+            try {
+                Thread.sleep(1000)
+                mProgressDialog.move()
+            } catch (e: Exception) {
+            }
+            try {
+                Thread.sleep(2500)
+            } catch (e: Exception) {
+            }
+            mProgressDialog.dismiss()
+        })
+        thread.start()
+
+        //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
+        if (!buttonResult[quizNumber]) {
+            mBeaconController.rangeBeacon {
+                mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+            }
+        }
+    }
 
     /*Beacon通信用のいろいろ*/
     //Controller関係
@@ -146,7 +142,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             Log.d("judgeAnswer", "${response.body()}")
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             //buttonResult[quizCode] = true
-                            goActivity(quizCode-1)
+                            goActivity(quizCode - 1)
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
