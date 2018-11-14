@@ -80,7 +80,12 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         view.findViewById<Button>(R.id.imageButton4).setOnClickListener(event(4))
         view.findViewById<Button>(R.id.imageButton5).setOnClickListener(event(5))
         view.findViewById<Button>(R.id.imageButton6).setOnClickListener(event(6))
+        val buttons = arrayOf<Button>(view.findViewById(R.id.imageButton1), view.findViewById(R.id.imageButton2), view.findViewById(R.id.imageButton3), view.findViewById(R.id.imageButton4), view.findViewById(R.id.imageButton5), view.findViewById(R.id.imageButton6))
+        for (i in 1..6)
+            buttons[i - 1]?.setOnClickListener(event(i))
+
         return view
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -114,6 +119,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             }
         }
     }
+
 
     private fun makeToast(message: String, x: Int, y: Int) {
         val toast: Toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT)
@@ -165,9 +171,11 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         mBeaconController = BeaconController(activity as Context)
         mBeaconController.onCreated()
     }
+
     override fun onConnected() {
         mBeaconController.bind(activity as BeaconConsumer)
     }
+
     override fun onDisconnect() {
         mBeaconController.unbind(activity as BeaconConsumer)
     }

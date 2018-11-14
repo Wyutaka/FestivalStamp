@@ -114,6 +114,8 @@ class ProgressDialog : DialogFragment() {
                 mProgressBar?.progress = 1
                 Thread.sleep(1000)
                 mProgressBar?.progress = 2
+                Thread.sleep(1000)
+                mProgressBar?.progress = 3
             } catch (e: Exception) {
             }
         })
