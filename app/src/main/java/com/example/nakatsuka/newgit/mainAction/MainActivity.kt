@@ -3,40 +3,45 @@ package com.example.nakatsuka.newgit.mainAction
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.KeyEvent
 import com.example.nakatsuka.newgit.R
-import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.BeaconConsumer
+
+private val RESULT_SUBACTIVITY: Int = 1000
+//位置情報取得のために必要な定数（ここで設定しさえすれば、どんな値でも良いです）
+private val PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
 class MainActivity : AppCompatActivity(), BeaconConsumer {
-    val RESULT_SUBACTIVITY: Int = 1000
-    val TAG = this.javaClass.simpleName
+    private val TAG = this.javaClass.simpleName
 
-    lateinit var prefer: SharedPreferences
-    lateinit var stampFragment: StampFragment
+    private lateinit var prefer: SharedPreferences
+    private lateinit var stampFragment: StampFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_COARSE_LOCATION)
+            }
+        }
+
+
+
         //前のActivityからuuidをもらうためのsharedPreferences
         prefer = getSharedPreferences("prefer", Context.MODE_PRIVATE)
-
-
-        Log.d("maindesu", "maindesu")
-
-
-        //itimaie.webViewClient = WebViewClient()
-        //itimaie.loadUrl("https://c0de-app.club.nitech.ac.jp/cloud/apps/files/?dir=/Public%20Share%20(c0de)/NitFes2018/www_knoom/design/stamp-picture&fileid=78384#/Public%20Share%20(c0de)/NitFes2018/www_knoom/design/stamp-picture/test.png")
 
         //fragmentの初期設定
         if (savedInstanceState == null) {
@@ -52,8 +57,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
             transaction.replace(R.id.container, stampFragment)
             transaction.commit()
-
-            Log.d("fragmentdesu", "fragmentdesu")
         }
 
         var nowFragment = 0
@@ -174,7 +177,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             if (resultCode == result_canceled) {
             } else if (resultCode == AppCompatActivity.RESULT_OK) {
 
-                val buttonResult = mutableListOf<Boolean>(false, false, false, false, false, false)
+                val buttonResult = mutableListOf(false, false, false, false, false, false)
                 val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
                 buttonResult[answerNumber!!] = true
 
