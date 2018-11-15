@@ -14,10 +14,15 @@ import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.BeaconConsumer
+import android.bluetooth.BluetoothAdapter
+
+
 
 private val RESULT_SUBACTIVITY: Int = 1000
 //位置情報取得のために必要な定数（ここで設定しさえすれば、どんな値でも良いです）
-private val PERMISSION_REQUEST_COARSE_LOCATION = 1;
+private val PERMISSION_REQUEST_COARSE_LOCATION = 1
+//Bluetoothをオンにするために必要な定数（ここで設定しさえすれば、どんな値でも良いです）
+private val REQUEST_ENABLE_BT = 1
 
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
@@ -32,6 +37,8 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        //位置情報パーミッションの確認
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_COARSE_LOCATION)
@@ -208,6 +215,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
     override fun onBeaconServiceConnect() {
         stampFragment.onBeaconServiceConnect()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
+        }
     }
 }
 
