@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         //位置情報パーミッションの確認
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
         //fragmentの初期設定
         if (savedInstanceState == null) {
+            stamp_rally.setBackgroundResource(R.drawable.invertedorangebutton)
             val transaction = supportFragmentManager.beginTransaction()
 
             //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         var nowFragment = 0
         val normal: Int = R.drawable.normalorengebutton
         val inverted: Int = R.drawable.invertedorangebutton
-        //Todo アニメーションの追加
         stamp_rally.setOnClickListener {
             stamp_rally.setBackgroundResource(inverted)
             map.setBackgroundResource(normal)
@@ -86,9 +85,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 //パラメータを設定
                 transaction.replace(R.id.container, stampFragment)
 
+
                 nowFragment = 0
                 transaction.commit()
             }
+            fragment_title.text = "スタンプラリー"
         }
         map.setOnClickListener {
 
@@ -97,7 +98,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             board.setBackgroundResource(normal)
             time_table.setBackgroundResource(normal)
             others.setBackgroundResource(normal)
-            Log.d("fragment", "called")
             if (savedInstanceState == null) {
                 nowFragment = 1
                 val transaction = supportFragmentManager.beginTransaction()
@@ -107,6 +107,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+            fragment_title.text = "地図"
         }
         board.setOnClickListener {
 
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
+            fragment_title.text = "掲示板"
         }
         time_table.setOnClickListener {
 
@@ -143,6 +145,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
+            fragment_title.text = "予定表"
         }
         others.setOnClickListener {
 
@@ -161,7 +164,9 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
+            fragment_title.text = "その他"
         }
+
     }
 
 
@@ -212,7 +217,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             }
         }
     }
-
     override fun onBeaconServiceConnect() {
         stampFragment.onBeaconServiceConnect()
     }

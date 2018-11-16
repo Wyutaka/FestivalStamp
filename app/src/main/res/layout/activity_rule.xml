@@ -15,7 +15,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
         android:text="利用規約"
         android:textColor="@color/koudaisaiorange"
         android:textSize="30dp"
@@ -27,13 +27,12 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
+        android:layout_height="500dp"
         android:layout_gravity="top"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/frame_style"
         app:layout_constraintBottom_toTopOf="@+id/agree_buttons"
         app:layout_constraintTop_toBottomOf="@+id/rule_title"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
@@ -41,6 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:textSize="20dp" />
 
     </ScrollView>
@@ -55,7 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
-
 
         <Button
             android:id="@+id/disagree"

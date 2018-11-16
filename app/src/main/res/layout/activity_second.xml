@@ -7,147 +7,165 @@
     tools:context=".mainAction.SecondActivity">
 
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eb6101"
+            android:background="@android:color/transparent"
+            android:gravity=""
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
 
             <Button
                 android:id="@+id/back_button"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
                 android:text="←スタンプラリー"
-                android:textColor="@android:color/background_light"
-                android:textSize="20dp" />
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </android.support.v7.widget.Toolbar>
 
+        <TextView
+            android:id="@+id/question_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="謎解き"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </FrameLayout>
 
-        <ScrollView
+
+    <ScrollView
+        android:id="@+id/for_focus2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/for_focus2"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/answer_word"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints,WebViewLayout"
+                tools:layout_editor_absoluteX="0dp">
 
-
-                <TextView
-                    android:id="@+id/result"
-                    android:layout_width="match_parent"
+                <WebView
+                    android:id="@+id/question_image"
+                    android:layout_width="328dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="" />
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/frame_style">
-
-                    <TextView
-                        android:id="@+id/question_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="謎解き"
-                        android:textColor="@color/koudaisaiorange"
-                        android:textSize="40dp"
-                        app:layout_constraintBottom_toTopOf="@+id/question_image"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.38" />
-
-                    <WebView
-                        android:id="@+id/question_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="64dp"
-                        android:src="@drawable/question_sample"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.503"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:ignore="MissingConstraints" />
-
-                </android.support.constraint.ConstraintLayout>
-
-
-                <EditText
-                    android:id="@+id/answer_word"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:width="335dp"
-                    android:background="@drawable/frame_style"
-                    android:hint="答え"
-                    android:inputType="text"
-                    android:maxLength="15"
-                    android:maxLines="1"
-                    android:maxWidth="15dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:textColorHighlight="#eb6101"
-                    android:textColorLink="#eb6101"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="38dp"
-                    tools:layout_editor_absoluteY="360dp" />
-
-
-                <Button
-                    android:id="@+id/answer_button"
-                    android:layout_width="120dp"
-                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/button_state"
-                    android:text="解答送信"
-                    android:textColor="@color/koudaisaiorange"
-                    android:textSize="20dp"
+                    android:src="@drawable/question_sample"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.503"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
 
-        </ScrollView>
-    </LinearLayout>
 
+            <EditText
+                android:id="@+id/answer_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:width="335dp"
+                android:background="@drawable/frame_style"
+                android:hint="答え"
+                android:inputType="text"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:maxWidth="15dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:textColorLink="#eb6101"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="365dp" />
+
+            <Button
+                android:id="@+id/answer_button"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/button_state"
+                android:text="解答送信"
+                android:textColor="@color/koudaisaiorange"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/answer_word"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints" />
+        </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

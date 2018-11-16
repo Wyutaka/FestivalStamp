@@ -21,7 +21,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="ユーザー登録"
         android:textColor="#eb6101"

@@ -48,6 +48,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         for (i in 1..6)
             buttons[i - 1].setOnClickListener(event(i))
 
+
+        //}
         return view
 
     }
@@ -72,6 +74,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         //TODO:APITestは実APIへ移行
         val APITest = APITest()
         isAPI = APITest.getIsAPI()
+        //Todo isAPIがそのままだからisSendに変更する
         val intent = Intent(activity, SecondActivity::class.java)
         if (buttonResult[answerNumber] == 0) {
             val completed = "すでにスタンプは押されています"
