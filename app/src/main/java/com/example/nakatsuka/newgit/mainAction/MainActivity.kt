@@ -215,6 +215,36 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
 
                 //val mStampFragment = StampFragment()
+                //現在使用していないため、削除しました。
+                /*
+                val buttonResult = mutableListOf(false, false, false, false, false, false)
+                val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
+
+                buttonResult[answerNumber!!] = true
+
+                val mStampFragment = StampFragment()
+
+                when (answerNumber) {
+                    1 -> if (buttonResult[0]) {
+                        mStampFragment.setState(buttonResult[1], 1)
+                    }
+                    2 -> if (buttonResult[1]) {
+                        mStampFragment.setState(buttonResult[2], 2)
+                    }
+                    3 -> if (buttonResult[2]) {
+                        mStampFragment.setState(buttonResult[3], 3)
+                    }
+                    4 -> if (buttonResult[3]) {
+                        mStampFragment.setState(buttonResult[4], 4)
+                    }
+                    5 -> if (buttonResult[4]) {
+                        mStampFragment.setState(buttonResult[5], 5)
+                    }
+                    6 -> if (buttonResult[5]) {
+                        mStampFragment.setState(buttonResult[6], 6)
+                    }
+                }
+                */
             }
         }
     }
