@@ -21,18 +21,9 @@ import com.example.nakatsuka.newgit.mainAction.lifecycle.ActivityLifeCycle
 import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageResponse
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_stamp.*
 import org.altbeacon.beacon.BeaconConsumer
 import retrofit2.Response
-import android.content.DialogInterface
-import android.R.string.cancel
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.DialogFragment
-import android.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import com.example.nakatsuka.newgit.mainAction.MainActivity
 
 
 /**配列の最大数を7つ*/
@@ -185,7 +176,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
-                                        goActivity(quizCode,isSend,imageUrl[quizCode])
+                                        a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
                                         //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
                                     }
                                     .setNegativeButton("戻る"){_,_
@@ -193,7 +184,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                         //Do Nothing
                                     }.show()
 
-                            a!!.goActivity(quizCode, isSend, imageUrl[quizCode - 1])
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
@@ -205,6 +195,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     //Do Nothing
                                 }.show()
 
+                        /*
                         val builder = AlertDialog.Builder(activity)
                                 .setTitle("問題取得失敗")
                                 .setMessage("ヒントは地図に！")
@@ -213,6 +204,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                         val dialog = builder.show()
                         val textView = dialog.findViewById<TextView>(android.R.id.message)
                         textView.textSize = 26f
+                        */
                     }
                 }
                 else -> {
