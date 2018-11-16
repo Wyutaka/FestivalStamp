@@ -58,30 +58,46 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onViewCreated(view, savedInstanceState)
 
         for (i in 1..6)
-            if (buttonResult[i] == 0)
+            if (buttonResult[i] == 2)
                 when (i) {
-                    1 -> imageButton1.setBackgroundResource(0)
-                    2 -> imageButton2.setBackgroundResource(0)
-                    3 -> imageButton3.setBackgroundResource(0)
-                    4 -> imageButton4.setBackgroundResource(0)
-                    5 -> imageButton5.setBackgroundResource(0)
-                    6 -> imageButton6.setBackgroundResource(0)
+                    1 -> {
+                        imageButton1.setBackgroundResource(0)
+                        text1.text = ""
+                    }
+                    2 -> {
+                        imageButton2.setBackgroundResource(0)
+                        text2.text = ""
+                    }
+                    3 -> {
+                        imageButton3.setBackgroundResource(0)
+                        text3.text = ""
+                    }
+                    4 ->{
+                        imageButton4.setBackgroundResource(0)
+                        text4.text = ""
+                    }
+                    5 ->{
+                        imageButton5.setBackgroundResource(0)
+                        text5.text = ""
+                    }
+                    6 ->{
+                        imageButton6.setBackgroundResource(0)
+                        text6.text = ""
+                    }
                 }
     }
 
-    private fun goActivity(answerNumber: Int) {
+    private fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String) {
         val isAPI: Boolean
         //TODO:APITestは実APIへ移行
-        val APITest = APITest()
-        isAPI = APITest.getIsAPI()
-        //Todo isAPIがそのままだからisSendに変更する
         val intent = Intent(activity, SecondActivity::class.java)
         if (buttonResult[answerNumber] == 0) {
             val completed = "すでにスタンプは押されています"
             makeToast(completed, 0, activity!!.for_scale.height)
         } else {
             intent.putExtra("AnswerNumber", answerNumber)
-            if (isAPI) {
+            intent.putExtra("ImageUrl",imageUrl)
+            if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
             }
         }
@@ -140,12 +156,12 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 200 -> {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
-                            //val imageUrl = it.imageURL
-                            //val isSend = it.isSend
+                            val imageUrl = it.imageURL
+                            val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             //buttonResult[quizCode] = true
-                            goActivity(quizCode - 1)
+                            goActivity(quizCode - 1,isSend,imageUrl)
                         }
                     } else {
                         Log.d(TAG, "isSend == false")

@@ -27,7 +27,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="410dp"
         android:layout_gravity="top"
         android:background="@drawable/frame_style"
         app:layout_constraintBottom_toTopOf="@+id/agree_buttons"

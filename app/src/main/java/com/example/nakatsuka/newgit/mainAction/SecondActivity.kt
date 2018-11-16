@@ -44,8 +44,8 @@ class SecondActivity : AppCompatActivity() {
         val quizCode = intent.getIntExtra("AnswerNumber",6)
 
         //webviewの適応
-        val imageURL = ""
-        question_image.loadUrl("https://www.nitech.ac.jp/")
+        val imageURL = intent.getStringExtra("ImageUrl")
+        question_image.loadUrl(imageURL)
 
 
         val webSettings = question_image.settings
