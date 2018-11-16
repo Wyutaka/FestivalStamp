@@ -67,9 +67,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 view.findViewById(R.id.imageButton6)
         )
         for (i in 1..6)
-            buttons[i - 1]!!.setOnClickListener(event(i))
-
-
+            buttons[i]!!.setOnClickListener(event(i))
         //}
         return view
 
