@@ -1,21 +1,23 @@
 package com.example.nakatsuka.newgit.mainAction
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
+import android.widget.Toast
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.BeaconConsumer
-import android.bluetooth.BluetoothAdapter
-
 
 
 private val RESULT_SUBACTIVITY: Int = 1000
@@ -27,15 +29,28 @@ private val REQUEST_ENABLE_BT = 1
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
-class MainActivity : AppCompatActivity(), BeaconConsumer {
+class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragmentListner {
     private val TAG = this.javaClass.simpleName
 
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
+    val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        pref.apply {
+            buttonResult[0] = pref.getInt("buttonResult[0]", 0)
+            buttonResult[1] = pref.getInt("buttonResult[1]", 0)
+            buttonResult[2] = pref.getInt("buttonResult[2]", 0)
+            buttonResult[3] = pref.getInt("buttonResult[3]", 0)
+            buttonResult[4] = pref.getInt("buttonResult[4]", 0)
+            buttonResult[5] = pref.getInt("buttonResult[5]", 0)
+            buttonResult[6] = pref.getInt("buttonResult[6]", 0)
+        }
+
 
         //位置情報パーミッションの確認
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -43,7 +58,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                 requestPermissions(arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_COARSE_LOCATION)
             }
         }
-
 
 
         //前のActivityからuuidをもらうためのsharedPreferences
@@ -56,8 +70,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
             //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
             val bnd = Bundle()
-            Log.d(TAG,prefer.getString("UUID",""))
+            Log.d(TAG, prefer.getString("UUID", ""))
             bnd.putString("UUID", prefer.getString("UUID", ""))
+            //bundleを用いてbuttonResultをfragmentに提供
+            bnd.putIntArray("buttonResult", buttonResult)
+
 
             stampFragment = StampFragment()
             stampFragment.arguments = bnd
@@ -189,34 +206,40 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             if (resultCode == result_canceled) {
             } else if (resultCode == AppCompatActivity.RESULT_OK) {
 
-                val buttonResult = mutableListOf(false, false, false, false, false, false)
                 val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
-                buttonResult[answerNumber!!] = true
+                val pref = PreferenceManager.getDefaultSharedPreferences(this)
+                val editor = pref.edit()
+                editor.putInt("buttonResult[answerNumber]", 2)
+                editor.apply()
+                buttonResult[answerNumber!!] = 2
 
-                val mStampFragment = StampFragment()
-                when (answerNumber) {
-                    0 -> if (buttonResult[0]) {
-                        mStampFragment.setState(buttonResult[0], 0)
-                    }
-                    1 -> if (buttonResult[1]) {
-                        mStampFragment.setState(buttonResult[1], 1)
-                    }
-                    2 -> if (buttonResult[2]) {
-                        mStampFragment.setState(buttonResult[2], 2)
-                    }
-                    3 -> if (buttonResult[3]) {
-                        mStampFragment.setState(buttonResult[3], 3)
-                    }
-                    4 -> if (buttonResult[4]) {
-                        mStampFragment.setState(buttonResult[4], 4)
-                    }
-                    5 -> if (buttonResult[5]) {
-                        mStampFragment.setState(buttonResult[5], 5)
-                    }
-                }
+
+                //val mStampFragment = StampFragment()
             }
         }
     }
+
+    override fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String) {
+        val intent = Intent(this, SecondActivity::class.java)
+        if (buttonResult[answerNumber] == 2) {
+            val completed = "すでにスタンプは押されています"
+            makeToast(completed, 0, this.for_scale.height)
+        } else {
+            intent.putExtra("AnswerNumber", answerNumber)
+            intent.putExtra("ImageUrl", imageUrl[answerNumber])
+            if (isSend) {
+                startActivityForResult(intent, RESULT_SUBACTIVITY)
+            }
+        }
+    }
+
+    private fun makeToast(message: String, x: Int, y: Int) {
+        val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, x, y / 4)
+        toast.show()
+    }
+
+
     override fun onBeaconServiceConnect() {
         stampFragment.onBeaconServiceConnect()
     }
@@ -229,4 +252,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         }
     }
 }
+
+
 

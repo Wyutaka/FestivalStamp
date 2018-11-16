@@ -45,6 +45,7 @@ class ProgressDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         mProgressBar = dialog.findViewById(R.id.progress)
+        mProgressBar!!.scaleY=0.1f
         mProgressMessage = dialog.findViewById(R.id.progress_message)
         mProgressMessage!!.text = mMessage
     }
@@ -109,17 +110,19 @@ class ProgressDialog : DialogFragment() {
     }
 
     fun move() {
-        mProgressBar?.max = 3
+        mProgressBar?.max = 30
         val thread = Thread(Runnable {
             while(true) {
                 try {
-                    mProgressBar?.progress = 1
+                    mProgressBar?.progress = 10
+                    mProgressBar?.secondaryProgress= 16
                     Thread.sleep(1000)
-                    mProgressBar?.progress = 2
+                    mProgressBar?.progress = 20
+                    mProgressBar?.secondaryProgress=28
                     Thread.sleep(1000)
                     if(!brk)
                         break
-                    mProgressBar?.progress = 3
+                    mProgressBar?.progress = 30
                     brk = true
                     break
                 } catch (e: Exception) {

@@ -8,6 +8,7 @@
     <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/progress"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progress"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="center"

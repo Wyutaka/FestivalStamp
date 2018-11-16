@@ -17,7 +17,7 @@ class BoardFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view: View = inflater!!.inflate(R.layout.fragment_board, container, false)
         val mwebview = view.findViewById(R.id.webView) as WebView
-        mwebview.loadUrl("https://www.nitech.ac.jp/")
+        mwebview.loadUrl("https://c0de-dev.club.nitech.ac.jp/knoom-web/bb")
 
 
         val webSettings = mwebview.settings
