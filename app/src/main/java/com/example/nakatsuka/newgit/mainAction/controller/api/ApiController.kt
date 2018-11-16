@@ -107,6 +107,7 @@ class ApiController {
         val request = ImageRequest(quizCode, beaconList.map { it.major })
         Log.d(TAG,"beaconList = ")
         beaconList.forEach{Log.d(TAG,"${it.major} ")}
+        Log.e("tatte",beaconList.toString())
 
         //APIClientで、上で作ったrequestを用いてAPI通信を行う
         APIClient.instance.image(request, uuid).enqueue(object : Callback<ImageResponse> {

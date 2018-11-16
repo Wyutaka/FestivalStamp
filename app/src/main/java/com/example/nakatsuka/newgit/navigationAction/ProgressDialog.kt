@@ -7,7 +7,7 @@ import android.os.Handler
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
-import android.widget.Button
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.nakatsuka.newgit.R
@@ -22,21 +22,22 @@ class ProgressDialog : DialogFragment() {
 
     private var mMessage: String? = null
 
+    var brk = true
+
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         mMessage = arguments!!.getString("message")
 
         val builder = AlertDialog.Builder(activity!!)
+        builder.setNegativeButton("CANCEL") { _, _ ->
+            brk = false
+        }
         val inflater = activity!!.layoutInflater
 
         val inf = inflater.inflate(R.layout.progressdialog, null)
 
-        inf.findViewById<Button>(R.id.exitButton).setOnClickListener {
-            cancel()
-        }
-
-
         builder.setView(inf)
+        this.isCancelable = false
 
         return builder.create()
     }
@@ -110,13 +111,19 @@ class ProgressDialog : DialogFragment() {
     fun move() {
         mProgressBar?.max = 3
         val thread = Thread(Runnable {
-            try {
-                mProgressBar?.progress = 1
-                Thread.sleep(1000)
-                mProgressBar?.progress = 2
-                Thread.sleep(1000)
-                mProgressBar?.progress = 3
-            } catch (e: Exception) {
+            while(true) {
+                try {
+                    mProgressBar?.progress = 1
+                    Thread.sleep(1000)
+                    mProgressBar?.progress = 2
+                    Thread.sleep(1000)
+                    if(!brk)
+                        break
+                    mProgressBar?.progress = 3
+                    brk = true
+                    break
+                } catch (e: Exception) {
+                }
             }
         })
         thread.start()
