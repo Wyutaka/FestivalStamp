@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import kotlinx.android.synthetic.main.activity_second.*
@@ -39,7 +41,19 @@ class SecondActivity : AppCompatActivity() {
         var answerResult = false
         val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         val uuid = prefer.getString("UUID", "")
-        val quizCode = 1
+        val quizCode = intent.getIntExtra("AnswerNumber",6)
+
+        //webviewの適応
+        val imageURL = intent.getStringExtra("ImageUrl")
+        question_image.loadUrl(imageURL)
+
+
+        val webSettings = question_image.settings
+        webSettings.javaScriptEnabled = true
+
+        question_image.webViewClient = WebViewClient()
+
+        question_number.text = "謎解き$quizCode"
         answer_button.setOnClickListener {
             /**
              * サーバー側の正誤判定に合わせるため正解がquizCodeごとに変わります

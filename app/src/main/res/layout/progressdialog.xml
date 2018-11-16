@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -28,10 +27,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:text="cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" tools:layout_editor_absoluteY="213dp"
-        tools:layout_editor_absoluteX="132dp" android:id="@+id/exitButton"/>
 </android.support.constraint.ConstraintLayout>

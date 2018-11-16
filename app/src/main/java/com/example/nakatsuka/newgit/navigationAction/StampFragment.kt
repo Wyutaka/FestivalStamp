@@ -35,7 +35,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -45,45 +44,12 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         uuid = arguments!!.getString("UUID", "")
         Log.d("StampFragment", "uuid = ${uuid}")
 
-        //ProgressDialog機能を追加させました
-        fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
-            val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
-            mProgressDialog.setTargetFragment(this, 100)
-            mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
-
-            val thread = Thread(Runnable {
-
-                try {
-                    Thread.sleep(1000)
-                    mProgressDialog.move()
-                } catch (e: Exception) {
-                }
-
-                try {
-                    Thread.sleep(2000)
-                } catch (e: Exception) {
-                }
-
-                mProgressDialog.dismiss()
-            })
-            thread.start()
-            //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
-            if (buttonResult[quizNumber]==0) {
-                mBeaconController.rangeBeacon {
-                    mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
-                }
-            }
-        }
-        view.findViewById<Button>(R.id.imageButton1).setOnClickListener(event(1))
-        view.findViewById<Button>(R.id.imageButton2).setOnClickListener(event(2))
-        view.findViewById<Button>(R.id.imageButton3).setOnClickListener(event(3))
-        view.findViewById<Button>(R.id.imageButton4).setOnClickListener(event(4))
-        view.findViewById<Button>(R.id.imageButton5).setOnClickListener(event(5))
-        view.findViewById<Button>(R.id.imageButton6).setOnClickListener(event(6))
         val buttons = arrayOf<Button>(view.findViewById(R.id.imageButton1), view.findViewById(R.id.imageButton2), view.findViewById(R.id.imageButton3), view.findViewById(R.id.imageButton4), view.findViewById(R.id.imageButton5), view.findViewById(R.id.imageButton6))
         for (i in 1..6)
-            buttons[i - 1]?.setOnClickListener(event(i))
+            buttons[i - 1].setOnClickListener(event(i))
 
+
+        //}
         return view
 
     }
@@ -92,29 +58,46 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onViewCreated(view, savedInstanceState)
 
         for (i in 1..6)
-            if (buttonResult[i]==0)
+            if (buttonResult[i] == 2)
                 when (i) {
-                    1 -> imageButton1.setBackgroundResource(0)
-                    2 -> imageButton2.setBackgroundResource(0)
-                    3 -> imageButton3.setBackgroundResource(0)
-                    4 -> imageButton4.setBackgroundResource(0)
-                    5 -> imageButton5.setBackgroundResource(0)
-                    6 -> imageButton6.setBackgroundResource(0)
+                    1 -> {
+                        imageButton1.setBackgroundResource(0)
+                        text1.text = ""
+                    }
+                    2 -> {
+                        imageButton2.setBackgroundResource(0)
+                        text2.text = ""
+                    }
+                    3 -> {
+                        imageButton3.setBackgroundResource(0)
+                        text3.text = ""
+                    }
+                    4 ->{
+                        imageButton4.setBackgroundResource(0)
+                        text4.text = ""
+                    }
+                    5 ->{
+                        imageButton5.setBackgroundResource(0)
+                        text5.text = ""
+                    }
+                    6 ->{
+                        imageButton6.setBackgroundResource(0)
+                        text6.text = ""
+                    }
                 }
     }
 
-    private fun goActivity(answerNumber: Int) {
+    private fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String) {
         val isAPI: Boolean
         //TODO:APITestは実APIへ移行
-        val APITest = APITest()
-        isAPI = APITest.getIsAPI()
         val intent = Intent(activity, SecondActivity::class.java)
-        if (buttonResult[answerNumber]==0) {
+        if (buttonResult[answerNumber] == 0) {
             val completed = "すでにスタンプは押されています"
             makeToast(completed, 0, activity!!.for_scale.height)
         } else {
             intent.putExtra("AnswerNumber", answerNumber)
-            if (isAPI) {
+            intent.putExtra("ImageUrl",imageUrl)
+            if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
             }
         }
@@ -128,7 +111,35 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     }
 
     fun setState(state: Boolean, num: Int) {
-        buttonResult[num] = num -1
+        buttonResult[num] = num - 1
+    }
+
+
+    //ProgressDialog機能を追加させました
+    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
+        val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
+        mProgressDialog.setTargetFragment(this, 100)
+        mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
+
+        val thread = Thread(Runnable {
+            try {
+                Thread.sleep(1000)
+                mProgressDialog.move()
+                Thread.sleep(2050)
+            } catch (e: Exception) {
+            }
+
+            mProgressDialog.dismiss()
+        })
+        thread.start()
+
+        //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
+        if (buttonResult[quizNumber] == 0) {
+            mBeaconController.rangeBeacon {
+                if (mProgressDialog.brk)
+                    mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+            }
+        }
     }
 
 
@@ -145,12 +156,12 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 200 -> {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
-                            //val imageUrl = it.imageURL
-                            //val isSend = it.isSend
+                            val imageUrl = it.imageURL
+                            val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             //buttonResult[quizCode] = true
-                            goActivity(quizCode - 1)
+                            goActivity(quizCode - 1,isSend,imageUrl)
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
@@ -181,7 +192,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     }
 
     override fun getApplicationContext(): Context = activity!!.applicationContext
-    override fun unbindService(p0: ServiceConnection?)=activity!!.unbindService(p0)
+    override fun unbindService(p0: ServiceConnection?) = activity!!.unbindService(p0)
     override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
 
     override fun onBeaconServiceConnect() {
