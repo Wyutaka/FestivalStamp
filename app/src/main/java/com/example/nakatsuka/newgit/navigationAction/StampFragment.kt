@@ -32,7 +32,11 @@ import retrofit2.Response
 class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     val RESULT_SUBACTIVITY: Int = 1000
-    private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
+    var a: fragmentListner? = null
+    interface fragmentListner{
+        fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String)
+    }
+    //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("","","","","","","")
     lateinit var texts:Array<TextView?>
     val TAG = this.javaClass.simpleName
@@ -42,6 +46,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
+        //全てのviewをいったん削除
+        container!!.removeAllViews()
 
         texts = arrayOf<TextView?>(
                 null,
@@ -75,6 +81,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val buttonResult : IntArray = arguments!!.getIntArray("buttonResult")
 
         //1〜6へのアクセス禁止
         for (i in 1..6)
@@ -107,19 +114,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 }
     }
 
-    private fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String) {
-        val intent = Intent(activity, SecondActivity::class.java)
-        if (buttonResult[answerNumber] == 2) {
-            val completed = "すでにスタンプは押されています"
-            makeToast(completed, 0, activity!!.for_scale.height)
-        } else {
-            intent.putExtra("AnswerNumber", answerNumber)
-            intent.putExtra("ImageUrl",imageUrl[answerNumber])
-            if (isSend) {
-                startActivityForResult(intent, RESULT_SUBACTIVITY)
-            }
-        }
-    }
 
     private fun makeToast(message: String, x: Int, y: Int) {
         val toast: Toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT)
@@ -146,6 +140,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         thread.start()
 
         //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
+        val buttonResult : IntArray = arguments!!.getIntArray("buttonResult")
+
         if (buttonResult[quizNumber] == 0) {
             mBeaconController.rangeBeacon {
                 if (mProgressDialog.brk)
@@ -164,6 +160,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     //レスポンスを見つつ最終的な遷移を決定する関数型オブジェクト
     val requestImagesFunc = fun(quizCode: Int): (Response<ImageResponse>) -> Unit {
         val go = fun(response: Response<ImageResponse>) {
+            val buttonResult : IntArray = arguments!!.getIntArray("buttonResult")
             when (response.code()) {
                 200 -> {
                     if (response.body()!!.isSend) {
@@ -174,7 +171,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             buttonResult[quizCode] = 1
                             texts[quizCode]!!.text = "問題取得済み"
-                            goActivity(quizCode,isSend,imageUrl[quizCode - 1])
+                            a!!.goActivity(quizCode,isSend,imageUrl[quizCode - 1])
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
