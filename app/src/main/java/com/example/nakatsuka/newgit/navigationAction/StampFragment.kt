@@ -26,6 +26,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_stamp.*
 import org.altbeacon.beacon.BeaconConsumer
 import retrofit2.Response
+import android.content.DialogInterface
+import android.R.string.cancel
+import android.app.AlertDialog
+import android.app.Dialog
+import android.app.DialogFragment
+import android.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
+import com.example.nakatsuka.newgit.mainAction.MainActivity
 
 
 /**配列の最大数を7つ*/
@@ -43,7 +51,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
 
-        texts = arrayOf<TextView?>(
+        texts = arrayOf(
                 null,
                 view!!.findViewById(R.id.text1),
                 view!!.findViewById(R.id.text2),
@@ -114,10 +122,10 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             makeToast(completed, 0, activity!!.for_scale.height)
         } else {
             intent.putExtra("AnswerNumber", answerNumber)
-            intent.putExtra("ImageUrl",imageUrl[answerNumber])
-            if (isSend) {
+            intent.putExtra("ImageUrl",imageUrl)
+            //if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
-            }
+            //}
         }
     }
 
@@ -171,19 +179,45 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
-                            makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
+                            //makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             buttonResult[quizCode] = 1
                             texts[quizCode]!!.text = "問題取得済み"
-                            goActivity(quizCode,isSend,imageUrl[quizCode - 1])
+                            Log.d(TAG, "isSend == false")
+                            AlertDialog.Builder(activity)
+                                    .setTitle("判定結果")
+                                    .setMessage(R.string.dialog_in_area)
+                                    .setPositiveButton("問題へ") { _, _ ->
+                                        goActivity(quizCode,isSend,imageUrl[quizCode])
+                                        //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
+                                    }
+                                    .setNegativeButton("戻る"){_,_
+                                        ->
+                                        //Do Nothing
+                                    }.show()
+
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
-                        makeToast("検知範囲外です。", 0, activity!!.for_scale.height)
+                        AlertDialog.Builder(activity)
+                                .setTitle(R.string.dialog_out_of_area)
+                                .setMessage("もう一度試してみて下さい！")
+                                .setPositiveButton("OK"){_,_
+                                    ->
+                                    //Do Nothing
+                                }.show()
+
                     }
                 }
                 else -> {
                     Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
-                    makeToast("HTTPレスポンス != 200。", 0, activity!!.for_scale.height)
+                    AlertDialog.Builder(activity)
+                            .setTitle("通信エラー")
+                            .setMessage(R.string.dialog_connection_error     )
+                            .setPositiveButton("OK"){_,_
+                                ->
+                                //Do Nothing
+                            }.show()
+                    //makeToast("HTTPレスポンス != 200。", 0, activity!!.for_scale.height)
                 }
             }
         }
