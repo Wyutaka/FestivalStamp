@@ -1,23 +1,23 @@
 package com.example.nakatsuka.newgit.mainAction
 
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
+import android.widget.Toast
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.BeaconConsumer
-import android.bluetooth.BluetoothAdapter
-import android.preference.PreferenceManager
-import android.view.Gravity
-import android.widget.Toast
 
 
 private val RESULT_SUBACTIVITY: Int = 1000
@@ -29,12 +29,12 @@ private val REQUEST_ENABLE_BT = 1
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
-class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentListner {
+class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragmentListner {
     private val TAG = this.javaClass.simpleName
 
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
-    val buttonResult : IntArray = intArrayOf(0,0,0,0,0,0,0)
+    val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +42,13 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
 
         val pref = PreferenceManager.getDefaultSharedPreferences(this)
         pref.apply {
-            buttonResult[0] = pref.getInt("buttonResult[0]",0)
-            buttonResult[1] = pref.getInt("buttonResult[1]",0)
-            buttonResult[2] = pref.getInt("buttonResult[2]",0)
-            buttonResult[3] = pref.getInt("buttonResult[3]",0)
-            buttonResult[4] = pref.getInt("buttonResult[4]",0)
-            buttonResult[5] = pref.getInt("buttonResult[5]",0)
-            buttonResult[6] = pref.getInt("buttonResult[6]",0)
+            buttonResult[0] = pref.getInt("buttonResult[0]", 0)
+            buttonResult[1] = pref.getInt("buttonResult[1]", 0)
+            buttonResult[2] = pref.getInt("buttonResult[2]", 0)
+            buttonResult[3] = pref.getInt("buttonResult[3]", 0)
+            buttonResult[4] = pref.getInt("buttonResult[4]", 0)
+            buttonResult[5] = pref.getInt("buttonResult[5]", 0)
+            buttonResult[6] = pref.getInt("buttonResult[6]", 0)
         }
 
 
@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
                 requestPermissions(arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_REQUEST_COARSE_LOCATION)
             }
         }
-
 
 
         //前のActivityからuuidをもらうためのsharedPreferences
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
 
             //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
             val bnd = Bundle()
-            Log.d(TAG,prefer.getString("UUID",""))
+            Log.d(TAG, prefer.getString("UUID", ""))
             bnd.putString("UUID", prefer.getString("UUID", ""))
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
@@ -210,7 +209,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
                 val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
                 val pref = PreferenceManager.getDefaultSharedPreferences(this)
                 val editor = pref.edit()
-                editor.putInt("buttonResult[$answerNumber]",2)
+                editor.putInt("buttonResult[answerNumber]", 2)
                 editor.apply()
                 buttonResult[answerNumber!!] = 2
 
@@ -220,14 +219,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
         }
     }
 
-     override fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String) {
+    override fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String) {
         val intent = Intent(this, SecondActivity::class.java)
         if (buttonResult[answerNumber] == 2) {
             val completed = "すでにスタンプは押されています"
             makeToast(completed, 0, this.for_scale.height)
         } else {
             intent.putExtra("AnswerNumber", answerNumber)
-            intent.putExtra("ImageUrl",imageUrl[answerNumber])
+            intent.putExtra("ImageUrl", imageUrl[answerNumber])
             if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
             }
@@ -239,6 +238,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
         toast.setGravity(Gravity.CENTER, x, y / 4)
         toast.show()
     }
+
 
     override fun onBeaconServiceConnect() {
         stampFragment.onBeaconServiceConnect()
@@ -252,4 +252,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer,StampFragment.fragmentL
         }
     }
 }
+
+
 

@@ -41,18 +41,17 @@ class SecondActivity : AppCompatActivity() {
         var answerResult = false
         val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         val uuid = prefer.getString("UUID", "")
-        val quizCode = intent.getIntExtra("AnswerNumber",6)
+        var quizCode = intent.getIntExtra("AnswerNumber",0)
+        quizCode = 1
 
-        //webviewの適応
-        val imageURL = intent.getStringExtra("ImageUrl")
-        question_image.loadUrl(imageURL)
-
-
-        val webSettings = question_image.settings
-        webSettings.javaScriptEnabled = true
-
-        question_image.webViewClient = WebViewClient()
-
+        when(quizCode){
+            1 -> question_image.setImageResource(R.drawable.quiz1)
+            2 -> question_image.setImageResource(R.drawable.quiz2)
+            3 -> question_image.setImageResource(R.drawable.quiz3)
+            4 -> question_image.setImageResource(R.drawable.quiz4)
+            5 -> question_image.setImageResource(R.drawable.quiz5)
+            6 -> question_image.setImageResource(R.drawable.quiz6)
+        }
         question_number.text = "謎解き$quizCode"
         answer_button.setOnClickListener {
             /**

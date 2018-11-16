@@ -19,6 +19,7 @@
             android:label="SecondActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"/>
+
         <activity android:name=".mainAction.StartActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
