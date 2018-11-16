@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.APITest
@@ -30,8 +31,9 @@ import retrofit2.Response
 class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     val RESULT_SUBACTIVITY: Int = 1000
-    private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
-
+    private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0)
+    private var imageUrl = mutableListOf<String>("","","","","","")
+    val texts = arrayOf<TextView>(view!!.findViewById(R.id.text1), view!!.findViewById(R.id.text2), view!!.findViewById(R.id.text3), view!!.findViewById(R.id.text4), view!!.findViewById(R.id.text5), view!!.findViewById(R.id.text6))
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
 
@@ -88,15 +90,13 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     }
 
     private fun goActivity(answerNumber: Int,isSend:Boolean,imageUrl:String) {
-        val isAPI: Boolean
-        //TODO:APITestは実APIへ移行
         val intent = Intent(activity, SecondActivity::class.java)
-        if (buttonResult[answerNumber] == 0) {
+        if (buttonResult[answerNumber] == 2) {
             val completed = "すでにスタンプは押されています"
             makeToast(completed, 0, activity!!.for_scale.height)
         } else {
             intent.putExtra("AnswerNumber", answerNumber)
-            intent.putExtra("ImageUrl",imageUrl)
+            intent.putExtra("ImageUrl",imageUrl[answerNumber])
             if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
             }
@@ -156,12 +156,13 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 200 -> {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
-                            val imageUrl = it.imageURL
+                            imageUrl[quizCode - 1] = it.imageURL
                             val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
-                            //buttonResult[quizCode] = true
-                            goActivity(quizCode - 1,isSend,imageUrl)
+                            buttonResult[quizCode - 1] = 1
+                            texts[quizCode - 1].text = "問題取得済み"
+                            goActivity(quizCode - 1,isSend,imageUrl[quizCode - 1])
                         }
                     } else {
                         Log.d(TAG, "isSend == false")

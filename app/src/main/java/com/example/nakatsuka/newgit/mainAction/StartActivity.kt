@@ -28,17 +28,14 @@ class StartActivity : AppCompatActivity() {
         var stringUUID = prefer.getString("UUID","")
         var userName = prefer.getString("USERNAME","")
 
-        stringUUID = ""
-        userName = ""
-
         //未登録の場合はAPITestにデバイス情報しか入りません
-        val APITest = APITest()
-        APITest.SetandPostUserJSON(userName, Build.DEVICE, stringUUID)
+        //val APITest = APITest()
+        //APITest.SetandPostUserJSON(userName, Build.DEVICE, stringUUID)
 
         //登録後はMainActivityにとばされます
         if(stringUUID != "" && userName != ""){
             val intent = Intent(this,MainActivity::class.java)
-            intent.putExtra("APITest",APITest)
+            //intent.putExtra("APITest",APITest)
             startActivity(intent)
         }
     }
