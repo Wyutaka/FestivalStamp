@@ -21,9 +21,6 @@ private var startTime = Date().time
 private val handler: Handler = Handler()
 
 
-
-
-
 class BeaconController(val parentContext: Context) : BeaconConsumer {
     //一定時間単位でBeacon位置を収集するリスト
 
@@ -48,12 +45,20 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "beaconList.size = ${beaconList.size}")
             }
-           if (Date().time - startTime < 3000) {
-                myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
+            if (Date().time - startTime < 3000) {
+                //Android端末によってはbeaconが全然取れないので、（とりあえずの処理として）3倍する
+                //TODO:もっと「いい」方法に…
+                for (i in 1..3) {
+                    myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
+                }
             } else {
                 Log.d(TAG, "time passed: ${Date().time - startTime}, count: ${myBeaconDataList.size}")
                 mBeaconManager.stopRangingBeaconsInRegion(mRegion)
-                Toast.makeText(parentContext, "BeaconSize:${myBeaconDataList.size}", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "BeaconSize:${myBeaconDataList.size}")
+                var beaconMajors = ""
+                myBeaconDataList.forEach { beaconMajors += "${it.major}\n" }
+                //beaconMajors = countSameBeacon(myBeaconDataList)
+                //Toast.makeText(parentContext, beaconMajors, Toast.LENGTH_SHORT).show()
                 //全ループ終了後に非同期処理を行う
                 handler.post {
                     onBeaconDataIsUpdated?.invoke(myBeaconDataList)
@@ -63,6 +68,37 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
         }
     }
 
+    //Listに含まれる
+    /*
+    fun countSameBeacon(beaconList:MutableList<MyBeaconData>):String
+    {
+        var straighteningList = arrayListOf<Map<Int,Int>>()
+        beaconList.forEach{
+            var major = it.major
+            if (straighteningList)
+            {
+                straighteningList.add(mapOf(major to 1))
+            }
+            else
+            {
+                straighteningList.forEach{
+                    if(it[]==major)
+                    {
+                        var tempKey = it[1]
+                        straighteningList.remove(it)
+                        straighteningList.add(mapOf(major to tempKey!!+1))
+                    }
+                }
+            }
+        }
+        var returnString=""
+        straighteningList.forEach{
+            returnString+="${it[0]} : ${it[2]}\n"
+        }
+
+        return returnString
+    }
+    */
     //3秒間のビーコン取得後に実行したいコールバックメソッド。thisを使う側のクラスから書き換える。
     var onBeaconDataIsUpdated: ((beaconListModel: MutableCollection<MyBeaconData>) -> Unit)? = null
 
@@ -77,13 +113,12 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
     fun unbind(bc: BeaconConsumer) = mBeaconManager.unbind(bc)
 
     override fun getApplicationContext(): Context = parentContext.applicationContext
-    override fun unbindService(p0: ServiceConnection?)
-    {
+    override fun unbindService(p0: ServiceConnection?) {
         unbind(parentContext as BeaconConsumer)
         parentContext.unbindService(p0)
     }
-    override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean
-    {
+
+    override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean {
         bind(parentContext as BeaconConsumer)
         return parentContext.bindService(p0, p1, p2)
     }
