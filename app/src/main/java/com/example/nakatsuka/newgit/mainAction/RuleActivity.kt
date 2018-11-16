@@ -30,6 +30,10 @@ class RuleActivity : AppCompatActivity() {
             val intent = Intent(this, ResistActivity::class.java)
             startActivity(intent)
         }
+
+        disagree.setOnClickListener {
+            finish()
+        }
     }
 
     fun jump() {

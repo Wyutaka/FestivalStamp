@@ -42,8 +42,8 @@ class SecondActivity : AppCompatActivity() {
         val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         val uuid = prefer.getString("UUID", "")
         var quizCode = intent.getIntExtra("AnswerNumber",0)
-        quizCode = 1
 
+        quizCode = 1
         when(quizCode){
             1 -> question_image.setImageResource(R.drawable.quiz1)
             2 -> question_image.setImageResource(R.drawable.quiz2)
@@ -52,6 +52,7 @@ class SecondActivity : AppCompatActivity() {
             5 -> question_image.setImageResource(R.drawable.quiz5)
             6 -> question_image.setImageResource(R.drawable.quiz6)
         }
+
         question_number.text = "謎解き$quizCode"
         answer_button.setOnClickListener {
             /**
