@@ -28,12 +28,13 @@ import org.altbeacon.beacon.BeaconConsumer
 import retrofit2.Response
 
 
+/**配列の最大数を7つ*/
 class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     val RESULT_SUBACTIVITY: Int = 1000
-    private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0)
-    private var imageUrl = mutableListOf<String>("","","","","","")
-    val texts = arrayOf<TextView>(view!!.findViewById(R.id.text1), view!!.findViewById(R.id.text2), view!!.findViewById(R.id.text3), view!!.findViewById(R.id.text4), view!!.findViewById(R.id.text5), view!!.findViewById(R.id.text6))
+    private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
+    private var imageUrl = mutableListOf("","","","","","","")
+    lateinit var texts:Array<TextView?>
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
 
@@ -42,13 +43,31 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
 
+        texts = arrayOf<TextView?>(
+                null,
+                view!!.findViewById(R.id.text1),
+                view!!.findViewById(R.id.text2),
+                view!!.findViewById(R.id.text3),
+                view!!.findViewById(R.id.text4),
+                view!!.findViewById(R.id.text5),
+                view!!.findViewById(R.id.text6)
+        )
+
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
         Log.d("StampFragment", "uuid = ${uuid}")
 
-        val buttons = arrayOf<Button>(view.findViewById(R.id.imageButton1), view.findViewById(R.id.imageButton2), view.findViewById(R.id.imageButton3), view.findViewById(R.id.imageButton4), view.findViewById(R.id.imageButton5), view.findViewById(R.id.imageButton6))
+        val buttons = arrayOf<Button?>(
+                null,
+                view.findViewById(R.id.imageButton1),
+                view.findViewById(R.id.imageButton2),
+                view.findViewById(R.id.imageButton3),
+                view.findViewById(R.id.imageButton4),
+                view.findViewById(R.id.imageButton5),
+                view.findViewById(R.id.imageButton6)
+        )
         for (i in 1..6)
-            buttons[i - 1].setOnClickListener(event(i))
+            buttons[i - 1]!!.setOnClickListener(event(i))
 
 
         //}
@@ -59,6 +78,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //1〜6へのアクセス禁止
         for (i in 1..6)
             if (buttonResult[i] == 2)
                 when (i) {
@@ -103,17 +123,11 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         }
     }
 
-
     private fun makeToast(message: String, x: Int, y: Int) {
         val toast: Toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, x, y / 4)
         toast.show()
     }
-
-    fun setState(state: Boolean, num: Int) {
-        buttonResult[num] = num - 1
-    }
-
 
     //ProgressDialog機能を追加させました
     private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
@@ -156,13 +170,13 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 200 -> {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
-                            imageUrl[quizCode - 1] = it.imageURL
+                            imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
                             makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
-                            buttonResult[quizCode - 1] = 1
-                            texts[quizCode - 1].text = "問題取得済み"
-                            goActivity(quizCode - 1,isSend,imageUrl[quizCode - 1])
+                            buttonResult[quizCode] = 1
+                            texts[quizCode]!!.text = "問題取得済み"
+                            goActivity(quizCode,isSend,imageUrl[quizCode - 1])
                         }
                     } else {
                         Log.d(TAG, "isSend == false")
