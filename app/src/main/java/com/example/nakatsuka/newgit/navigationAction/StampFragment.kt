@@ -183,7 +183,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
                                         a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
-                                        goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
+                                        //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
                                     }
                                     .setNegativeButton("戻る") { _, _
                                         ->
