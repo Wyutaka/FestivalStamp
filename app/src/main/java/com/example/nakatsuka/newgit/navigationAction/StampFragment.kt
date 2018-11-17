@@ -19,6 +19,7 @@ import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.lifecycle.ActivityLifeCycle
 import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
+import com.example.nakatsuka.newgit.mainAction.model.api.ImageData
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageResponse
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
 import kotlinx.android.synthetic.main.fragment_stamp.*
@@ -39,6 +40,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("", "", "", "", "", "", "")
     lateinit var texts: Array<TextView?>
+    var data = arrayOf<ImageData?>(null, null, null, null, null, null)
+
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
 
@@ -123,31 +126,33 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     //ProgressDialog機能を追加させました
     private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
-        val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
-        mProgressDialog.setTargetFragment(this, 100)
-        mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
-
-        val thread = Thread(Runnable {
-            try {
-                Thread.sleep(1000)
-                mProgressDialog.move()
-                Thread.sleep(2050)
-            } catch (e: Exception) {
-            }
-
-            mProgressDialog.dismiss()
-        })
-        thread.start()
-
-        //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
-
         if (buttonResult[quizNumber] == 0) {
+            val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
+            mProgressDialog.setTargetFragment(this, 100)
+            mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
+
+            val thread = Thread(Runnable {
+                try {
+                    Thread.sleep(1000)
+                    mProgressDialog.move()
+                    Thread.sleep(2050)
+                } catch (e: Exception) {
+                }
+
+                mProgressDialog.dismiss()
+            })
+            thread.start()
+
+            //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
             mBeaconController.rangeBeacon {
                 if (mProgressDialog.brk)
                     mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
             }
         }
+
+        if (buttonResult[quizNumber] == 1)
+            a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
     }
 
 
@@ -165,6 +170,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 200 -> {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
+                            data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
                             imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             Log.d("judgeAnswer", "${response.body()}")
@@ -177,9 +183,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
                                         a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
-                                        //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
+                                        goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
                                     }
-                                    .setNegativeButton("戻る"){_,_
+                                    .setNegativeButton("戻る") { _, _
                                         ->
                                         //Do Nothing
                                     }.show()
@@ -190,7 +196,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                         AlertDialog.Builder(activity)
                                 .setTitle(R.string.dialog_out_of_area)
                                 .setMessage("もう一度試してみて下さい！")
-                                .setPositiveButton("OK"){_,_
+                                .setPositiveButton("OK") { _, _
                                     ->
                                     //Do Nothing
                                 }.show()
@@ -212,7 +218,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                     AlertDialog.Builder(activity)
                             .setTitle("通信エラー")
                             .setMessage(R.string.dialog_connection_error     )
-                            .setPositiveButton("OK"){_,_
+                            .setPositiveButton("OK") { _, _
                                 ->
                                 //Do Nothing
                             }.show()
