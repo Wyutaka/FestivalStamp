@@ -33,6 +33,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     val RESULT_SUBACTIVITY: Int = 1000
     var a: fragmentListner? = null
 
+
     interface fragmentListner {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
     }
@@ -44,6 +45,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
+    lateinit var userName:String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -64,6 +66,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
+        userName = arguments!!.getString("USERNAME","")
         Log.d("StampFragment", "uuid = ${uuid}")
 
         val buttons = arrayOf<Button?>(
@@ -155,14 +158,30 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         if (buttonResult[quizNumber] == 1)
             a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
 
-        if(buttonResult[quizNumber] == 3){
+        if (buttonResult[quizNumber] == 3) {
             val builder = AlertDialog.Builder(activity)
                     .setTitle("ゲームクリア")
                     .setMessage("ゲームを終了しますか？")
-                    .setPositiveButton("OK"){_,_ ->
-                        activity!!.moveTaskToBack(true)
+                    .setPositiveButton("OK") { _, _ ->
+
+                        val mApiController = ApiController()
+                        mApiController.requestGoal(uuid) { response ->
+                            when (response.code()) {
+                                200 -> {
+                                    response.body()?.let {
+                                        val builder = AlertDialog.Builder(activity)
+                                                .setTitle("クリア済")
+                                                .setMessage(userName+"さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+                                                .setPositiveButton("OK") { _, _ ->
+                                                }
+                                        builder.show()
+                                    }
+                                }
+                            }
+                        }
+
                     }
-                    .setNegativeButton("キャンセル"){_,_ ->
+                    .setNegativeButton("キャンセル") { _, _ ->
                     }
             builder.show()
         }

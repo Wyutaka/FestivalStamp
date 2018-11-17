@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             val bnd = Bundle()
             Log.d(TAG, prefer.getString("UUID", ""))
             bnd.putString("UUID", prefer.getString("UUID", ""))
+            bnd.putString("USERNAME",prefer.getString("USERNAME",""))
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
 
@@ -214,20 +215,12 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                 editor.apply()
                 buttonResult[answerNumber!!] = 2
 
-                prefer = getSharedPreferences("prefer",Context.MODE_PRIVATE)
-                val uuid = prefer.getString("UUID","")
-                val mApiController = ApiController()
-                mApiController.requestGoal(uuid){response ->
-                    when(response.code()){
-                        200 -> {
-                            response.body()?.let{
-                                for(i in 1..6){
-                                    buttonResult[i] = 3
-                                }
-                            }
-                        }
+                if(buttonResult[1] == 2 && buttonResult[2] == 2 && buttonResult[3] == 2 && buttonResult[4] == 2 && buttonResult[4] == 2 && buttonResult[5] == 2 && buttonResult[6] == 2){
+                    for (i in 1..6){
+                        buttonResult[i] = 3
                     }
                 }
+
 
 
                 //val mStampFragment = StampFragment()
