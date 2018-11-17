@@ -125,6 +125,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     }
 
     //ProgressDialog機能を追加させました
+    //ゴール時の反応を追加しました
     private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
         if (buttonResult[quizNumber] == 0) {
@@ -153,6 +154,18 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         if (buttonResult[quizNumber] == 1)
             a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
+
+        if(buttonResult[quizNumber] == 3){
+            val builder = AlertDialog.Builder(activity)
+                    .setTitle("ゲームクリア")
+                    .setMessage("ゲームを終了しますか？")
+                    .setPositiveButton("OK"){_,_ ->
+                        activity!!.moveTaskToBack(true)
+                    }
+                    .setNegativeButton("キャンセル"){_,_ ->
+                    }
+            builder.show()
+        }
     }
 
 
@@ -217,7 +230,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                     Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
                     AlertDialog.Builder(activity)
                             .setTitle("通信エラー")
-                            .setMessage(R.string.dialog_connection_error     )
+                            .setMessage(R.string.dialog_connection_error)
                             .setPositiveButton("OK") { _, _
                                 ->
                                 //Do Nothing
