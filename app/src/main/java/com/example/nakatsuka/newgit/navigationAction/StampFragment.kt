@@ -45,7 +45,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     val TAG = this.javaClass.simpleName
     lateinit var uuid: String
-    lateinit var userName:String
+    lateinit var userName: String
+
+    private var mode = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,7 +68,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
-        userName = arguments!!.getString("USERNAME","")
+        userName = arguments!!.getString("USERNAME", "")
         Log.d("StampFragment", "uuid = ${uuid}")
 
         val buttons = arrayOf<Button?>(
@@ -81,6 +83,14 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         for (i in 1..6)
             buttons[i]!!.setOnClickListener(event(i))
         //}
+
+        AlertDialog.Builder(activity)
+                .setMessage("デバッグモードを使用しますか？")
+                .setPositiveButton("はい") { _, _ ->
+                    mode = true
+                }
+                .setNegativeButton("いいえ", null)
+                .show()
         return view
 
     }
@@ -148,10 +158,33 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             })
             thread.start()
 
+            //TODO delete by koudaisai
+            val cheat = mutableListOf<MyBeaconData>()
+            if (mode)
+                for (i in 1..9)
+                    when (quizNumber) {
+                        1 ->
+                            cheat.add(MyBeaconData(442, 0))
+                        2 ->
+                            cheat.add(MyBeaconData(298, 0))
+                        3 ->
+                            cheat.add(MyBeaconData(91, 0))
+                        4 ->
+                            cheat.add(MyBeaconData(503, 0))
+                        5 ->
+                            cheat.add(MyBeaconData(844, 0))
+                        6 ->
+                            cheat.add(MyBeaconData(1212, 0))
+                    }
+
             //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
             mBeaconController.rangeBeacon {
-                if (mProgressDialog.brk)
-                    mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+                if (mProgressDialog.brk) {
+                    if (mode)
+                        mApiController.requestImage(uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
+                    else
+                        mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+                }
             }
         }
 
@@ -171,7 +204,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     response.body()?.let {
                                         val builder = AlertDialog.Builder(activity)
                                                 .setTitle("クリア済")
-                                                .setMessage(userName+"さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+                                                .setMessage(userName + "さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
                                                 .setPositiveButton("OK") { _, _ ->
                                                 }
                                         builder.show()
@@ -189,7 +222,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
 
     /*Beacon通信用のいろいろ*/
-    //Controller関係
+//Controller関係
     val mApiController = ApiController()
     lateinit var mBeaconController: BeaconController//関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
 
