@@ -36,7 +36,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     var TAG = this.javaClass.simpleName
 
     interface fragmentListner {
-        fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
+        fun goActivity(answerNumber: Int, isSend: Boolean,imageURL:String)
         fun take1(answerNumber: Int)
         fun goActivity(answerNumber: Int,isSend: Boolean)
     }
@@ -83,7 +83,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         for(i in 1..6) {
             if (buttonResult[i] == 1)
-                texts[i]!!.text = "問題取得済み"
+                texts[i]!!.text = "\n\n問題取得済み"
             else texts[i]!!.text = "\n\n問題未取得"
         }
 
@@ -123,36 +123,36 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
 
         for (i in 1..6) {
-            if (buttonResult[i] == 2) {
+            if (buttonResult[i] == 2||buttonResult[i] == 3) {
 
                 when (i) {
                     1 -> {
-                        imageButton1.setBackgroundResource(android.R.color.transparent)
+                        imageButton1.setBackgroundResource(0)
                         imageButton1.text = ""
                         text1.text = ""
                     }
                     2 -> {
-                        imageButton2.setBackgroundResource(android.R.color.transparent)
+                        imageButton2.setBackgroundResource(0)
                         imageButton2.text = ""
                         text2.text = ""
                     }
                     3 -> {
-                        imageButton3.setBackgroundResource(android.R.color.transparent)
+                        imageButton3.setBackgroundResource(0)
                         imageButton3.text = ""
                         text3.text = ""
                     }
                     4 -> {
-                        imageButton4.setBackgroundResource(android.R.color.transparent)
+                        imageButton4.setBackgroundResource(0)
                         imageButton4.text = ""
                         text4.text = ""
                     }
                     5 -> {
-                        imageButton5.setBackgroundResource(android.R.color.transparent)
+                        imageButton5.setBackgroundResource(0)
                         imageButton5.text = ""
                         text5.text = ""
                     }
                     6 -> {
-                        imageButton6.setBackgroundResource(android.R.color.transparent)
+                        imageButton6.setBackgroundResource(0)
                         imageButton6.text = ""
                         text6.text = ""
                     }
@@ -213,7 +213,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         }
 
         if (buttonResult[quizNumber] == 1) {
-            Log.d("quiznumber",quizNumber.toString())
+    Log.d("quiznumber",quizNumber.toString())
             a!!.goActivity(quizNumber,true)
         }
         /*if(buttonResult[quizNumber] == 2){
@@ -248,6 +248,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                         builder.show()
                                     }
                                 }
+
+                                else ->Log.d("goaldesu",response.code().toString())
                             }
                         }
 
@@ -291,7 +293,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
-                                        a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
+                                        a!!.goActivity(quizCode, isSend)
 
                                     }
                                     .setNegativeButton("戻る") { _, _

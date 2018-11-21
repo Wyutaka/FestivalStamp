@@ -274,12 +274,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         }
     }
 
-    override fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String) {
+    override fun goActivity(answerNumber: Int, isSend: Boolean) {
         val intent = Intent(this, SecondActivity::class.java)
         if (buttonResult[answerNumber] == 1) {
 
             intent.putExtra("AnswerNumber", answerNumber)
-            intent.putExtra("ImageUrl", imageUrl[answerNumber])
             if (isSend) {
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
             }
@@ -301,10 +300,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         toast.show()
     }
 
-    override fun goActivity(answerNumber: Int ,isSend: Boolean) {
+    override fun goActivity(answerNumber: Int ,isSend: Boolean,imageUrl:String) {
         val intent = Intent(this, SecondActivity::class.java)
         intent.putExtra("AnswerNumber", answerNumber)
         if (buttonResult[answerNumber] == 1) {
+            if(isSend)
                 startActivityForResult(intent, RESULT_SUBACTIVITY)
 
         }
