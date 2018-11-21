@@ -30,6 +30,8 @@ import retrofit2.Response
 /**配列の最大数を7つ*/
 class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
+    var TAG = this.javaClass.simpleName
+
     interface fragmentListner {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
     }
