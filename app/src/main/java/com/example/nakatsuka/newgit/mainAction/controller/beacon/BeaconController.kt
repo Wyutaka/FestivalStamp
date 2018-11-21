@@ -26,6 +26,7 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
     }
 
     override fun onBeaconServiceConnect() {
+        var callBackCalled = false
         val myBeaconDataList: MutableList<MyBeaconData> = mutableListOf()
         //レンジングのイベント
         mBeaconManager.addRangeNotifier { beaconList, _ ->
@@ -36,11 +37,14 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
                     myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
                 }
             } else {
-                mBeaconManager.stopRangingBeaconsInRegion(mRegion)
-                //全ループ終了後に非同期処理を行う
-                Handler().post {
-                    onBeaconDataIsUpdated?.invoke(myBeaconDataList)
-                    myBeaconDataList.clear()
+                if (callBackCalled == false) {
+                    callBackCalled = true
+                    mBeaconManager.stopRangingBeaconsInRegion(mRegion)
+                    //全ループ終了後に非同期処理を行う
+                    Handler().post {
+                        onBeaconDataIsUpdated?.invoke(myBeaconDataList)
+                        myBeaconDataList.clear()
+                    }
                 }
             }
         }
