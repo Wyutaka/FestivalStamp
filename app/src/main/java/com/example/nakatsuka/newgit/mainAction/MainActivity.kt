@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
             transaction.replace(R.id.container, stampFragment)
             transaction.commit()
+
+
         }
 
         var nowFragment = 0
@@ -98,10 +100,10 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             if (savedInstanceState == null) {
                 val transaction = supportFragmentManager.beginTransaction()
                 //バックスタックを設定
-                transaction.addToBackStack(null)
+                //transaction.addToBackStack(null)
 
                 //パラメータを設定
-                transaction.replace(R.id.container, stampFragment)
+                transaction.add(R.id.container, stampFragment!!)
 
 
                 nowFragment = 0
@@ -207,7 +209,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             if (resultCode == result_canceled) {
             } else if (resultCode == AppCompatActivity.RESULT_OK) {
 
-                val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 6)
+                val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 0)
                 val pref = PreferenceManager.getDefaultSharedPreferences(this)
                 val editor = pref.edit()
                 editor.putInt("buttonResult[answerNumber]", 2)
@@ -217,8 +219,24 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                 if (buttonResult[1] == 2 && buttonResult[2] == 2 && buttonResult[3] == 2 && buttonResult[4] == 2 && buttonResult[4] == 2 && buttonResult[5] == 2 && buttonResult[6] == 2) {
                     for (i in 1..6) {
                         buttonResult[i] = 3
-                    }
-                }
+                    }}
+
+
+
+                val transaction = supportFragmentManager.beginTransaction()
+                    //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
+                    val bnd = Bundle()
+                    //Log.d(TAG,prefer.getString("UUID",""))
+                    //bnd.putString("UUID", prefer.getString("UUID", ""))
+                    //bundleを用いてbuttonResultをfragmentに提供
+                    bnd.putIntArray("buttonResult",buttonResult)
+
+                stampFragment = StampFragment()
+                stampFragment.arguments = bnd
+
+                transaction.replace(R.id.container, stampFragment)
+                transaction.commit()
+
 
 
                 //val mStampFragment = StampFragment()
@@ -278,7 +296,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
 
     override fun onBeaconServiceConnect() {
-        stampFragment.onBeaconServiceConnect()
+        stampFragment!!.onBeaconServiceConnect()
     }
 
     override fun onResume() {

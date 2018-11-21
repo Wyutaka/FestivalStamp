@@ -54,14 +54,19 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         a = activity as fragmentListner
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        container!!.removeAllViews()
+
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
         //全てのviewをいったん削除
+
+
+
+
         texts = arrayOf(
                 null,
                 view!!.findViewById(R.id.text1),
@@ -111,31 +116,33 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onViewCreated(view, savedInstanceState)
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
 
+
         for (i in 1..6) {
             if (buttonResult[i] == 2) {
+
                 when (i) {
                     1 -> {
-                        imageButton1.setBackgroundResource(0)
+                        imageButton1.setBackgroundResource(android.R.color.transparent)
                         text1.text = ""
                     }
                     2 -> {
-                        imageButton2.setBackgroundResource(0)
+                        imageButton2.setBackgroundResource(android.R.color.transparent)
                         text2.text = ""
                     }
                     3 -> {
-                        imageButton3.setBackgroundResource(0)
+                        imageButton3.setBackgroundResource(android.R.color.transparent)
                         text3.text = ""
                     }
                     4 -> {
-                        imageButton4.setBackgroundResource(0)
+                        imageButton4.setBackgroundResource(android.R.color.transparent)
                         text4.text = ""
                     }
                     5 -> {
-                        imageButton5.setBackgroundResource(0)
+                        imageButton5.setBackgroundResource(android.R.color.transparent)
                         text5.text = ""
                     }
                     6 -> {
-                        imageButton6.setBackgroundResource(0)
+                        imageButton6.setBackgroundResource(android.R.color.transparent)
                         text6.text = ""
                     }
                 }
@@ -285,6 +292,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         }
         return go
     }
+
+
 
     /*IActivityLifecycle*/
     override fun onCreated() {

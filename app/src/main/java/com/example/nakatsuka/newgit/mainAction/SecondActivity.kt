@@ -93,7 +93,6 @@ class SecondActivity : AppCompatActivity() {
                             intent.putExtra("answerNumber", quizCode)
                             setResult(RESULT_OK, intent)
                             finish()
-
                         }
                         .show()
             } else {
