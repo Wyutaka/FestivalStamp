@@ -72,9 +72,11 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 view!!.findViewById(R.id.text6)
         )
 
-        for(i in 1..6)
-            if(isGot[i]!!)
+        for(i in 1..5) {
+            if (isGot[i]!!)
                 texts[i]!!.text = "問題取得済み"
+            else texts[i]!!.text = "謎解き$i\n問題未取得"
+        }
 
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
