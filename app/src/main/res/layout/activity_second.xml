@@ -143,7 +143,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/button_state"
+                android:background="@drawable/normalorengebutton"
                 android:text="解答送信"
                 android:textColor="@color/koudaisaiorange"
                 android:textSize="20dp" />

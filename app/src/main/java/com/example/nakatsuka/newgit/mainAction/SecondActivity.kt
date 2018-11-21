@@ -36,9 +36,9 @@ class SecondActivity : AppCompatActivity() {
         var answerResult = false
         val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
         val uuid = prefer.getString("UUID", "")
-        var quizCode = intent.getIntExtra("AnswerNumber",0)
+        var quizCode = intent.getIntExtra("AnswerNumber", 0)
 
-        when(quizCode){
+        when (quizCode) {
             1 -> question_image.setImageResource(R.drawable.quiz1)
             2 -> question_image.setImageResource(R.drawable.quiz2)
             3 -> question_image.setImageResource(R.drawable.quiz3)

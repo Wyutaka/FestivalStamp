@@ -79,7 +79,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/button_state"
+        android:background="@drawable/normalorengebutton"
         android:text="入力完了"
         android:textColor="#eb6101"
         android:textSize="20dp"

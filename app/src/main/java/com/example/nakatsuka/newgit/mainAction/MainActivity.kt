@@ -15,7 +15,6 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.widget.Toast
 import com.example.nakatsuka.newgit.R
-import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.BeaconConsumer
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             val bnd = Bundle()
             Log.d(TAG, prefer.getString("UUID", ""))
             bnd.putString("UUID", prefer.getString("UUID", ""))
-            bnd.putString("USERNAME",prefer.getString("USERNAME",""))
+            bnd.putString("USERNAME", prefer.getString("USERNAME", ""))
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
 
@@ -215,12 +214,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                 editor.apply()
                 buttonResult[answerNumber!!] = 2
 
-                if(buttonResult[1] == 2 && buttonResult[2] == 2 && buttonResult[3] == 2 && buttonResult[4] == 2 && buttonResult[4] == 2 && buttonResult[5] == 2 && buttonResult[6] == 2){
-                    for (i in 1..6){
+                if (buttonResult[1] == 2 && buttonResult[2] == 2 && buttonResult[3] == 2 && buttonResult[4] == 2 && buttonResult[4] == 2 && buttonResult[5] == 2 && buttonResult[6] == 2) {
+                    for (i in 1..6) {
                         buttonResult[i] = 3
                     }
                 }
-
 
 
                 //val mStampFragment = StampFragment()
