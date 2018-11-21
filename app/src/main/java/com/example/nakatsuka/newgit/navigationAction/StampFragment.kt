@@ -30,13 +30,13 @@ import retrofit2.Response
 /**配列の最大数を7つ*/
 class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
-    val RESULT_SUBACTIVITY: Int = 1000
-    var a: fragmentListner? = null
-
-
     interface fragmentListner {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
     }
+
+    val RESULT_SUBACTIVITY: Int = 1000
+    lateinit var a: fragmentListner
+
 
     //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("", "", "", "", "", "", "")
@@ -49,12 +49,19 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     private var mode = false
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        a = activity as fragmentListner
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        container!!.removeAllViews()
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
         //全てのviewをいったん削除
-        container!!.removeAllViews()
+
 
         texts = arrayOf(
                 null,
@@ -247,7 +254,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
-                                        a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
+                                            a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
                                         //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
                                     }
                                     .setNegativeButton("戻る") { _, _
