@@ -301,6 +301,15 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         toast.show()
     }
 
+    override fun goActivity(answerNumber: Int ,isSend: Boolean) {
+        val intent = Intent(this, SecondActivity::class.java)
+        intent.putExtra("AnswerNumber", answerNumber)
+        if (buttonResult[answerNumber] == 1) {
+                startActivityForResult(intent, RESULT_SUBACTIVITY)
+
+        }
+    }
+
 
 
     override fun onBeaconServiceConnect() {

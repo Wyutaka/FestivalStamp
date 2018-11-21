@@ -38,6 +38,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     interface fragmentListner {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
         fun take1(answerNumber: Int)
+        fun goActivity(answerNumber: Int,isSend: Boolean)
     }
 
     lateinit var a: fragmentListner
@@ -67,7 +68,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
-
 
 
 
@@ -119,6 +119,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
+        //a!!.goActivity(1,true)
 
 
         for (i in 1..6) {
@@ -162,9 +163,10 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     //ProgressDialog機能を追加させました
     //ゴール時の反応を追加しました
-    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
+    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener{
+        Log.d("quiznumber",quizNumber.toString())
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
-        if (buttonResult[quizNumber] == 0) {
+        if (buttonResult[quizNumber] == 0 ) {
             val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
             mProgressDialog.setTargetFragment(this, 100)
             mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
@@ -211,7 +213,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         }
 
         if (buttonResult[quizNumber] == 1) {
-            a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
+            Log.d("quiznumber",quizNumber.toString())
+            a!!.goActivity(quizNumber,true)
         }
         /*if(buttonResult[quizNumber] == 2){
         val completed = "すでにスタンプは押されています"
@@ -266,7 +269,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
             when (response.code()) {
                 200 -> {
-                    if (response.body()!!.isSend) {
+                    if (response.body()!!.isSend){
                         response.body()?.let {
                             data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
                             imageUrl[quizCode] = it.imageURL
