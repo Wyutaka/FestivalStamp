@@ -212,7 +212,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                 val answerNumber: Int? = intent!!.getIntExtra("answerNumber", 0)
                 val pref = PreferenceManager.getDefaultSharedPreferences(this)
                 val editor = pref.edit()
-                editor.putInt("buttonResult[answerNumber]", 2)
+                editor.putInt("buttonResult["+"${answerNumber}"+"]", 2)
                 editor.apply()
                 buttonResult[answerNumber!!] = 2
 
@@ -286,6 +286,20 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         }
     }
 
+
+    override fun take1(answerNumber: Int) {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+        editor.putInt("buttonResult["+"${answerNumber}"+"]", 1)
+        editor.apply()
+        buttonResult[answerNumber!!] = 1
+    }
+
+    private fun makeToast(message: String, x: Int, y: Int) {
+        val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, x, y / 4)
+        toast.show()
+    }
 
 
 

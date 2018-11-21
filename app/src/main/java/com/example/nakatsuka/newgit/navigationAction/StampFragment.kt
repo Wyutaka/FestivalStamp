@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.Gravity
@@ -15,6 +16,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.nakatsuka.newgit.R
+import com.example.nakatsuka.newgit.mainAction.MainActivity
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.lifecycle.ActivityLifeCycle
@@ -35,6 +37,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     interface fragmentListner {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
+        fun take1(answerNumber: Int)
     }
 
     lateinit var a: fragmentListner
@@ -63,7 +66,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
-        //全てのviewをいったん削除
+        val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
 
 
 
@@ -79,7 +82,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         )
 
         for(i in 1..6) {
-            if (isGot[i]!!)
+            if (buttonResult[i] == 1)
                 texts[i]!!.text = "問題取得済み"
             else texts[i]!!.text = "\n\n問題未取得"
         }
@@ -257,7 +260,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     //Controller関係
     val mApiController = ApiController()
     lateinit var mBeaconController: BeaconController//関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
-
     //imageRequest時に実行
     val requestImagesFunc = fun(quizCode: Int): (Response<ImageResponse>) -> Unit {
         val go = fun(response: Response<ImageResponse>) {
@@ -270,6 +272,13 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             buttonResult[quizCode] = 1
+
+                            a!!.take1(quizCode)
+//                            val pref = PreferenceManager.getDefaultSharedPreferences(activity!!)
+//                            val editor = pref.edit()
+//                            editor.putInt("buttonResult[answerNumber]", 1)
+//                            editor.apply()
+//                            //buttonResult[answerNumber!!] = 1
 
                             texts[quizCode]!!.text = "\n\n問題取得済み"
                             isGot[quizCode] = true
