@@ -1,5 +1,6 @@
 package com.example.nakatsuka.newgit.mainAction.controller.api
 
+import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Button

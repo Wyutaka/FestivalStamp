@@ -22,6 +22,8 @@ class OthersFragment : Fragment() {
         webSettings.javaScriptEnabled = true
 
         mwebview.webViewClient = WebViewClient()
+        webSettings.loadWithOverviewMode = true
+        webSettings.useWideViewPort = true
 
         return view
     }

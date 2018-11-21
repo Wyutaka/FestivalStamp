@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     lateinit var a: fragmentListner
 
+    private val isGot = arrayOf(null,false, false, false, false, false, false)
+
+    //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("", "", "", "", "", "", "")
     lateinit var texts: Array<TextView?>
     var data = arrayOf<ImageData?>(null, null, null, null, null, null)
@@ -43,7 +47,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     lateinit var userName: String
 
     private var mode = false
-
+    private var choice = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +70,10 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 view!!.findViewById(R.id.text6)
         )
 
+        for(i in 1..6)
+            if(isGot[i]!!)
+                texts[i]!!.text = "問題取得済み"
+
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
         userName = arguments!!.getString("USERNAME", "")
@@ -82,13 +90,16 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         for (i in 1..6)
             buttons[i]!!.setOnClickListener(event(i))
 
-        AlertDialog.Builder(activity)
-                .setMessage("デバッグモードを使用しますか？")
-                .setPositiveButton("はい") { _, _ ->
-                    mode = true
-                }
-                .setNegativeButton("いいえ", null)
-                .show()
+        if (!choice) {
+            AlertDialog.Builder(activity)
+                    .setMessage("デバッグモードを使用しますか？")
+                    .setPositiveButton("はい") { _, _ ->
+                        mode = true
+                    }
+                    .setNegativeButton("いいえ", null)
+                    .show()
+            choice = true
+        }
         return view
     }
 
@@ -171,9 +182,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             mBeaconController.rangeBeacon {
                 if (mProgressDialog.brk) {
                     if (mode)
-                        mApiController.requestImage(uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
+                        mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
                     else
-                        mApiController.requestImage(uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
+                        mApiController.requestImage(activity, uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
                 }
             }
         }
@@ -230,6 +241,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             val isSend = it.isSend
                             buttonResult[quizCode] = 1
                             texts[quizCode]!!.text = "問題取得済み"
+                            isGot[quizCode] = true
+                            Log.d(TAG, "isSend == false")
                             AlertDialog.Builder(activity)
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
