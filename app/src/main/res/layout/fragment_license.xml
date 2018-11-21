@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="bumptech/glide BSD, part MIT and Apache 2.0 https://github.com/bumptech/glide/blob/master/LICENSE  AltBeacon/android-beacon-library Apache License 2.0 https://github.com/AltBeacon/android-beacon-library/blob/master/LICENSE  square/retrofit Apache License 2.0 https://github.com/square/retrofit/blob/master/LICENSE.txt  square/moshi Apache License 2.0 https://github.com/square/moshi/blob/master/LICENSE.txt  Support Library https://developer.android.com/topic/libraries/support-library"
-                    android:textSize="30dp" />
+                    android:textSize="15dp" />
             </LinearLayout>
         </ScrollView>
 

@@ -276,10 +276,8 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
     override fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String) {
         val intent = Intent(this, SecondActivity::class.java)
-        if (buttonResult[answerNumber] == 2) {
-            val completed = "すでにスタンプは押されています"
-            makeToast(completed, 0, this.for_scale.height)
-        } else {
+        if (buttonResult[answerNumber] == 1) {
+
             intent.putExtra("AnswerNumber", answerNumber)
             intent.putExtra("ImageUrl", imageUrl[answerNumber])
             if (isSend) {
@@ -288,11 +286,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         }
     }
 
-    private fun makeToast(message: String, x: Int, y: Int) {
-        val toast: Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, x, y / 4)
-        toast.show()
-    }
+
 
 
     override fun onBeaconServiceConnect() {

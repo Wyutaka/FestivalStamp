@@ -22,6 +22,7 @@ import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageData
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageResponse
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_stamp.*
 import org.altbeacon.beacon.BeaconConsumer
 import retrofit2.Response
@@ -80,7 +81,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         for(i in 1..6) {
             if (isGot[i]!!)
                 texts[i]!!.text = "問題取得済み"
-            else texts[i]!!.text = "謎解き$i\n問題未取得"
+            else texts[i]!!.text = "\n\n問題未取得"
         }
 
         lifecycle.addObserver(ActivityLifeCycle(this))
@@ -123,26 +124,32 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 when (i) {
                     1 -> {
                         imageButton1.setBackgroundResource(android.R.color.transparent)
+                        imageButton1.text = ""
                         text1.text = ""
                     }
                     2 -> {
                         imageButton2.setBackgroundResource(android.R.color.transparent)
+                        imageButton2.text = ""
                         text2.text = ""
                     }
                     3 -> {
                         imageButton3.setBackgroundResource(android.R.color.transparent)
+                        imageButton3.text = ""
                         text3.text = ""
                     }
                     4 -> {
                         imageButton4.setBackgroundResource(android.R.color.transparent)
+                        imageButton4.text = ""
                         text4.text = ""
                     }
                     5 -> {
                         imageButton5.setBackgroundResource(android.R.color.transparent)
+                        imageButton5.text = ""
                         text5.text = ""
                     }
                     6 -> {
                         imageButton6.setBackgroundResource(android.R.color.transparent)
+                        imageButton6.text = ""
                         text6.text = ""
                     }
                 }
@@ -203,6 +210,17 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         if (buttonResult[quizNumber] == 1) {
             a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
         }
+        /*if(buttonResult[quizNumber] == 2){
+        val completed = "すでにスタンプは押されています"
+            AlertDialog.Builder(activity)
+                    .setTitle("結果")
+                    .setMessage(completed)
+                    .setPositiveButton("OK") { _, _ ->
+
+                    }
+                    .show()
+
+        }*/
 
         Log.d("buttonResult",buttonResult[quizNumber].toString())
         if (buttonResult[quizNumber] == 3) {
@@ -317,6 +335,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     override fun onBeaconServiceConnect() {
         mBeaconController.onBeaconServiceConnect()
     }
+
 }
 
 
