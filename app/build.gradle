@@ -19,11 +19,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug {
-            buildConfigField("boolean", "IS_DEBUG", "true")
-        }
         release {
-            buildConfigField("boolean", "IS_DEBUG", "false")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

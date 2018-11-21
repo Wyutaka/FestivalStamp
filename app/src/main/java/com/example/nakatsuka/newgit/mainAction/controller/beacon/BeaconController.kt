@@ -4,31 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Handler
-import android.util.Log
-import android.widget.Toast
 import com.example.nakatsuka.newgit.BuildConfig
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
-import org.altbeacon.beacon.BeaconConsumer
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.Identifier
-import org.altbeacon.beacon.Region
-import org.altbeacon.beacon.BeaconParser
+import org.altbeacon.beacon.*
 import java.util.*
 
-const val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
+private const val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
 private val mRegion = Region("APIAndBeaconModuleRegion", Identifier.parse("0f0ba8e1-f98a-4f59-af70-91308c6620b5"), null, null)
 private var startTime = Date().time
-private val handler: Handler = Handler()
-
 
 class BeaconController(val parentContext: Context) : BeaconConsumer {
-    //一定時間単位でBeacon位置を収集するリスト
-
-    private val TAG = this.javaClass.simpleName
 
     private lateinit var mBeaconManager: BeaconManager
 
-    /*クラス生成時に、IActivityLifeCycleによって実行される*/
+    /*クラス生成時に、IActivityLifeCycleを通じて実行される*/
     fun onCreated() {
         mBeaconManager = BeaconManager.getInstanceForApplication(parentContext)
         // iBeaconの受信設定：iBeaconのフォーマットを登録する
@@ -36,15 +25,10 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
 
     }
 
-
     override fun onBeaconServiceConnect() {
         val myBeaconDataList: MutableList<MyBeaconData> = mutableListOf()
-        Log.i(TAG, "onBeaconServiceConnect called")
-        // レンジングのイベント。設定
+        //レンジングのイベント
         mBeaconManager.addRangeNotifier { beaconList, _ ->
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "beaconList.size = ${beaconList.size}")
-            }
             if (Date().time - startTime < 3000) {
                 //Android端末によってはbeaconが全然取れないので、（とりあえずの処理として）3倍する
                 //TODO:もっと「いい」方法に…
@@ -52,15 +36,9 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
                     myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
                 }
             } else {
-                Log.d(TAG, "time passed: ${Date().time - startTime}, count: ${myBeaconDataList.size}")
                 mBeaconManager.stopRangingBeaconsInRegion(mRegion)
-                Log.d(TAG, "BeaconSize:${myBeaconDataList.size}")
-                var beaconMajors = ""
-                myBeaconDataList.forEach { beaconMajors += "${it.major}\n" }
-                //beaconMajors = countSameBeacon(myBeaconDataList)
-                //Toast.makeText(parentContext, beaconMajors, Toast.LENGTH_SHORT).show()
                 //全ループ終了後に非同期処理を行う
-                handler.post {
+                Handler().post {
                     onBeaconDataIsUpdated?.invoke(myBeaconDataList)
                     myBeaconDataList.clear()
                 }
@@ -68,42 +46,10 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
         }
     }
 
-    //Listに含まれる
-    /*
-    fun countSameBeacon(beaconList:MutableList<MyBeaconData>):String
-    {
-        var straighteningList = arrayListOf<Map<Int,Int>>()
-        beaconList.forEach{
-            var major = it.major
-            if (straighteningList)
-            {
-                straighteningList.add(mapOf(major to 1))
-            }
-            else
-            {
-                straighteningList.forEach{
-                    if(it[]==major)
-                    {
-                        var tempKey = it[1]
-                        straighteningList.remove(it)
-                        straighteningList.add(mapOf(major to tempKey!!+1))
-                    }
-                }
-            }
-        }
-        var returnString=""
-        straighteningList.forEach{
-            returnString+="${it[0]} : ${it[2]}\n"
-        }
-
-        return returnString
-    }
-    */
-    //3秒間のビーコン取得後に実行したいコールバックメソッド。thisを使う側のクラスから書き換える。
+    //ビーコン取得後に実行したいコールバックメソッド。BeaconControllerを使うクラス上で書き換える。
     var onBeaconDataIsUpdated: ((beaconListModel: MutableCollection<MyBeaconData>) -> Unit)? = null
 
     fun rangeBeacon(overWriteFun: (MutableCollection<MyBeaconData>) -> Unit) {
-        Log.i(TAG, "rangeBeacon Called")
         mBeaconManager.startRangingBeaconsInRegion(mRegion)
         startTime = Date().time
         onBeaconDataIsUpdated = overWriteFun

@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import com.example.nakatsuka.newgit.R
@@ -51,10 +50,8 @@ class ResistActivity : AppCompatActivity() {
                                                 response.body()?.let {
                                                     stringUUID = it.uuid
 
-                                                    Log.d("registerUser", "${response.body()}, stringUUID: $stringUUID")
                                                 }
 
-                                                Log.d("ResistActivity", "UUID = ${stringUUID}")
                                                 val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
                                                 val editor: SharedPreferences.Editor = prefer.edit()
                                                 editor.putString("UUID", stringUUID)
@@ -75,7 +72,6 @@ class ResistActivity : AppCompatActivity() {
                                             .setPositiveButton("OK") { _, _ ->
                                             }
                                             .show()
-                                    Log.e("registerUser", "${response.code()}, ${response.body()}")
                                 }
                                 409 -> {
                                     AlertDialog.Builder(this)

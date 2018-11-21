@@ -6,11 +6,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import kotlinx.android.synthetic.main.activity_second.*
@@ -28,13 +25,11 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         //MainActivityからのインテントと仮APIのデータを受け取る
         val intent = intent
         //このあたりでbuttonNumberから画像の設定
-
 
         //正誤判定
         val mApiController = ApiController()
@@ -64,8 +59,6 @@ class SecondActivity : AppCompatActivity() {
                     200 -> {
                         response.body()?.let {
                             answerResult = it.isCorrect
-                            Log.d("judgeAnswer", "${response.body()}")
-
                             judgement(answerResult, quizCode, response.code(), "")
                         }
                     }
@@ -75,7 +68,6 @@ class SecondActivity : AppCompatActivity() {
                         }
                     }
                     else -> {
-                        Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
                         judgement(answerResult, quizCode, response.code(), "")
                     }
                 }

@@ -7,7 +7,6 @@ import android.os.Handler
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.nakatsuka.newgit.R

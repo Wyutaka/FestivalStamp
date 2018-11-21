@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -34,16 +33,12 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         fun goActivity(answerNumber: Int, isSend: Boolean, imageUrl: String)
     }
 
-    val RESULT_SUBACTIVITY: Int = 1000
     lateinit var a: fragmentListner
 
-
-    //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("", "", "", "", "", "", "")
     lateinit var texts: Array<TextView?>
     var data = arrayOf<ImageData?>(null, null, null, null, null, null)
 
-    val TAG = this.javaClass.simpleName
     lateinit var uuid: String
     lateinit var userName: String
 
@@ -61,8 +56,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         container!!.removeAllViews()
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
         //全てのviewをいったん削除
-
-
         texts = arrayOf(
                 null,
                 view!!.findViewById(R.id.text1),
@@ -76,7 +69,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
         userName = arguments!!.getString("USERNAME", "")
-        Log.d("StampFragment", "uuid = ${uuid}")
 
         val buttons = arrayOf<Button?>(
                 null,
@@ -89,7 +81,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         )
         for (i in 1..6)
             buttons[i]!!.setOnClickListener(event(i))
-        //}
 
         AlertDialog.Builder(activity)
                 .setMessage("デバッグモードを使用しますか？")
@@ -99,16 +90,14 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 .setNegativeButton("いいえ", null)
                 .show()
         return view
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
 
-        //1〜6へのアクセス禁止
-        for (i in 1..6)
-            if (buttonResult[i] == 2)
+        for (i in 1..6) {
+            if (buttonResult[i] == 2) {
                 when (i) {
                     1 -> {
                         imageButton1.setBackgroundResource(0)
@@ -135,13 +124,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                         text6.text = ""
                     }
                 }
-    }
-
-
-    private fun makeToast(message: String, x: Int, y: Int) {
-        val toast: Toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, x, y / 4)
-        toast.show()
+            }
+        }
     }
 
     //ProgressDialog機能を追加させました
@@ -184,7 +168,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             cheat.add(MyBeaconData(1212, 0))
                     }
 
-            //別スレッドでプログレスダイアログ出してる間にそそくさとビーコン取得
             mBeaconController.rangeBeacon {
                 if (mProgressDialog.brk) {
                     if (mode)
@@ -195,8 +178,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             }
         }
 
-        if (buttonResult[quizNumber] == 1)
+        if (buttonResult[quizNumber] == 1) {
             a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
+        }
 
         if (buttonResult[quizNumber] == 3) {
             val builder = AlertDialog.Builder(activity)
@@ -229,12 +213,11 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
 
     /*Beacon通信用のいろいろ*/
-//Controller関係
+    //Controller関係
     val mApiController = ApiController()
     lateinit var mBeaconController: BeaconController//関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
 
-
-    //レスポンスを見つつ最終的な遷移を決定する関数型オブジェクト
+    //imageRequest時に実行
     val requestImagesFunc = fun(quizCode: Int): (Response<ImageResponse>) -> Unit {
         val go = fun(response: Response<ImageResponse>) {
             val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
@@ -245,26 +228,20 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
                             imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
-                            Log.d("judgeAnswer", "${response.body()}")
-                            //makeToast("検知範囲内です。", 0, activity!!.for_scale.height)
                             buttonResult[quizCode] = 1
                             texts[quizCode]!!.text = "問題取得済み"
-                            Log.d(TAG, "isSend == false")
                             AlertDialog.Builder(activity)
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
-                                            a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
-                                        //goActivity(quizCode,isSend,"http://cough.cocolog-nifty.com/photos/uncategorized/2017/02/01/gabrieldropout04.jpg")
+                                        a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
                                     }
                                     .setNegativeButton("戻る") { _, _
                                         ->
-                                        //Do Nothing
                                     }.show()
 
                         }
                     } else {
-                        Log.d(TAG, "isSend == false")
                         AlertDialog.Builder(activity)
                                 .setTitle(R.string.dialog_out_of_area)
                                 .setMessage("もう一度試してみて下さい！")
@@ -272,21 +249,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     ->
                                     //Do Nothing
                                 }.show()
-
-                        /*
-                        val builder = AlertDialog.Builder(activity)
-                                .setTitle("問題取得失敗")
-                                .setMessage("ヒントは地図に！")
-                                .setPositiveButton("OK") { _, _ ->
-                                }
-                        val dialog = builder.show()
-                        val textView = dialog.findViewById<TextView>(android.R.id.message)
-                        textView.textSize = 26f
-                        */
                     }
                 }
                 else -> {
-                    Log.e("judgeAnswer", "${response.code()}, ${response.body()}")
                     AlertDialog.Builder(activity)
                             .setTitle("通信エラー")
                             .setMessage(R.string.dialog_connection_error)
@@ -294,7 +259,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                 ->
                                 //Do Nothing
                             }.show()
-                    //makeToast("HTTPレスポンス != 200。", 0, activity!!.for_scale.height)
                 }
             }
         }
@@ -315,6 +279,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         mBeaconController.unbind(activity as BeaconConsumer)
     }
 
+    /*BeaconConsumer*/
     override fun getApplicationContext(): Context = activity!!.applicationContext
     override fun unbindService(p0: ServiceConnection?) = activity!!.unbindService(p0)
     override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
