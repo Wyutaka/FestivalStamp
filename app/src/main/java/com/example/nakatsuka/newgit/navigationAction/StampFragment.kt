@@ -197,6 +197,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             a!!.goActivity(data[quizNumber - 1]!!.quizCode, data[quizNumber - 1]!!.isSend, data[quizNumber - 1]!!.imageUrl)
         }
 
+        Log.d("buttonResult",buttonResult[quizNumber].toString())
         if (buttonResult[quizNumber] == 3) {
             val builder = AlertDialog.Builder(activity)
                     .setTitle("ゲームクリア")
@@ -244,14 +245,17 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             buttonResult[quizCode] = 1
-                            texts[quizCode]!!.text = "問題取得済み"
+
+                            texts[quizCode]!!.text = "\n\n問題取得済み"
                             isGot[quizCode] = true
+
                             Log.d(TAG, "isSend == false")
                             AlertDialog.Builder(activity)
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
                                         a!!.goActivity(quizCode, isSend, imageUrl[quizCode])
+
                                     }
                                     .setNegativeButton("戻る") { _, _
                                         ->
