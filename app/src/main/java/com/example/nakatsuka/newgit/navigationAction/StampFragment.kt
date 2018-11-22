@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
         fun take1(answerNumber: Int)
         fun goActivity(answerNumber: Int, isSend: Boolean)
         fun takeGoal()
+        fun saveURL(quizCode: Int,imageURL:String)
     }
 
     lateinit var a: fragmentListner
@@ -43,7 +45,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     private val isGot = arrayOf(null, false, false, false, false, false, false)
 
     //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
-    private var imageUrl = mutableListOf("", "", "", "", "", "", "")
+    //private var imageUrl = mutableListOf("", "", "", "", "", "", "")
     lateinit var texts: Array<TextView?>
     var data = arrayOf<ImageData?>(null, null, null, null, null, null)
 
@@ -211,7 +213,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         if (buttonResult[quizNumber] == 1) {
             Log.d("quiznumber", quizNumber.toString())
-            a!!.goActivity(quizNumber, true)
+            val imageURL = arguments!!.getStringArrayList("imageURL")
+            a!!.goActivity(quizNumber, true,  imageURL[quizNumber])
         }
         /*if(buttonResult[quizNumber] == 2){
         val completed = "すでにスタンプは押されています"
@@ -284,11 +287,14 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                     if (response.body()!!.isSend) {
                         response.body()?.let {
                             data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
-                            imageUrl[quizCode] = it.imageURL
+                           // imageUrl[quizCode] = it.imageURL
                             val isSend = it.isSend
                             buttonResult[quizCode] = 1
 
+
+
                             a!!.take1(quizCode)
+                            a!!.saveURL(quizCode,it.imageURL)
 //                            val pref = PreferenceManager.getDefaultSharedPreferences(activity!!)
 //                            val editor = pref.edit()
 //                            editor.putInt("buttonResult[answerNumber]", 1)

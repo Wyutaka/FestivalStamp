@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
     val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
-    
+    private var imageURL = arrayListOf<String>("","","","","","","")
     var goalApiIsCalled = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,13 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             buttonResult[5] = pref.getInt("buttonResult[5]", 0)
             buttonResult[6] = pref.getInt("buttonResult[6]", 0)
             goalApiIsCalled = pref.getBoolean("goalApiIsCalled",false)
+            imageURL[1] = pref.getString("imageURL[1]","URL")
+            imageURL[2] = pref.getString("imageURL[2]","URL")
+            imageURL[3] = pref.getString("imageURL[3]","URL")
+            imageURL[4] = pref.getString("imageURL[4]","URL")
+            imageURL[5] = pref.getString("imageURL[5]","URL")
+            imageURL[6] = pref.getString("imageURL[6]","URL")
+
         }
 
 
@@ -78,6 +85,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
             bnd.putBoolean("goalApiIsCalled",goalApiIsCalled)
+            bnd.putStringArrayList("imageURL",imageURL)
 
 
             stampFragment = StampFragment()
@@ -235,6 +243,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                     //bnd.putString("UUID", prefer.getString("UUID", ""))
                     //bundleを用いてbuttonResultをfragmentに提供
                     bnd.putIntArray("buttonResult",buttonResult)
+                    bnd.putStringArrayList("imageURL",imageURL)
 
                 stampFragment = StampFragment()
                 stampFragment.arguments = bnd
@@ -305,6 +314,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         editor.putBoolean("goalIsApiCalled",true)
         editor.apply()
         goalApiIsCalled = true
+    }
+
+    override fun saveURL(quizCode: Int,imageURL:String){
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+        editor.putString("imageURL["+"${quizCode}"+"]", imageURL)
+        editor.apply()
+
     }
 
     private fun makeToast(message: String, x: Int, y: Int) {
