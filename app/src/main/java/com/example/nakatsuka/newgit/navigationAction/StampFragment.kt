@@ -52,8 +52,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     lateinit var uuid: String
     lateinit var userName: String
-
-    private var mode = false
+    
+    private var cheatMode = false
     private var choice = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +107,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             AlertDialog.Builder(activity)
                     .setMessage("デバッグモードを使用しますか？")
                     .setPositiveButton("はい") { _, _ ->
-                        mode = true
+                        cheatMode = true
                     }
                     .setNegativeButton("いいえ", null)
                     .show()
@@ -185,7 +185,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
             //TODO delete by koudaisai
             val cheat = mutableListOf<MyBeaconData>()
-            if (mode)
+            if (cheatMode)
                 for (i in 1..9)
                     when (quizNumber) {
                         1 ->
@@ -204,8 +204,9 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
             mBeaconController.rangeBeacon {
                 if (mProgressDialog.brk) {
-                    if (mode)
+                    if (cheatMode) {
                         mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
+                    }
                     else
                         mApiController.requestImage(activity, uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
                 }
@@ -288,7 +289,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             texts[quizCode]!!.text = "\n\n問題取得済み"
                             isGot[quizCode] = true
 
-                            Log.d(TAG, "isSend == false")
                             AlertDialog.Builder(activity)
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
