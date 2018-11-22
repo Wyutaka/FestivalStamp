@@ -52,6 +52,7 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
                         myBeaconDataList.clear()
                     }
                 }
+                
             }
         }
     }
