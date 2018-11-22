@@ -31,7 +31,7 @@ interface APIService{
 
 class APIClient {
     companion object {
-        private const val BASE_URL = "https://c0de-api.club.nitech.ac.jp/knoom/"
+        private const val BASE_URL = "https://nitfes2018.ske.nitech.ac.jp/knoom/"
 
         val instance: APIService by lazy {
             val moshi = Moshi.Builder()

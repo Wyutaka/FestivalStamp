@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
     val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
+    
     var goalApiIsCalled = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
