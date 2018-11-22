@@ -194,15 +194,17 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        AlertDialog.Builder(this)
-                .setTitle("確認")
-                .setMessage("アプリを終了しますか？")
-                .setPositiveButton("OK") { _, _ ->
-                    this.moveTaskToBack(true)
-                }
-                .setNegativeButton("キャンセル") { _, _ ->
-                }
-                .show()
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder(this)
+                    .setTitle("確認")
+                    .setMessage("アプリを終了しますか？")
+                    .setPositiveButton("OK") { _, _ ->
+                        this.moveTaskToBack(true)
+                    }
+                    .setNegativeButton("キャンセル") { _, _ ->
+                    }
+                    .show()
+        }
         return super.onKeyDown(keyCode, event)
     }
 
