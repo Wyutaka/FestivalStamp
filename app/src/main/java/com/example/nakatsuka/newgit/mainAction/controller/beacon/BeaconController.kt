@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Handler
+import android.util.Log
 import com.example.nakatsuka.newgit.BuildConfig
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
 import org.altbeacon.beacon.*
@@ -14,6 +15,8 @@ private val mRegion = Region("APIAndBeaconModuleRegion", Identifier.parse("0f0ba
 private var startTime = Date().time
 
 class BeaconController(val parentContext: Context) : BeaconConsumer {
+
+    private val TAG = this.javaClass.simpleName
 
     private lateinit var mBeaconManager: BeaconManager
 
@@ -26,13 +29,16 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
     }
 
     override fun onBeaconServiceConnect() {
+        Log.d(TAG,"onBeaconServiceConnect called")
         var callBackCalled = false
         val myBeaconDataList: MutableList<MyBeaconData> = mutableListOf()
         //レンジングのイベント
         mBeaconManager.addRangeNotifier { beaconList, _ ->
             if (Date().time - startTime < 3000) {
+                callBackCalled = false
                 //Android端末によってはbeaconが全然取れないので、（とりあえずの処理として）3倍する
                 //TODO:もっと「いい」方法に…
+                Log.d(TAG,"Ranging. . . ")
                 for (i in 1..3) {
                     myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
                 }
@@ -54,6 +60,7 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
     var onBeaconDataIsUpdated: ((beaconListModel: MutableCollection<MyBeaconData>) -> Unit)? = null
 
     fun rangeBeacon(overWriteFun: (MutableCollection<MyBeaconData>) -> Unit) {
+        Log.d(TAG,"Rangebeacon Called")
         mBeaconManager.startRangingBeaconsInRegion(mRegion)
         startTime = Date().time
         onBeaconDataIsUpdated = overWriteFun
