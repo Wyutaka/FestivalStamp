@@ -4,19 +4,16 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import com.example.nakatsuka.newgit.R
-import com.example.nakatsuka.newgit.mainAction.MainActivity
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.lifecycle.ActivityLifeCycle
@@ -24,7 +21,6 @@ import com.example.nakatsuka.newgit.mainAction.lifecycle.IActivityLifeCycle
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageData
 import com.example.nakatsuka.newgit.mainAction.model.api.ImageResponse
 import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_stamp.*
 import org.altbeacon.beacon.BeaconConsumer
 import retrofit2.Response
@@ -36,14 +32,15 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     var TAG = this.javaClass.simpleName
 
     interface fragmentListner {
-        fun goActivity(answerNumber: Int, isSend: Boolean,imageURL:String)
+        fun goActivity(answerNumber: Int, isSend: Boolean, imageURL: String)
         fun take1(answerNumber: Int)
-        fun goActivity(answerNumber: Int,isSend: Boolean)
+        fun goActivity(answerNumber: Int, isSend: Boolean)
+        fun takeGoal()
     }
 
     lateinit var a: fragmentListner
 
-    private val isGot = arrayOf(null,false, false, false, false, false, false)
+    private val isGot = arrayOf(null, false, false, false, false, false, false)
 
     //private val buttonResult = mutableListOf(0, 0, 0, 0, 0, 0, 0)
     private var imageUrl = mutableListOf("", "", "", "", "", "", "")
@@ -52,7 +49,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     lateinit var uuid: String
     lateinit var userName: String
-    
+
     private var cheatMode = false
     private var choice = false
 
@@ -81,7 +78,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 view!!.findViewById(R.id.text6)
         )
 
-        for(i in 1..6) {
+        for (i in 1..6) {
             if (buttonResult[i] == 1)
                 texts[i]!!.text = "\n\n問題取得済み"
             else texts[i]!!.text = "\n\n問題未取得"
@@ -123,7 +120,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
 
         for (i in 1..6) {
-            if (buttonResult[i] == 2||buttonResult[i] == 3) {
+            if (buttonResult[i] == 2 || buttonResult[i] == 3) {
 
                 when (i) {
                     1 -> {
@@ -163,10 +160,10 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     //ProgressDialog機能を追加させました
     //ゴール時の反応を追加しました
-    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener{
-        Log.d("quiznumber",quizNumber.toString())
+    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
+        Log.d("quiznumber", quizNumber.toString())
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
-        if (buttonResult[quizNumber] == 0 ) {
+        if (buttonResult[quizNumber] == 0) {
             val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
             mProgressDialog.setTargetFragment(this, 100)
             mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
@@ -206,16 +203,15 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                 if (mProgressDialog.brk) {
                     if (cheatMode) {
                         mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
-                    }
-                    else
+                    } else
                         mApiController.requestImage(activity, uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
                 }
             }
         }
 
         if (buttonResult[quizNumber] == 1) {
-    Log.d("quiznumber",quizNumber.toString())
-            a!!.goActivity(quizNumber,true)
+            Log.d("quiznumber", quizNumber.toString())
+            a!!.goActivity(quizNumber, true)
         }
         /*if(buttonResult[quizNumber] == 2){
         val completed = "すでにスタンプは押されています"
@@ -229,33 +225,46 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
         }*/
 
-        Log.d("buttonResult",buttonResult[quizNumber].toString())
-        if (buttonResult[quizNumber] == 3) {
-            val builder = AlertDialog.Builder(activity)
-                    .setTitle("ゲームクリア")
-                    .setMessage("ゲームを終了しますか？")
-                    .setPositiveButton("OK") { _, _ ->
+        var goalApiIsCalled = arguments!!.getBoolean("goalApiIsCalled")
+        Log.d("buttonResult", buttonResult[quizNumber].toString())
+        if (!goalApiIsCalled) {
+            if (buttonResult[quizNumber] == 3) {
+                val builder = AlertDialog.Builder(activity)
+                        .setTitle("ゲームクリア")
+                        .setMessage("ゲームを終了しますか？")
+                        .setPositiveButton("OK") { _, _ ->
 
-                        val mApiController = ApiController()
-                        mApiController.requestGoal(uuid) { response ->
-                            when (response.code()) {
-                                200 -> {
-                                    response.body()?.let {
-                                        val builder = AlertDialog.Builder(activity)
-                                                .setTitle("クリア済")
-                                                .setMessage(userName + "さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
-                                                .setPositiveButton("OK") { _, _ ->
-                                                }
-                                        builder.show()
+                            val mApiController = ApiController()
+                            mApiController.requestGoal(uuid) { response ->
+                                when (response.code()) {
+                                    200 -> {
+
+                                        response.body()?.let {
+                                            a!!.takeGoal()
+
+                                            val builder = AlertDialog.Builder(activity)
+                                                    .setTitle("クリア済")
+                                                    .setMessage("$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+                                                    .setPositiveButton("OK") { _, _ ->
+                                                    }
+                                            builder.show()
+                                        }
                                     }
+
+                                    else -> Log.d("goaldesu", response.code().toString())
                                 }
-
-                                else ->Log.d("goaldesu",response.code().toString())
                             }
-                        }
 
-                    }
-                    .setNegativeButton("キャンセル") { _, _ ->
+                        }
+                        .setNegativeButton("キャンセル") { _, _ ->
+                        }
+                builder.show()
+            }
+        } else {
+            val builder = AlertDialog.Builder(activity)
+                    .setTitle("クリア済")
+                    .setMessage("$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+                    .setPositiveButton("OK") { _, _ ->
                     }
             builder.show()
         }
@@ -272,7 +281,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
             when (response.code()) {
                 200 -> {
-                    if (response.body()!!.isSend){
+                    if (response.body()!!.isSend) {
                         response.body()?.let {
                             data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
                             imageUrl[quizCode] = it.imageURL
@@ -326,7 +335,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     }
 
 
-
     /*IActivityLifecycle*/
     override fun onCreated() {
         mBeaconController = BeaconController(activity as Context)
@@ -343,6 +351,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
 
     /*BeaconConsumer*/
     override fun getApplicationContext(): Context = activity!!.applicationContext
+
     override fun unbindService(p0: ServiceConnection?) = activity!!.unbindService(p0)
     override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
 

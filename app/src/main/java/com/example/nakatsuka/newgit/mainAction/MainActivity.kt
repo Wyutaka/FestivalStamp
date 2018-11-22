@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
     val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
-
+    var goalApiIsCalled = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             buttonResult[4] = pref.getInt("buttonResult[4]", 0)
             buttonResult[5] = pref.getInt("buttonResult[5]", 0)
             buttonResult[6] = pref.getInt("buttonResult[6]", 0)
+            goalApiIsCalled = pref.getBoolean("goalApiIsCalled",false)
         }
 
 
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             bnd.putString("USERNAME", prefer.getString("USERNAME", ""))
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
+            bnd.putBoolean("goalApiIsCalled",goalApiIsCalled)
 
 
             stampFragment = StampFragment()
@@ -292,6 +294,14 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
         editor.putInt("buttonResult["+"${answerNumber}"+"]", 1)
         editor.apply()
         buttonResult[answerNumber!!] = 1
+    }
+
+    override fun takeGoal(){
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+        editor.putBoolean("goalIsApiCalled",true)
+        editor.apply()
+        goalApiIsCalled = true
     }
 
     private fun makeToast(message: String, x: Int, y: Int) {
