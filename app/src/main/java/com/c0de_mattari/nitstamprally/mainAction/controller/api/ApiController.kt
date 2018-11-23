@@ -1,5 +1,6 @@
 package com.c0de_mattari.nitstamprally.mainAction.controller.api
 
+import android.app.Activity
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
 import android.util.Log
@@ -25,7 +26,11 @@ class ApiController {
             override fun onFailure(call: Call<RuleResponse>, t: Throwable) {
                 //テキストもろもろ消して最初の画面に戻ります
                 agreeButton.visibility = View.INVISIBLE
+
+
                 title.visibility = View.GONE
+                AlertUtil.showNotifyDialog(activity,"通信エラー","通信状況を確認の上再度お試しください")
+                /*
                 AlertDialog.Builder(activity)
                         .setTitle("通信エラー")
                         .setMessage("通信状況を確認の上再度お試しください")
@@ -33,6 +38,7 @@ class ApiController {
                             activity.jump()
                         }
                         .show()
+                        */
             }
         })
     }
@@ -44,12 +50,15 @@ class ApiController {
                 onResponse(response)
             }
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                AlertUtil.showNotifyDialog(activity,"通信エラー","通信状況を確認の上再度お試しください")
+                /*
                 AlertDialog.Builder(activity)
                         .setTitle("通信エラー")
                         .setMessage("通信状況を確認の上再度お試しください")
                         .setPositiveButton("OK") { _, _ ->
                         }
                         .show()
+                        */
             }
         })
     }
@@ -86,12 +95,15 @@ class ApiController {
 
             override fun onFailure(call: Call<ImageResponse>, t: Throwable) {
                 Log.e(TAG, t.localizedMessage, t)
+                AlertUtil.showNotifyDialog(activity as Activity,"通信エラー","通信状況を確認の上再度お試しください")
+                /*
                 AlertDialog.Builder(activity!!)
                         .setTitle("通信エラー")
                         .setMessage("通信状況を確認の上再度お試しください")
                         .setPositiveButton("OK") { _, _ ->
                         }
                         .show()
+                        */
             }
         })
     }
@@ -105,12 +117,15 @@ class ApiController {
             }
 
             override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
+                AlertUtil.showNotifyDialog(activity,"通信エラー","通信状況を確認の上再度お試しください")
+                /*
                 AlertDialog.Builder(activity)
                         .setTitle("通信エラー")
                         .setMessage("通信状況を確認の上再度お試しください")
                         .setPositiveButton("OK") { _, _ ->
                         }
                         .show()
+                        */
             }
         })
     }

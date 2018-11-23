@@ -1,5 +1,6 @@
 package com.c0de_mattari.nitstamprally.navigationAction
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.c0de_mattari.nitstamprally.R
+import com.c0de_mattari.nitstamprally.mainAction.AlertUtil
 import com.c0de_mattari.nitstamprally.mainAction.MainActivity
 import com.c0de_mattari.nitstamprally.mainAction.controller.api.ApiController
 import com.c0de_mattari.nitstamprally.mainAction.controller.beacon.BeaconController
@@ -200,10 +202,7 @@ class StampFragment : Fragment() {
         Log.d("buttonResult", buttonResult[quizNumber].toString())
         if (!goalApiIsCalled) {
             if (buttonResult[quizNumber] == 3) {
-                val builder = AlertDialog.Builder(activity)
-                        .setTitle("ゲームクリア")
-                        .setMessage("ゲームを終了しますか？")
-                        .setPositiveButton("OK") { _, _ ->
+                AlertUtil.showYesNoDialog(activity as Activity,"ゲームクリア","ゲームを終了しますか?",true){
 
                             val mApiController = ApiController()
                             mApiController.requestGoal(uuid) { response ->
@@ -214,12 +213,7 @@ class StampFragment : Fragment() {
                                             mFragmentListner!!.takeGoal()
                                             Log.d("", goalApiIsCalled.toString())
 
-                                            val builder = AlertDialog.Builder(activity)
-                                                    .setTitle("クリア済")
-                                                    .setMessage("$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
-                                                    .setPositiveButton("OK") { _, _ ->
-                                                    }
-                                            builder.show()
+                                            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
                                         }
                                     }
 
@@ -228,17 +222,9 @@ class StampFragment : Fragment() {
                             }
 
                         }
-                        .setNegativeButton("キャンセル") { _, _ ->
-                        }
-                builder.show()
             }
         } else {
-            val builder = AlertDialog.Builder(activity)
-                    .setTitle("クリア済")
-                    .setMessage("$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
-                    .setPositiveButton("OK") { _, _ ->
-                    }
-            builder.show()
+            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
         }
     }
 
@@ -255,49 +241,57 @@ class StampFragment : Fragment() {
             when (response.code()) {
                 200 -> {
                     val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
-
-                    if (response.body()!!.isSend) {
-                        response.body()?.let {
-                            data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
-                            val isSend = it.isSend
-                            buttonResult[quizCode] = 1
-
-                            mFragmentListner!!.take1(quizCode)
-                            mFragmentListner!!.saveURL(quizCode, it.imageURL)
-
-                            texts[quizCode]!!.text = "\n\n問題取得済み"
-                            isGot[quizCode] = true
-
-                            AlertDialog.Builder(activity)
-                                    .setTitle("判定結果")
-                                    .setMessage(R.string.dialog_in_area)
-                                    .setPositiveButton("問題へ") { _, _ ->
-                                        mFragmentListner!!.goActivity(quizCode, isSend, it.imageURL)
-
-                                    }
-                                    .setNegativeButton("戻る") { _, _
-                                        ->
-                                    }.show()
-
+                    //TODO:iOSに合わせて文面をを差し替え
+                    when(response.body()!!.messageId.toInt())
+                    {
+                        0 -> {//範囲外
+                            AlertUtil.showNotifyDialog(
+                                    activity as Activity,
+                                    "取得結果",
+                                    getString(R.string.dialog_out_of_area)
+                            )
                         }
-                    } else {
-                        AlertDialog.Builder(activity)
-                                .setTitle(R.string.dialog_out_of_area)
-                                .setMessage("もう一度試してみて下さい！")
-                                .setPositiveButton("OK") { _, _
-                                    ->
-                                    //Do Nothing
-                                }.show()
+                        1 ->{//範囲付近
+                            AlertUtil.showNotifyDialog(
+                                    activity as Activity,
+                                    "取得結果",
+                                    getString(R.string.dialog_near_area)
+                            )
+                        }
+                        2->{
+                            //範囲内
+                            response.body()?.let {
+                                data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
+                                val isSend = it.isSend
+                                buttonResult[quizCode] = 1
+
+                                mFragmentListner!!.take1(quizCode)
+                                mFragmentListner!!.saveURL(quizCode, it.imageURL)
+
+                                texts[quizCode]!!.text = "\n\n問題取得済み"
+                                isGot[quizCode] = true
+
+                                AlertUtil.showYesNoDialog(
+                                        activity as Activity,
+                                        "判定結果",
+                                        getString(R.string.dialog_in_area),
+                                        true
+                                ) {
+                                    mFragmentListner!!.goActivity(quizCode, isSend, it.imageURL)
+                                }
+                            }
+                        }
+                        3->{
+                            //クリア済
+                            //未定義
+                        }
                     }
                 }
                 else -> {
-                    AlertDialog.Builder(activity)
-                            .setTitle("通信エラー")
-                            .setMessage(R.string.dialog_connection_error)
-                            .setPositiveButton("OK") { _, _
-                                ->
-                                //Do Nothing
-                            }.show()
+                    AlertUtil.showNotifyDialog(activity as Activity,
+                            "通信エラー",
+                            "通信エラーが発生しました。"
+                    )
                 }
             }
         }

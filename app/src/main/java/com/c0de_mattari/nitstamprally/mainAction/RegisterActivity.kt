@@ -27,80 +27,44 @@ class RegisterActivity : AppCompatActivity() {
         //ユーザー名の登録とUUIDの作成、またその保存
         send_name.setOnClickListener {
             val userName: String = userName.editableText.toString()
+            AlertUtil.showYesNoDialog(this,"確認","${userName}で登録します",true) {
+                //ここにprogressBar
 
-            AlertDialog.Builder(this)
-                    .setTitle("確認")
-                    .setMessage(userName + "で登録します")
-                    .setPositiveButton("OK") { _, _ ->
+                val mApiController = ApiController()
 
+                var stringUUID = ""
 
-                        //ここにprogressBar
-
-                        val mApiController = ApiController()
-
-                        var stringUUID = ""
-
-                        mApiController.registerUser(this, userName, Build.DEVICE, Build.VERSION.RELEASE) { response ->
-                            when (response.code()) {
-                                200 -> {
-                                    AlertDialog.Builder(this)
-                                            .setTitle("登録完了")
-                                            .setPositiveButton("OK") { _, _ ->
-
-                                                response.body()?.let {
-                                                    stringUUID = it.uuid
-
-                                                }
-
-                                                val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
-                                                val editor: SharedPreferences.Editor = prefer.edit()
-                                                editor.putString("UUID", stringUUID)
-                                                editor.putString("USERNAME", userName)
-                                                editor.apply()
-                                                val intent = Intent(this, MainActivity::class.java)
-
-                                                startActivity(intent)
-                                            }
-                                            .show()
-
+                mApiController.registerUser(this, userName, Build.DEVICE, Build.VERSION.RELEASE) { response ->
+                    when (response.code()) {
+                        200 -> {
+                            AlertUtil.showNotifyDialog(this, "登録完了", callback = {
+                                response.body()?.let {
+                                    stringUUID = it.uuid
 
                                 }
-                                400 -> {
-                                    AlertDialog.Builder(this)
-                                            .setTitle("エラー")
-                                            .setMessage("4文字以上で入力してください")
-                                            .setPositiveButton("OK") { _, _ ->
-                                            }
-                                            .show()
-                                }
-                                409 -> {
-                                    AlertDialog.Builder(this)
-                                            .setTitle("エラー")
-                                            .setMessage("その名前は使用できません")
-                                            .setPositiveButton("OK") { _, _ ->
-                                            }
-                                            .show()
 
-                                }
-                                500 -> {
+                                val prefer: SharedPreferences = getSharedPreferences("prefer", Context.MODE_PRIVATE)
+                                val editor: SharedPreferences.Editor = prefer.edit()
+                                editor.putString("UUID", stringUUID)
+                                editor.putString("USERNAME", userName)
+                                editor.apply()
+                                val intent = Intent(this, MainActivity::class.java)
 
-                                    AlertDialog.Builder(this)
-                                            .setTitle("通信エラー")
-                                            .setMessage("もう一度やり直してください")
-                                            .setPositiveButton("OK") { _, _ ->
-                                            }
-                                            .show()
-                                }
-                            }
+                                startActivity(intent)
+                            })
                         }
-
-
+                        400 -> {
+                            AlertUtil.showNotifyDialog(this,"エラー","4文字以上で入力してください")
+                        }
+                        409 -> {
+                            AlertUtil.showNotifyDialog(this,"エラー","その名前は利用できません")
+                        }
+                        500 -> {
+                            AlertUtil.showNotifyDialog(this,"通信エラー","もう一度やり直して下さい")
+                        }
                     }
-
-                    .setNegativeButton("cancel") { _, _ ->
-                    }
-
-                    .show()
+                }
+            }
 
         }
     }

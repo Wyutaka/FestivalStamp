@@ -84,6 +84,15 @@ class SecondActivity : AppCompatActivity() {
     private fun judgement(answerResult: Boolean, quizCode: Int, responseCode: Int, msg: String) {
         if (responseCode == 200) {
             if (answerResult) {
+                AlertUtil.showNotifyDialog(this,"正解！","スタンプを押します")
+                {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("isCorrect", answerResult)
+                    intent.putExtra("answerNumber", quizCode)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
+                /*
                 AlertDialog.Builder(this)
                         .setTitle("正解!")
                         .setMessage("スタンプを押します")
@@ -95,43 +104,60 @@ class SecondActivity : AppCompatActivity() {
                             finish()
                         }
                         .show()
+                        */
             } else {
+                AlertUtil.showNotifyDialog(this,"不正解","もう一度考えてみて下さい")
+                /*
                 AlertDialog.Builder(this)
                         .setTitle("不正解")
                         .setMessage("もう一度考えてみてください")
                         .setPositiveButton("OK") { _, _ ->
                         }.show()
+                        */
             }
         } else {
             when (responseCode) {
                 400 -> {
+                    AlertUtil.showNotifyDialog(this,"エラー","解答を入力し直して下さい")
+                    /*
                     AlertDialog.Builder(this)
                             .setTitle("エラー")
                             .setMessage("解答を入力し直してください")
                             .setPositiveButton("OK") { _, _ ->
                             }.show()
+                            */
                 }
                 401 -> {
                     if (msg == "Not Send UUID") {
+                        AlertUtil.showNotifyDialog(this,"通信エラー","もう一度やり直して下さい")
+
+                        /*
                         AlertDialog.Builder(this)
                                 .setTitle("通信エラー")
                                 .setMessage("もう一度やり直してください")
                                 .setPositiveButton("OK") { _, _ ->
                                 }.show()
+                                */
                     } else if (msg == "User not found") {
+                        AlertUtil.showNotifyDialog(this,"エラー","このエラーが出続けるよう場合、お手数ですがサービスセンターにお越しください")
+                        /*
                         AlertDialog.Builder(this)
                                 .setTitle("エラー")
                                 .setMessage("このエラーが出続けるよう場合、お手数ですがサービスセンターにお越しください")
                                 .setPositiveButton("OK") { _, _ ->
                                 }.show()
+                                */
                     }
                 }
                 500 -> {
+                    AlertUtil.showNotifyDialog(this,"エラー","解答を入力し直して下さい")
+                    /*
                     AlertDialog.Builder(this)
                             .setTitle("エラー")
                             .setMessage("解答を入力し直してください")
                             .setPositiveButton("OK") { _, _ ->
                             }.show()
+                */
                 }
             }
         }

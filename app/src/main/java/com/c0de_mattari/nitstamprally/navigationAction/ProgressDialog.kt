@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.c0de_mattari.nitstamprally.R
+import com.c0de_mattari.nitstamprally.mainAction.AlertUtil
 
 class ProgressDialog : DialogFragment() {
 

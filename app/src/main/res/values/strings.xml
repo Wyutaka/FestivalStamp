@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dialog_in_area">範囲内です。問題を表示します。</string>
+    <string name="dialog_near_area">範囲付近です。もう少し近づいてみて下さい！</string>
     <string name="dialog_out_of_area">範囲外です。</string>
     <string name="dialog_connection_error">通信エラーが発生しました。</string>
 </resources>
