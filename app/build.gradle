@@ -10,7 +10,7 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.nakatsuka.newgit"
+        applicationId "com.c0de_mattari.nitstamprally"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
