@@ -16,7 +16,7 @@ class MapFragment : Fragment() {
         val view: View = inflater!!.inflate(R.layout.fragment_map, container, false)
 
         val mwebview = view.findViewById(R.id.webView) as WebView
-        mwebview.loadUrl("https://c0de-dev.club.nitech.ac.jp/knoom-web/map", null)
+        mwebview.loadUrl("https://nitfes2018.ske.nitech.ac.jp/knoom-web/map", null)
 
 
         val webSettings = mwebview.settings

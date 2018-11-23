@@ -15,7 +15,7 @@ class OthersFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val view: View = inflater!!.inflate(R.layout.fragment_others, container, false)
         val mwebview = view.findViewById(R.id.webView) as WebView
-        mwebview.loadUrl("https://c0de-dev.club.nitech.ac.jp/knoom-web/link")
+        mwebview.loadUrl("https://nitfes2018.ske.nitech.ac.jp/knoom-web/link")
 
 
         val webSettings = mwebview.settings
