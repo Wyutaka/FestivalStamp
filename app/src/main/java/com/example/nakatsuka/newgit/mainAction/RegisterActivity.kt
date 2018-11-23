@@ -11,7 +11,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
-import kotlinx.android.synthetic.main.activity_resist.*
+import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -19,7 +19,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_resist)
+        setContentView(R.layout.activity_register)
 
         //キーボードの設定
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
