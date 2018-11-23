@@ -33,7 +33,7 @@
         <activity android:name=".mainAction.RuleActivity" />
 
 
-        <activity android:name=".mainAction.ResistActivity"></activity>
+        <activity android:name=".mainAction.RegisterActivity"></activity>
     </application>
 
 

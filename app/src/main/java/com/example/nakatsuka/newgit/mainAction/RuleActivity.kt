@@ -3,8 +3,6 @@ package com.example.nakatsuka.newgit.mainAction
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import android.widget.TextView
 import com.example.nakatsuka.newgit.R
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import kotlinx.android.synthetic.main.activity_rule.*
@@ -27,7 +25,7 @@ class RuleActivity : AppCompatActivity() {
         }
 
         agree_contents.setOnClickListener {
-            val intent = Intent(this, ResistActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 

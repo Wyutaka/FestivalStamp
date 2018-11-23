@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true"
     android:gravity="center"
     app:layout_gravity="center"
-    tools:context=".mainAction.ResistActivity">
+    tools:context=".mainAction.RegisterActivity">
 
     <TextView
         android:id="@+id/user_title"

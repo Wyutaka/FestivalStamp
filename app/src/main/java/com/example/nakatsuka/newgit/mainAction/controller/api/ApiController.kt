@@ -37,7 +37,7 @@ class ApiController {
         })
     }
 
-    fun registerUser(activity: ResistActivity, userName: String, device: String, version: String, onResponse: (response: Response<UserResponse>) -> Unit) {
+    fun registerUser(activity: RegisterActivity, userName: String, device: String, version: String, onResponse: (response: Response<UserResponse>) -> Unit) {
         val request = UserRequest(userName, device, version)
         APIClient.instance.user(request).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
