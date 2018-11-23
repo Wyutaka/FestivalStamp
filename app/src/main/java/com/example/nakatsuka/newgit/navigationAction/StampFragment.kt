@@ -39,6 +39,7 @@ class StampFragment : Fragment()  {
         fun goActivity(answerNumber: Int, isSend: Boolean)
         fun takeGoal()
         fun saveURL(quizCode: Int,imageURL:String)
+        fun isGoal():Boolean
     }
 
     lateinit var a: fragmentListner
@@ -104,16 +105,16 @@ class StampFragment : Fragment()  {
         for (i in 1..6)
             buttons[i]!!.setOnClickListener(event(i))
 
-        if (!choice) {
-            AlertDialog.Builder(activity)
-                    .setMessage("デバッグモードを使用しますか？")
-                    .setPositiveButton("はい") { _, _ ->
-                        cheatMode = true
-                    }
-                    .setNegativeButton("いいえ", null)
-                    .show()
-            choice = true
-        }
+//        if (!choice) {
+//            AlertDialog.Builder(activity)
+//                    .setMessage("デバッグモードを使用しますか？")
+//                    .setPositiveButton("はい") { _, _ ->
+//                        cheatMode = true
+//                    }
+//                    .setNegativeButton("いいえ", null)
+//                    .show()
+//            choice = true
+//        }
         return view
     }
 
@@ -187,23 +188,23 @@ class StampFragment : Fragment()  {
             thread.start()
 
             //TODO delete by koudaisai
-            val cheat = mutableListOf<MyBeaconData>()
-            if (cheatMode)
-                for (i in 1..9)
-                    when (quizNumber) {
-                        1 ->
-                            cheat.add(MyBeaconData(442, 0))
-                        2 ->
-                            cheat.add(MyBeaconData(298, 0))
-                        3 ->
-                            cheat.add(MyBeaconData(91, 0))
-                        4 ->
-                            cheat.add(MyBeaconData(503, 0))
-                        5 ->
-                            cheat.add(MyBeaconData(844, 0))
-                        6 ->
-                            cheat.add(MyBeaconData(1212, 0))
-                    }
+//            val cheat = mutableListOf<MyBeaconData>()
+//            if (cheatMode)
+//                for (i in 1..9)
+//                    when (quizNumber) {
+//                        1 ->
+//                            cheat.add(MyBeaconData(442, 0))
+//                        2 ->
+//                            cheat.add(MyBeaconData(298, 0))
+//                        3 ->
+//                            cheat.add(MyBeaconData(91, 0))
+//                        4 ->
+//                            cheat.add(MyBeaconData(503, 0))
+//                        5 ->
+//                            cheat.add(MyBeaconData(844, 0))
+//                        6 ->
+//                            cheat.add(MyBeaconData(1212, 0))
+//                    }
 //            Log.d("DEBAG",activity.toString())
 //            Log.d("DEBAG",uuid)
 //            Log.d("DEBAG",quizNumber.toString())
@@ -214,10 +215,10 @@ class StampFragment : Fragment()  {
             (activity as MainActivity).rangeBeacon {
                 Log.d("DEBAG", "Rangebeacon called from stampfragment")
                 if (mProgressDialog.brk) {
-                    if (cheatMode) {
-                        mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
-                        Log.d("DEBAG", requestImagesFunc(quizNumber).toString())
-                    } else
+//                    if (cheatMode) {
+//                        mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
+//                        Log.d("DEBAG", requestImagesFunc(quizNumber).toString())
+//                    } else
                         mApiController.requestImage(activity, uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
                 }
             }
@@ -241,7 +242,7 @@ class StampFragment : Fragment()  {
 
         }*/
 
-        var goalApiIsCalled = arguments!!.getBoolean("goalApiIsCalled")
+        val goalApiIsCalled = a!!.isGoal()
         Log.d("buttonResult", buttonResult[quizNumber].toString())
         if (!goalApiIsCalled) {
             if (buttonResult[quizNumber] == 3) {
@@ -257,6 +258,7 @@ class StampFragment : Fragment()  {
 
                                         response.body()?.let {
                                             a!!.takeGoal()
+                                            Log.d("",goalApiIsCalled.toString())
 
                                             val builder = AlertDialog.Builder(activity)
                                                     .setTitle("クリア済")

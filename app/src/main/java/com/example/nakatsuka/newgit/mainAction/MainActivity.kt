@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity(),  StampFragment.fragmentListner,BeaconC
                 //transaction.addToBackStack(null)
 
                 //パラメータを設定
-                transaction.add(R.id.container, stampFragment!!)
+                transaction.replace(R.id.container, stampFragment!!)
 
                 nowFragment = 0
                 transaction.commit()
@@ -356,6 +356,13 @@ class MainActivity : AppCompatActivity(),  StampFragment.fragmentListner,BeaconC
         editor.putBoolean("goalIsApiCalled",true)
         editor.apply()
         goalApiIsCalled = true
+    }
+
+    override fun isGoal(): Boolean {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+
+        return pref.getBoolean("goalIsApiCalled",false)
+
     }
 
     override fun saveURL(quizCode: Int,imageURL:String){
