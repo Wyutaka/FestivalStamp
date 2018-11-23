@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -15,9 +16,11 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.widget.Toast
 import com.example.nakatsuka.newgit.R
+import com.example.nakatsuka.newgit.mainAction.model.beacon.MyBeaconData
 import com.example.nakatsuka.newgit.navigationAction.*
 import kotlinx.android.synthetic.main.activity_main.*
-import org.altbeacon.beacon.BeaconConsumer
+import org.altbeacon.beacon.*
+import java.util.*
 
 
 private val RESULT_SUBACTIVITY: Int = 1000
@@ -26,20 +29,46 @@ private val PERMISSION_REQUEST_COARSE_LOCATION = 1
 //Bluetoothをオンにするために必要な定数（ここで設定しさえすれば、どんな値でも良いです）
 private val REQUEST_ENABLE_BT = 1
 
+private const val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
+
 /*Todo fragmentの処理　
   Todo APITestの部分の差し替え
   Todo Goal後のアラートの実装*/
-class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragmentListner {
+class MainActivity : AppCompatActivity(),  StampFragment.fragmentListner,BeaconConsumer {
     private val TAG = this.javaClass.simpleName
+
+
+
+
+    private val mRegion = Region("APIAndBeaconModuleRegion", Identifier.parse("0f0ba8e1-f98a-4f59-af70-91308c6620b5"), null, null)
+    private lateinit var mBeaconManager: BeaconManager
+    var onBeaconDataIsUpdated: ((beaconListModel: MutableCollection<MyBeaconData>) -> Unit)? = null
+    private var mBeaconScanStartTime = Date().time
+    private var mBeaconScanIsFinished = false
+
+
+
+
 
     private lateinit var prefer: SharedPreferences
     private lateinit var stampFragment: StampFragment
     val buttonResult: IntArray = intArrayOf(0, 0, 0, 0, 0, 0, 0)
     private var imageURL = arrayListOf<String>("","","","","","","")
+    var uuid : String =  ""
     var goalApiIsCalled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
+        mBeaconManager = BeaconManager.getInstanceForApplication(this)
+        // iBeaconの受信設定：iBeaconのフォーマットを登録する
+        mBeaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
+
+        mBeaconManager.bind(this)
+
 
         val pref = PreferenceManager.getDefaultSharedPreferences(this)
         pref.apply {
@@ -57,7 +86,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             imageURL[4] = pref.getString("imageURL[4]","URL")
             imageURL[5] = pref.getString("imageURL[5]","URL")
             imageURL[6] = pref.getString("imageURL[6]","URL")
-
+            uuid = pref.getString("uuid","uuid")
         }
 
 
@@ -80,7 +109,13 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
             //追記:beaconでuuidを用いるので、bundleを使ってMainActivity->StampFragment間の値渡しをします
             val bnd = Bundle()
             Log.d(TAG, prefer.getString("UUID", ""))
-            bnd.putString("UUID", prefer.getString("UUID", ""))
+            val editor = pref.edit()
+            editor.putString("uuid",prefer.getString("UUID",""))
+            uuid = prefer.getString("UUID","")
+            editor.apply()
+
+            Log.d("UUID",uuid)
+            bnd.putString("UUID", uuid)
             bnd.putString("USERNAME", prefer.getString("USERNAME", ""))
             //bundleを用いてbuttonResultをfragmentに提供
             bnd.putIntArray("buttonResult", buttonResult)
@@ -115,7 +150,6 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
                 //パラメータを設定
                 transaction.add(R.id.container, stampFragment!!)
-
 
                 nowFragment = 0
                 transaction.commit()
@@ -200,6 +234,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mBeaconManager.unbind(this)
+    }
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
@@ -244,6 +283,9 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
                     //bundleを用いてbuttonResultをfragmentに提供
                     bnd.putIntArray("buttonResult",buttonResult)
                     bnd.putStringArrayList("imageURL",imageURL)
+                    bnd.putString("UUID", uuid)
+                    Log.d("UUID",uuid)
+                    bnd.putString("USERNAME", prefer.getString("USERNAME", ""))
 
                 stampFragment = StampFragment()
                 stampFragment.arguments = bnd
@@ -342,9 +384,63 @@ class MainActivity : AppCompatActivity(), BeaconConsumer, StampFragment.fragment
 
 
 
+
+
+
+
+
+
+
+
     override fun onBeaconServiceConnect() {
-        stampFragment!!.onBeaconServiceConnect()
+        Log.d(TAG,"onBeaconServiceConnect called")
+        var callBackCalled = false
+        val myBeaconDataList: MutableList<MyBeaconData> = mutableListOf()
+        //レンジングのイベント
+        mBeaconManager.addRangeNotifier { beaconList, _ ->
+            if (Date().time - mBeaconScanStartTime < 3000) {
+                callBackCalled = false
+                //Android端末によってはbeaconが全然取れないので、（とりあえずの処理として）3倍する
+                //TODO:もっと「いい」方法に…
+                Log.d(TAG,"Ranging. . . ")
+                for (i in 1..3) {
+                    myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
+                }
+            } else {
+                mBeaconManager.stopRangingBeaconsInRegion(mRegion)
+                //全ループ終了後に非同期処理を行う
+                onBeaaconDataUpdate(myBeaconDataList)
+            }
+        }
     }
+
+    @Synchronized
+    fun rangeBeacon(overWriteFun: (MutableCollection<MyBeaconData>) -> Unit) {
+        mBeaconManager.startRangingBeaconsInRegion(mRegion)
+        mBeaconScanStartTime = Date().time
+        onBeaconDataIsUpdated = overWriteFun
+        mBeaconScanIsFinished = false
+        Log.d("DEBAG","Rangebeacon called from origin")
+    }
+
+    @Synchronized
+    fun onBeaaconDataUpdate(myBeaconDataList: MutableList<MyBeaconData>) {
+        if (!mBeaconScanIsFinished) {
+            mBeaconScanIsFinished = true
+            Handler().post {
+                onBeaconDataIsUpdated?.invoke(myBeaconDataList)
+                myBeaconDataList.clear()
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 
     override fun onResume() {
         super.onResume()

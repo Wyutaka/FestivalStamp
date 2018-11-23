@@ -34,6 +34,8 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
         val myBeaconDataList: MutableList<MyBeaconData> = mutableListOf()
         //レンジングのイベント
         mBeaconManager.addRangeNotifier { beaconList, _ ->
+            Log.d("DEBAG", startTime.toString())
+            Log.d("DEBAG",Date().time.toString())
             if (Date().time - startTime < 3000) {
                 callBackCalled = false
                 //Android端末によってはbeaconが全然取れないので、（とりあえずの処理として）3倍する
@@ -43,15 +45,15 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
                     myBeaconDataList.addAll(beaconList.asSequence().map { MyBeaconData(it.id2.toInt(), it.rssi) })
                 }
             } else {
-                if (callBackCalled == false) {
-                    callBackCalled = true
+                //if (callBackCalled == false){
+                   // callBackCalled = true
                     mBeaconManager.stopRangingBeaconsInRegion(mRegion)
                     //全ループ終了後に非同期処理を行う
                     Handler().post {
                         onBeaconDataIsUpdated?.invoke(myBeaconDataList)
                         myBeaconDataList.clear()
                     }
-                }
+                //}
                 
             }
         }
@@ -61,10 +63,10 @@ class BeaconController(val parentContext: Context) : BeaconConsumer {
     var onBeaconDataIsUpdated: ((beaconListModel: MutableCollection<MyBeaconData>) -> Unit)? = null
 
     fun rangeBeacon(overWriteFun: (MutableCollection<MyBeaconData>) -> Unit) {
-        Log.d(TAG,"Rangebeacon Called")
         mBeaconManager.startRangingBeaconsInRegion(mRegion)
         startTime = Date().time
         onBeaconDataIsUpdated = overWriteFun
+        Log.d("DEBAG","Rangebeacon called from origin")
     }
 
     fun bind(bc: BeaconConsumer) = mBeaconManager.bind(bc)

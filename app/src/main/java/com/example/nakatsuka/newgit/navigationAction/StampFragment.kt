@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.example.nakatsuka.newgit.R
+import com.example.nakatsuka.newgit.mainAction.MainActivity
 import com.example.nakatsuka.newgit.mainAction.controller.api.ApiController
 import com.example.nakatsuka.newgit.mainAction.controller.beacon.BeaconController
 import com.example.nakatsuka.newgit.mainAction.lifecycle.ActivityLifeCycle
@@ -28,7 +29,7 @@ import retrofit2.Response
 
 
 /**配列の最大数を7つ*/
-class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
+class StampFragment : Fragment()  {
 
     var TAG = this.javaClass.simpleName
 
@@ -65,6 +66,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        mBeaconController = BeaconController(activity as Context)
         val view = inflater.inflate(R.layout.fragment_stamp, container, false)
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
 
@@ -86,7 +88,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             else texts[i]!!.text = "\n\n問題未取得"
         }
 
-        lifecycle.addObserver(ActivityLifeCycle(this))
+        //lifecycle.addObserver(ActivityLifeCycle(this))
         uuid = arguments!!.getString("UUID", "")
         userName = arguments!!.getString("USERNAME", "")
 
@@ -163,8 +165,10 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     //ProgressDialog機能を追加させました
     //ゴール時の反応を追加しました
     private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
-        Log.d("quiznumber", quizNumber.toString())
+
+        val uuid = arguments!!.getString("UUID")
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
+
         if (buttonResult[quizNumber] == 0) {
             val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
             mProgressDialog.setTargetFragment(this, 100)
@@ -200,15 +204,24 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                         6 ->
                             cheat.add(MyBeaconData(1212, 0))
                     }
+//            Log.d("DEBAG",activity.toString())
+//            Log.d("DEBAG",uuid)
+//            Log.d("DEBAG",quizNumber.toString())
+//            Log.d("DEBAG",cheat.toString())
+            //Log.d("DEBAG",)
+//            Log.d("DEBAG",mBeaconController.toString())
 
-            mBeaconController.rangeBeacon {
+            (activity as MainActivity).rangeBeacon {
+                Log.d("DEBAG", "Rangebeacon called from stampfragment")
                 if (mProgressDialog.brk) {
                     if (cheatMode) {
                         mApiController.requestImage(activity, uuid, quizNumber, cheat, requestImagesFunc(quizNumber))
+                        Log.d("DEBAG", requestImagesFunc(quizNumber).toString())
                     } else
                         mApiController.requestImage(activity, uuid, quizNumber, it as MutableList<MyBeaconData>, requestImagesFunc(quizNumber))
                 }
             }
+            Log.d("DEBAG","end")
         }
 
         if (buttonResult[quizNumber] == 1) {
@@ -277,13 +290,17 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
     /*Beacon通信用のいろいろ*/
     //Controller関係
     val mApiController = ApiController()
-    lateinit var mBeaconController: BeaconController//関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
+    lateinit var mBeaconController: BeaconController
+    //関数型オブジェクトを返す高階関数(?)です。受け取ったquizCodeの値に応じて、関数型オブジェクトを返します。
     //imageRequest時に実行
     val requestImagesFunc = fun(quizCode: Int): (Response<ImageResponse>) -> Unit {
         val go = fun(response: Response<ImageResponse>) {
-            val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
+            Log.d("requestImagesFunc",response.code().toString())
+            //val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
             when (response.code()) {
                 200 -> {
+                    val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
+
                     if (response.body()!!.isSend) {
                         response.body()?.let {
                             data[quizCode - 1] = ImageData(it.quizCode, it.isSend, it.imageURL)
@@ -291,15 +308,8 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                             val isSend = it.isSend
                             buttonResult[quizCode] = 1
 
-
-
                             a!!.take1(quizCode)
                             a!!.saveURL(quizCode,it.imageURL)
-//                            val pref = PreferenceManager.getDefaultSharedPreferences(activity!!)
-//                            val editor = pref.edit()
-//                            editor.putInt("buttonResult[answerNumber]", 1)
-//                            editor.apply()
-//                            //buttonResult[answerNumber!!] = 1
 
                             texts[quizCode]!!.text = "\n\n問題取得済み"
                             isGot[quizCode] = true
@@ -308,7 +318,7 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
                                     .setTitle("判定結果")
                                     .setMessage(R.string.dialog_in_area)
                                     .setPositiveButton("問題へ") { _, _ ->
-                                        a!!.goActivity(quizCode, isSend)
+                                        a!!.goActivity(quizCode, isSend,it.imageURL)
 
                                     }
                                     .setNegativeButton("戻る") { _, _
@@ -338,31 +348,6 @@ class StampFragment : Fragment(), IActivityLifeCycle, BeaconConsumer {
             }
         }
         return go
-    }
-
-
-    /*IActivityLifecycle*/
-    override fun onCreated() {
-        mBeaconController = BeaconController(activity as Context)
-        mBeaconController.onCreated()
-    }
-
-    override fun onConnected() {
-        mBeaconController.bind(activity as BeaconConsumer)
-    }
-
-    override fun onDisconnect() {
-        mBeaconController.unbind(activity as BeaconConsumer)
-    }
-
-    /*BeaconConsumer*/
-    override fun getApplicationContext(): Context = activity!!.applicationContext
-
-    override fun unbindService(p0: ServiceConnection?) = activity!!.unbindService(p0)
-    override fun bindService(p0: Intent?, p1: ServiceConnection?, p2: Int): Boolean = activity!!.bindService(p0, p1, p2)
-
-    override fun onBeaconServiceConnect() {
-        mBeaconController.onBeaconServiceConnect()
     }
 
 }
