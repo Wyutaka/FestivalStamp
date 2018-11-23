@@ -230,6 +230,8 @@ class MainActivity : AppCompatActivity(), StampFragment.FragmentListner, BeaconC
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            AlertUtil.showYesNoDialog(this,"確認","アプリを終了しますか？"){this.moveTaskToBack(true)}
+            /*
             AlertDialog.Builder(this)
                     .setTitle("確認")
                     .setMessage("アプリを終了しますか？")
@@ -239,6 +241,7 @@ class MainActivity : AppCompatActivity(), StampFragment.FragmentListner, BeaconC
                     .setNegativeButton("キャンセル") { _, _ ->
                     }
                     .show()
+                    */
         }
         return super.onKeyDown(keyCode, event)
     }
