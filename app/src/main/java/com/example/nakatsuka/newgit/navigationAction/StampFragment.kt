@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -56,6 +58,8 @@ class StampFragment : Fragment()  {
     private var cheatMode = false
     private var choice = false
 
+    private var isProcessing = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         a = activity as fragmentListner
@@ -102,7 +106,11 @@ class StampFragment : Fragment()  {
                 view.findViewById(R.id.imageButton6)
         )
         for (i in 1..6)
-            buttons[i]!!.setOnClickListener(event(i))
+            buttons[i]!!.setOnClickListener {
+                if (!isProcessing) {
+                    event(i)
+                }
+            }
 
         if (!choice) {
             AlertDialog.Builder(activity)
@@ -164,25 +172,34 @@ class StampFragment : Fragment()  {
 
     //ProgressDialog機能を追加させました
     //ゴール時の反応を追加しました
-    private fun event(quizNumber: Int): View.OnClickListener = View.OnClickListener {
-
+    private fun event(quizNumber: Int) {
         val uuid = arguments!!.getString("UUID")
         val buttonResult: IntArray = arguments!!.getIntArray("buttonResult")
 
         if (buttonResult[quizNumber] == 0) {
+            isProcessing = true
             val mProgressDialog = ProgressDialog.newInstance("ビーコン取得中...")
             mProgressDialog.setTargetFragment(this, 100)
-            mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
 
             val thread = Thread(Runnable {
                 try {
+                    Handler(Looper.getMainLooper()).post {
+                        mProgressDialog.show(activity!!.supportFragmentManager, "dialog")
+                    }
                     Thread.sleep(1000)
-                    mProgressDialog.move()
+                    isProcessing = mProgressDialog.brk
+                    Handler(Looper.getMainLooper()).post {
+                        mProgressDialog.move()
+                    }
                     Thread.sleep(2050)
+                    isProcessing = mProgressDialog.brk
+                    Handler(Looper.getMainLooper()).post {
+                        mProgressDialog.dismiss()
+                    }
+                    Thread.sleep(1000)
+                    isProcessing = false
                 } catch (e: Exception) {
                 }
-
-                mProgressDialog.dismiss()
             })
             thread.start()
 
