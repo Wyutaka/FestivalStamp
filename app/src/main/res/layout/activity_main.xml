@@ -1,250 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/for_scale"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainAction.MainActivity">
-
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.design.widget.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:layout_marginTop="@android:dimen/notification_large_icon_width"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            tools:ignore="NotSibling">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/stamp_rally"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_state"
-                    android:text="Button" />
-
-
-                <Button
-                    android:id="@+id/map"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_state"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/notice_board"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_state"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/time_table"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_state"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/others"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_state"
-                    android:text="Button" />
-            </LinearLayout>
-        </android.support.design.widget.BottomNavigationView>
-    </android.support.constraint.ConstraintLayout>
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="361dp"
-        android:layout_height="431dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:scaleType="fitXY"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_picture_frame_16_9"
-            tools:layout_editor_absoluteY="-51dp" />
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="351dp"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="66dp">
-
-            <android.support.v7.widget.GridLayout
-                android:id="@+id/gridLayout2"
-                android:layout_width="353dp"
-                android:layout_height="408dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="12dp"
-                android:visibility="visible"
-                app:columnCount="4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                tools:rowCount="6">
-
-                <ImageButton
-                    android:id="@+id/imageButton0"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/imageButton1"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/imageButton2"
-                    android:layout_width="161dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/imageButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/imageButton4"
-                    android:layout_width="72dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-                <ImageButton
-                    android:id="@+id/imageButton5"
-                    android:layout_width="186dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@android:string/no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_launcher_background"
-                    app:layout_columnSpan="2"
-                    app:layout_columnWeight="2"
-                    app:layout_rowSpan="2"
-                    app:layout_rowWeight="2"
-                    tools:ignore="VectorDrawableCompat" />
-
-            </android.support.v7.widget.GridLayout>
-        </android.support.constraint.ConstraintLayout>
-
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="16dp"
-        tools:ignore="MissingConstraints">
-
+    tools:context=".mainAction.MainActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eb6101">
+            android:gravity="center"
+            >
 
             <TextView
+                android:id="@+id/fragment_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="スタンプラリー"
-                android:textColor="@android:color/background_light"
-                android:textSize="18dp" />
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
 
         </android.support.v7.widget.Toolbar>
 
 
-        <TextView
-            android:id="@+id/userInformation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <ImageView
-            android:id="@+id/gifView"
-            android:layout_width="64dp"
-            android:layout_height="@android:dimen/notification_large_icon_height"
-            android:layout_marginRight="8dp"
-            tools:layout_editor_absoluteX="8dp" />
 
-    </LinearLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/stamp_rally"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/normalorengebutton"
+                android:textSize="12dp"
+                android:text="スタンプ" />
+
+            <Button
+                android:id="@+id/map"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/normalorengebutton"
+                android:text="地図" />
+
+            <Button
+                android:id="@+id/board"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/normalorengebutton"
+                android:text="掲示板" />
+
+            <Button
+                android:id="@+id/time_table"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/normalorengebutton"
+                android:text="予定表" />
+
+            <Button
+                android:id="@+id/others"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/normalorengebutton"
+                android:text="その他" />
+        </LinearLayout>
+    </android.support.design.widget.BottomNavigationView>
 
 
 </android.support.constraint.ConstraintLayout>

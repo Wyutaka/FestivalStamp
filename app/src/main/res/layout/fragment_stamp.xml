@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".navigationAction.StampFragment">
+
+
+    <ImageView
+        android:id="@+id/girlView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/girl" />
+
+    <ImageView
+        android:id="@+id/frameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        android:visibility="visible"
+        app:srcCompat="@drawable/s_pictureframe" />
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="14dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.GridLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:visibility="visible"
+                app:columnCount="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:rowCount="3">
+
+
+                <Button
+                    android:id="@+id/imageButton1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き1"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <Button
+                    android:id="@+id/imageButton2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き2"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <Button
+                    android:id="@+id/imageButton3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き3"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <Button
+                    android:id="@+id/imageButton4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き4"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <Button
+                    android:id="@+id/imageButton5"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き5"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <Button
+                    android:id="@+id/imageButton6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/s_floatingislandmin"
+                    android:contentDescription="@android:string/no"
+                    android:scaleType="fitCenter"
+                    android:textColor="@color/koudaisaiorange"
+                    android:text="謎解き6"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+            </android.support.v7.widget.GridLayout>
+
+            <android.support.v7.widget.GridLayout
+                android:id="@+id/textLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:visibility="visible"
+                app:columnCount="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:rowCount="3">
+
+                <TextView
+                    android:id="@+id/text1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <TextView
+                    android:id="@+id/text5"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+
+                <TextView
+                    android:id="@+id/text6"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@android:string/no"
+                    android:gravity="center"
+                    android:scaleType="fitCenter"
+                    android:text="\n\n問題未取得"
+                    app:layout_columnSpan="1"
+                    app:layout_columnWeight="1"
+                    app:layout_rowSpan="1"
+                    app:layout_rowWeight="1" />
+            </android.support.v7.widget.GridLayout>
+
+        </FrameLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

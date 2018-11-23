@@ -1,49 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainAction.RuleActivity">
+    android:orientation="vertical"
+    tools:context=".mainAction.RuleActivity">
 
     <TextView
         android:id="@+id/rule_title"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:text="利用規約"
-        android:textSize="32sp"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="16dp"
-        tools:ignore="MissingConstraints"
-        android:textColor="#eb6101"/>
-
-    <ScrollView
-        android:layout_width="343dp"
-        android:layout_height="389dp"
-        tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="76dp"
-        tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/rule_contents"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="ここに利用規約をたしてください"
-            android:textSize="20dp"
-            />
-        
-    </ScrollView>
-
-    <Button
-        android:id="@+id/agree_contents"
-        android:layout_width="172dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_normal_orange_button"
-        android:text="同意する"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="利用規約"
+        android:textColor="@color/koudaisaiorange"
         android:textSize="30dp"
-        tools:layout_editor_absoluteX="106dp"
-        tools:layout_editor_absoluteY="478dp"
-        tools:ignore="MissingConstraints"
-        android:textColor="#eb6101"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="406dp"
+            android:layout_gravity="top"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:background="@drawable/frame_style"
+            app:layout_constraintBottom_toTopOf="@+id/agree_buttons"
+            app:layout_constraintTop_toBottomOf="@+id/rule_title"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp">
+
+            <TextView
+                android:id="@+id/rule_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="20dp" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/agree_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/disagree"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/normalorengebutton"
+                android:text="同意しない"
+                android:textColor="@color/koudaisaiorange"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/agree_contents"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|end"
+                android:background="@drawable/normalorengebutton"
+                android:text="同意する"
+                android:textColor="@color/koudaisaiorange"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
