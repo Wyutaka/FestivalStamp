@@ -11,7 +11,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/s_c0de"/>
+            android:src="@mipmap/c0de"/>
     </item>
 
 </layer-list>
