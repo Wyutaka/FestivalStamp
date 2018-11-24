@@ -2,7 +2,7 @@
     <string name="app_name">NEWGIT</string>
 
     <string name="dialog_in_area">範囲内です。問題を表示します。</string>
-    <string name="dialog_near_area">範囲付近です。もう少し近づいてみて下さい！(スマホを高く掲げると、問題取得できるかもしれません)</string>
+    <string name="dialog_near_area">範囲付近です。もう少し近づいてみて下さい！(スマホを高く掲げると、問題を取得しやすくなるかもしれません)</string>
     <string name="dialog_out_of_area">範囲外です。</string>
     <string name="dialog_connection_error">通信エラーが発生しました。</string>
 </resources>
