@@ -213,7 +213,7 @@ class StampFragment : Fragment() {
                                             mFragmentListner!!.takeGoal()
                                             Log.d("", goalApiIsCalled.toString())
 
-                                            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+                                            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所(5233教室)まで景品(数に限りがございます)を受け取りにお越しください！")
                                         }
                                     }
 
@@ -224,7 +224,7 @@ class StampFragment : Fragment() {
                         }
             }
         } else {
-            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所まで景品(数に限りがございます)を受け取りにお越しください！")
+            AlertUtil.showNotifyDialog(activity as Activity,"クリア済","$userName さん、クリアおめでとうございます！景品受取所(5233教室)まで景品(数に限りがございます)を受け取りにお越しください！")
         }
     }
 
